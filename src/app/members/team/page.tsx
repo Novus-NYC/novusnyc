@@ -1006,7 +1006,9 @@ export default function TeamPage() {
         <div className="mt-4">
           <LoadError message={teamLoadError} onRetry={() => window.location.reload()} />
         </div>
-      ) : !teamLoaded ? (
+      ) : !teamLoaded || !scope.chapterId ? (
+        // Without the chapter list nothing can be matched to a chapter, so an
+        // empty table here means "still loading", not "no members".
         <div className="mt-4"><SkeletonRows rows={8} cols={6} /></div>
       ) : filtered.length === 0 ? (
         <Empty
