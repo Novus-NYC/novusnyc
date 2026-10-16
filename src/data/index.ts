@@ -76,9 +76,11 @@ export const communityPartners = [
   { name: "Castleton Avenue Merchants Organization", logo: "/partners/logos/castleton-avenue-merchants.png", website: "https://www.facebook.com/CAMOSINYC", important: false },
   { name: "Queens Economic Development Corporation", logo: "/partners/logos/queens-economic-development.png", website: "https://www.queensny.org/", important: false },
   { name: "Staten Island Business Outreach Center", logo: "/partners/logos/siboc.png", website: "https://siboc.org/", important: false },
+  { name: "Staten Island Small Business Development Center", logo: "/partners/logos/staten-island-sbdc.png", website: "https://www.sisbdc.org/", important: false },
   // No site of its own; the link that was here belonged to a different group.
   { name: "East New York Merchants Association", logo: "/partners/logos/east-new-york-merchants.png", important: false },
   { name: "Local Development Corporation of East New York", logo: "/partners/logos/ldceny.png", website: "https://www.ldceny.org/", important: false },
+  { name: "Rockaway Development & Revitalization Corporation", logo: "/partners/logos/rdrc.png", important: false },
 ];
 
 export type CommunityPartner = (typeof communityPartners)[number];

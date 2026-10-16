@@ -235,6 +235,18 @@ export const partnerships: Partnership[] = [
     introducedBy: [{ from: "forest-avenue-bid" }],
   },
   {
+    id: "staten-island-sbdc",
+    name: "Staten Island Small Business Development Center",
+    shortName: "Staten Island SBDC",
+    kind: "program",
+    sector: "Staten Island",
+    depth: "active",
+    roles: [],
+    monogram: "SBDC",
+    summary:
+      "Hosted by the College of Staten Island, the Staten Island Small Business Development Center provides free business advising, training, and research to entrepreneurs in Staten Island and South Brooklyn.",
+  },
+  {
     id: "sunnyside-shines",
     name: "Sunnyside Shines BID",
     shortName: "Sunnyside Shines",
@@ -472,19 +484,16 @@ export const partnerships: Partnership[] = [
       "The Lower East Side Partnership connects Novus with small businesses in the Lower East Side.",
   },
   {
-    // Pending founder open question 4: the redesign was for a staff member's
-    // company, not an RDRC-referred merchant.
     id: "rdrc",
     name: "Rockaway Development & Revitalization Corporation",
     shortName: "RDRC",
     kind: "ldc",
     sector: "Queens",
     depth: "active",
-    roles: ["built-their-site"],
+    roles: [],
     monogram: "RDRC",
     summary:
-      "Rockaway Development & Revitalization Corporation replied to Novus's outreach in September 2026, and the team delivered a website redesign that was approved that month.",
-    hidden: true,
+      "Rockaway Development & Revitalization Corporation is a Novus community partner in Queens.",
   },
 ];
 

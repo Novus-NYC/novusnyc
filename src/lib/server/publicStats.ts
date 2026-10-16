@@ -34,8 +34,8 @@ export interface PublicStatSnapshot {
  * labelled "automatic" and there was no way to see the real number at all.
  */
 export const PUBLISHED_IMPACT_TOTALS = {
-  students: "400+",
-  businesses: "170+",
+  students: "550",
+  businesses: "270",
 } as const;
 
 async function getActiveMemberCount(): Promise<number> {
@@ -142,7 +142,7 @@ export async function getPublicStatSnapshot(): Promise<PublicStatSnapshot> {
     // figures live in the overrides, so the panel can show both.
     homeStudentMembers: `${activeMembers}`,
     homeBusinessesSupported: `${liveStats.totalBusinesses}`,
-    communityOrganizations: `${communityOrganizations}+`,
+    communityOrganizations: `${communityOrganizations}`,
     homeSchoolsRepresented: `${schoolsRepresented}+`,
     aboutBusinesses: `${liveStats.totalBusinesses}`,
     aboutWebsiteProjects: `${liveStats.websiteProjects}+`,

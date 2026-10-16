@@ -41,10 +41,10 @@ const ANCHOR_ANGLE = 90;
 // of collapsing between neighbors.
 const RING_POSITION = [
   "bronx-chamber", "third-avenue-bid",
-  "queens-chamber", "licp", "sunnyside-shines", "bayside-village-bid", "qedc",
+  "queens-chamber", "licp", "sunnyside-shines", "bayside-village-bid", "qedc", "rdrc",
   "bay-ridge-bid", "atlantic-avenue-bid", "park-slope-bid", "north-flatbush-bid", "brooklyn-chamber",
   "chldc", "cypress-hills-fulton-bid", "enyma", "ldceny",
-  "si-chamber", "forest-avenue-bid", "siboc", "camo",
+  "si-chamber", "forest-avenue-bid", "siboc", "staten-island-sbdc", "camo",
   "aaf", "lower-east-side-partnership", "manhattan-chamber", "nyc-sbs", "sbrn",
 ];
 
