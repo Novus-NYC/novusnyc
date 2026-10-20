@@ -267,11 +267,13 @@ never be switchable off). The Emails page is built from that list, so **a new
 send path needs a registry entry**. Keep each entry's `variables` equal to what
 the code passes; an unknown `{{token}}` renders as an empty string, silently.
 
-`voltanyc.org` still routes to the same inbox and is deliberately kept alive:
-partners, BIDs and applicants from before the rebrand hold those addresses. Do
-not delete that zone or its routing rules.
+The pre-rebrand mail domain still routes to the same inbox and is deliberately
+kept alive: partners, BIDs and applicants from before the rebrand hold those
+addresses. Do not delete that zone or its routing rules. Its website must not
+redirect here or serve this site, and the organization's former name must not
+appear in public copy, structured data, llms.txt or the README.
 
-Some `@voltanyc.org` strings are **not** mailboxes and must never be rewritten:
+Some strings on the pre-rebrand domain are **not** mailboxes and must never be rewritten:
 `UID:...` values in calendar invites, `calendar_events.i_cal_uid` in Postgres,
 and historical `audit_logs` rows, which record what happened at the time.
 
@@ -285,7 +287,7 @@ rather than recreated, so existing post permalinks still resolve.
 
 - **Platform:** Vercel
 - **Production domain:** `www.novusnyc.org` (www is canonical — the apex 301s to www)
-- **Redirects (`next.config.mjs`):** `voltanyc.org`, `www.voltanyc.org`, `nyc.voltanpo.org`, `volta-nyc.vercel.app`, `novus-nyc.vercel.app` → `https://www.novusnyc.org`
+- **Redirects (`next.config.mjs`):** `novus-nyc.vercel.app` → `https://www.novusnyc.org`
 - **Never** add `www.novusnyc.org` to that list — Vercel already 301s the apex to www, so redirecting www back to the apex creates an infinite loop.
 - **Images:** served from Supabase Storage (`thzvuxuqvjkifpxlmoqc.supabase.co`), optimized as AVIF/WebP by Next.js Image.
 - **Cache-busting:** run `npx next build` and deploy; Vercel invalidates CDN on deploy automatically.

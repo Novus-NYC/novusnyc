@@ -19,8 +19,9 @@
  *   dig +short MX novusnyc.org
  *   dig +short TXT novusnyc.org | grep spf1
  *
- * voltanyc.org still routes to the same inbox and is deliberately left alive —
- * partners, BIDs and applicants from before the rebrand hold those addresses.
+ * The pre-rebrand mail domain still routes to the same inbox and is
+ * deliberately left alive — partners, BIDs and applicants from before the
+ * rebrand hold those addresses.
  */
 const MAIL_DOMAIN = "novusnyc.org";
 

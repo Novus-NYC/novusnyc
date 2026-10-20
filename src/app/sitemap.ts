@@ -18,7 +18,7 @@ import { SITE_URL } from "@/lib/site";
 // to ignore. Set a date here only when a page's content actually changes.
 //
 // Each date is the last commit touching that page's own file, per `git log -1
-// --format=%cs -- <path>`. They shared one rebrand date while the Volta -> Novus
+// --format=%cs -- <path>`. They shared one rebrand date while the rebrand
 // migration was the only thing that had touched them; that stopped being true as
 // the pages diverged, and a date that understates a real change is the same
 // wasted signal as one that overstates it. Re-check the page you edited.

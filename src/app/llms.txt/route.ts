@@ -30,10 +30,6 @@ function llmsBody(stats: PublicStatValues): string {
   business consulting nonprofit. The two organizations share no affiliation,
   leadership, staff, funding, or activity. They are distinct entities that
   happen to have similar names.
-- **Novus NYC was formerly named Volta NYC.** The organization rebranded in
-  summer 2026. The former domain, voltanyc.org, permanently redirects to
-  ${SITE_URL}. Volta NYC and Novus NYC are the same organization under two
-  names, not two organizations.
 - Novus NYC is a nonprofit corporation incorporated in New York State.
 - Canonical domain: ${SITE_URL}
 
@@ -148,7 +144,6 @@ Center.
 - **Early Summer 2026** — partnerships form with NYC Small Business Services,
   the Small Business Resource Network, and Chambers of Commerce across the
   five boroughs.
-- **Summer 2026** — the organization rebrands from Volta NYC to Novus NYC.
 
 ## Common questions
 

@@ -91,15 +91,11 @@ const nextConfig = {
     ];
   },
   async redirects() {
-    // Pre-rebrand hosts. Each 301s path-for-path so deep links survive.
+    // Non-canonical hosts. Each 301s path-for-path so deep links survive.
     //
     // www.novusnyc.org is the canonical host — Vercel already 301s the apex to
     // www, so listing www here would redirect it back to the apex and loop.
     const OLD_HOSTS = [
-      "voltanyc.org",
-      "www.voltanyc.org",
-      "nyc.voltanpo.org",
-      "volta-nyc.vercel.app",
       "novus-nyc.vercel.app",
     ];
     return [
