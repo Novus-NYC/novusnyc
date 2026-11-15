@@ -8,7 +8,9 @@ import IntroductionMapSection from "./IntroductionMapSection";
 
 export default function CityNetwork({ partners }: { partners: PublicPartnership[] }) {
   const [city, setCity] = useState<"New York City" | "Chicago">("New York City");
-  const [activeChicagoPartner, setActiveChicagoPartner] = useState<string | null>(null);
+  const [hoveredChicagoPartner, setHoveredChicagoPartner] = useState<string | null>(null);
+  const [selectedChicagoPartner, setSelectedChicagoPartner] = useState<string | null>(null);
+  const activeChicagoPartner = hoveredChicagoPartner ?? selectedChicagoPartner;
   const reduced = useReducedMotion();
   const chicago = cityPartnerGroups.find((group) => group.city === "Chicago");
   const chicagoPartners = chicago?.partners ?? [];
@@ -49,15 +51,14 @@ export default function CityNetwork({ partners }: { partners: PublicPartnership[
                         aria-label={`Show details for ${partner.name}`}
                         aria-pressed={activeChicagoPartner === partner.name}
                         className="cursor-pointer outline-none"
-                        onMouseEnter={() => setActiveChicagoPartner(partner.name)}
-                        onMouseLeave={() => setActiveChicagoPartner(null)}
-                        onFocus={() => setActiveChicagoPartner(partner.name)}
-                        onBlur={() => setActiveChicagoPartner(null)}
-                        onClick={() => setActiveChicagoPartner(partner.name)}
+                        onMouseEnter={() => setHoveredChicagoPartner(partner.name)}
+                        onMouseLeave={() => setHoveredChicagoPartner(null)}
+                        onFocus={() => setSelectedChicagoPartner(partner.name)}
+                        onClick={() => setSelectedChicagoPartner(partner.name)}
                         onKeyDown={(event) => {
                           if (event.key === "Enter" || event.key === " ") {
                             event.preventDefault();
-                            setActiveChicagoPartner(partner.name);
+                            setSelectedChicagoPartner(partner.name);
                           }
                         }}
                       >
