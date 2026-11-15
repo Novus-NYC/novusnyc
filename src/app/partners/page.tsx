@@ -75,16 +75,16 @@ export default async function PartnersPage() {
 
       <PartnerDirectory partners={partners} />
 
-      <section id="student-pipeline" aria-labelledby="student-pipeline-heading" className="scroll-mt-20 border-b border-n-border bg-n-bg py-12 md:py-16">
+      <section id="student-pipeline" aria-labelledby="student-pipeline-heading" className="scroll-mt-20 border-t border-white/10 bg-n-dark py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-5 md:px-8">
-          <h2 id="student-pipeline-heading" className="font-display text-2xl font-bold text-n-ink">Student Pipeline:</h2>
-          <div className="mt-6 grid gap-4 sm:grid-cols-2">
+          <h2 id="student-pipeline-heading" className="font-display text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl">Student Pipeline:</h2>
+          <div className="mx-auto mt-10 grid max-w-5xl grid-cols-2 gap-4 sm:gap-8 md:mt-12 md:gap-12">
             {studentPipelinePartners.map((partner) => (
-              <a key={partner.name} href={partner.website} target="_blank" rel="noopener noreferrer" className="flex min-h-28 items-center gap-5 rounded-2xl border border-n-border bg-white px-5 py-4 transition-shadow hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-n-purple">
-                <span className="flex h-20 w-24 shrink-0 items-center justify-center rounded-xl bg-white p-2">
-                  <Image src={partner.logo} alt="" width={96} height={80} className="max-h-full w-auto object-contain" />
+              <a key={partner.name} href={partner.website} target="_blank" rel="noopener noreferrer" className="group block text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-n-orange">
+                <span className="flex h-40 items-center justify-center rounded-2xl bg-white p-4 transition-transform group-hover:-translate-y-1 sm:h-56 sm:p-7 md:h-64 md:p-9">
+                  <Image src={partner.logo} alt="" width={440} height={260} className="h-full w-full object-contain" />
                 </span>
-                <span className="font-display text-lg font-bold leading-snug text-n-ink">{partner.name}</span>
+                <span className="mt-5 block font-display text-base font-bold leading-snug text-white group-hover:text-n-orange sm:text-xl md:text-2xl">{partner.name}</span>
               </a>
             ))}
           </div>
