@@ -1200,6 +1200,41 @@ body:has(.home-scroll-story) footer::before {
   animation-play-state: paused;
 }
 
+.school-logo-marquee {
+  mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+}
+
+.school-logo-track {
+  display: flex;
+  width: max-content;
+  animation: school-logo-scroll 48s linear infinite;
+  will-change: transform;
+}
+
+.school-logo-track-reverse {
+  animation-direction: reverse;
+  animation-duration: 54s;
+}
+
+.school-logo-track-short {
+  animation-duration: 30s;
+}
+
+.school-logo-marquee:hover .school-logo-track {
+  animation-play-state: paused;
+}
+
+.school-logo-group {
+  display: flex;
+  flex: none;
+  gap: 1rem;
+  padding-right: 1rem;
+}
+
+@keyframes school-logo-scroll {
+  to { transform: translate3d(-50%, 0, 0); }
+}
+
 .partner-logo-card {
   transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
 }
@@ -1491,6 +1526,23 @@ body:has(.home-scroll-story) footer::before {
   }
 
   .partner-marquee-track > div[aria-hidden="true"] {
+    display: none;
+  }
+
+  .school-logo-marquee {
+    mask-image: none;
+  }
+
+  .school-logo-track,
+  .school-logo-group {
+    width: 100%;
+    animation: none;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .school-logo-group[aria-hidden="true"],
+  .school-logo-repeat {
     display: none;
   }
 }

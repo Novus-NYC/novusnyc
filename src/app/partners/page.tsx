@@ -3,20 +3,13 @@ import Image from "next/image";
 import AnimatedSection from "@/components/AnimatedSection";
 import CityNetwork from "@/components/partnerships/CityNetwork";
 import PartnerDirectory from "@/components/partnerships/PartnerDirectory";
+import SchoolLogoMarquee from "@/components/partnerships/SchoolLogoMarquee";
 import { studentPipelinePartners } from "@/data/partnerGroups";
-import { marqueeSchools } from "@/data";
 import { EMAIL } from "@/lib/mail";
 import { getPublicPartnerships } from "@/lib/server/publicPartnerships";
 
 const DESCRIPTION =
   "Meet the community organizations supporting Novus in New York and Chicago, and the programs connecting students to our work.";
-
-const SCHOOL_TILE_STYLES = [
-  "-rotate-2 border-n-orange/30 bg-n-orange/10",
-  "rotate-1 border-n-purple/40 bg-n-purple/10",
-  "-rotate-1 border-white/20 bg-white/5",
-  "rotate-2 border-n-orange/25 bg-white/5",
-];
 
 // Open Graph and Twitter are set here so the page does not inherit the root
 // layout's pricing language while the founder settles it.
@@ -98,13 +91,7 @@ export default async function PartnersPage() {
           </div>
           <div className="mt-16 border-t border-white/10 pt-10 sm:mt-20">
             <h3 className="text-center font-display text-2xl font-bold text-white sm:text-3xl">Schools our members come from</h3>
-            <div className="mx-auto mt-8 flex max-w-6xl flex-wrap items-center justify-center gap-3 py-3 sm:gap-4">
-              {marqueeSchools.map((school, index) => (
-                <span key={school} className={`inline-flex min-h-14 max-w-64 items-center justify-center rounded-xl border px-4 py-3 text-center font-body text-sm font-semibold leading-snug text-white/90 sm:px-5 sm:text-base ${SCHOOL_TILE_STYLES[index % SCHOOL_TILE_STYLES.length]}`}>
-                  {school}
-                </span>
-              ))}
-            </div>
+            <SchoolLogoMarquee />
           </div>
         </div>
       </section>
