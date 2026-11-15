@@ -2,11 +2,28 @@ import type { Metadata } from "next";
 import AnimatedSection from "@/components/AnimatedSection";
 import IntroductionMapSection from "@/components/partnerships/IntroductionMapSection";
 import PartnerDirectory from "@/components/partnerships/PartnerDirectory";
+import { cityPartnerGroups, studentPipelinePartners, type PartnerGroupEntry } from "@/data/partnerGroups";
 import { EMAIL } from "@/lib/mail";
 import { getPublicPartnerships } from "@/lib/server/publicPartnerships";
 
 const DESCRIPTION =
-  "The chambers of commerce, business improvement districts, and development corporations that introduce Novus NYC to small businesses, and what each relationship involves.";
+  "Meet the community organizations supporting Novus in New York and Chicago, and the programs connecting students to our work.";
+
+function PartnerCards({ partners }: { partners: PartnerGroupEntry[] }) {
+  return (
+    <div className="mt-7 grid gap-4 md:grid-cols-2">
+      {partners.map((partner) => (
+        <article key={partner.name} className="rounded-2xl border border-n-border bg-white p-6 shadow-sm sm:p-7">
+          <h3 className="font-display text-xl font-bold text-n-ink">{partner.name}</h3>
+          <p className="mt-3 font-body text-base leading-relaxed text-n-muted">{partner.detail}</p>
+          <a href={partner.website} target="_blank" rel="noopener noreferrer" className="mt-5 inline-flex font-body text-sm font-semibold text-n-purple underline underline-offset-4 hover:text-n-orange-ink">
+            Visit organization <span aria-hidden="true" className="ml-1">↗</span>
+          </a>
+        </article>
+      ))}
+    </div>
+  );
+}
 
 // Open Graph and Twitter are set here so the page does not inherit the root
 // layout's pricing language while the founder settles it.
@@ -48,10 +65,10 @@ export default async function PartnersPage() {
           <AnimatedSection>
             <p className="mb-4 font-body text-sm font-semibold uppercase tracking-widest text-n-orange">Partners</p>
             <h1 className="max-w-4xl font-display font-bold leading-[1.02] tracking-tight text-white" style={{ fontSize: "clamp(2.3rem, 5.4vw, 4.2rem)" }}>
-              The organizations that introduce us to New York&apos;s small businesses.
+              The organizations behind our work.
             </h1>
             <p className="mt-6 max-w-2xl font-body text-lg leading-relaxed text-white/80">
-              Chambers of commerce, business improvement districts (BIDs), and development corporations know their merchants. We build the websites. Here is what each relationship involves.
+              Community partners help us reach local businesses, while student programs connect young people with work they can own. Our network began in New York and now reaches Chicago.
             </p>
           </AnimatedSection>
         </div>
@@ -59,6 +76,7 @@ export default async function PartnersPage() {
 
       <section id="introductions" className="relative scroll-mt-20 bg-n-dark pb-8 pt-4">
         <div className="mx-auto max-w-7xl px-5 md:px-8">
+          <h2 className="mb-6 font-display text-2xl font-bold text-white">New York City community partners</h2>
           <a
             href="#what-partnering-means"
             className="sr-only focus:not-sr-only focus:mb-4 focus:inline-block focus:rounded-full focus:bg-white focus:px-4 focus:py-2 focus:font-body focus:text-sm focus:font-semibold focus:text-n-ink"
@@ -72,6 +90,33 @@ export default async function PartnersPage() {
       </section>
 
       <PartnerDirectory partners={partners} />
+
+      <section id="beyond-nyc" aria-labelledby="beyond-nyc-heading" className="scroll-mt-20 bg-n-bg py-16 md:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-5 md:px-8">
+          <p className="font-body text-sm font-semibold uppercase tracking-widest text-n-orange-ink">Beyond New York City</p>
+          <h2 id="beyond-nyc-heading" className="page-section-heading mt-3 text-n-ink">Community partners in other cities</h2>
+          <p className="mt-4 max-w-2xl font-body text-lg leading-relaxed text-n-muted">
+            As Novus grows, we work with organizations rooted in the communities our student teams serve.
+          </p>
+          {cityPartnerGroups.map((group) => (
+            <div key={group.city} className="mt-9">
+              <p className="font-display text-2xl font-bold text-n-ink">{group.city}</p>
+              <PartnerCards partners={group.partners} />
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section id="student-pipeline" aria-labelledby="student-pipeline-heading" className="scroll-mt-20 border-b border-n-border bg-white py-16 md:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-5 md:px-8">
+          <p className="font-body text-sm font-semibold uppercase tracking-widest text-n-orange-ink">Student pipeline</p>
+          <h2 id="student-pipeline-heading" className="page-section-heading mt-3 text-n-ink">Programs connecting students to Novus</h2>
+          <p className="mt-4 max-w-2xl font-body text-lg leading-relaxed text-n-muted">
+            These programs help young people find opportunities to put their skills to work.
+          </p>
+          <PartnerCards partners={studentPipelinePartners} />
+        </div>
+      </section>
 
       <section id="what-partnering-means" className="scroll-mt-20 bg-white py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-5 md:px-8">
