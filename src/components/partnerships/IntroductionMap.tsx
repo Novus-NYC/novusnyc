@@ -183,13 +183,6 @@ export default function IntroductionMap({ partners }: { partners: PublicPartners
   ];
 
   const focused = focusedId ? byId.get(focusedId) : undefined;
-  // The panel keeps the organization it last showed while it fades out, so
-  // letting go of a circle never empties the page under the cursor.
-  const [shown, setShown] = useState<PublicPartnership | null>(null);
-  useEffect(() => {
-    if (focused) setShown(focused);
-  }, [focused]);
-
   return (
     <div ref={frameRef} className="scroll-mt-20">
       <div
@@ -348,7 +341,7 @@ export default function IntroductionMap({ partners }: { partners: PublicPartners
                   x={node.label.x}
                   y={node.label.y}
                   textAnchor={node.label.anchor}
-                  className={`pmap-halo fill-white font-body ${partner.depth === "deep" ? "font-semibold" : "font-medium"}`}
+                  className={`pointer-events-none pmap-halo fill-white font-body ${partner.depth === "deep" ? "font-semibold" : "font-medium"}`}
                   style={{ fontSize: node.label.fontSize }}
                 >
                   {node.label.lines.map((line, index) => (
@@ -411,16 +404,9 @@ export default function IntroductionMap({ partners }: { partners: PublicPartners
         </div>
       )}
 
-      {compact ? null : (
-        <div aria-live="polite" className="mt-6 grid min-h-[25rem] border-t border-white/10 pt-7 lg:min-h-[22rem] xl:min-h-[19.5rem] [&>*]:col-start-1 [&>*]:row-start-1">
-          <div aria-hidden={Boolean(focused)} className={`self-start ${fade} ${focused ? "pointer-events-none opacity-0" : "opacity-100 delay-100"}`}>
-            <p className="font-body text-sm text-white/45">Hover over an organization to see more</p>
-          </div>
-          {shown && (
-            <div aria-hidden={!focused} className={`self-start ${fade} ${focused ? "opacity-100 delay-100" : "pointer-events-none opacity-0"}`}>
-              <PartnerDetail partner={shown} partnersById={byId} surface="dark" />
-            </div>
-          )}
+      {!compact && focused && (
+        <div aria-live="polite" className="mt-6 border-t border-white/10 pt-7">
+          <PartnerDetail partner={focused} partnersById={byId} surface="dark" />
         </div>
       )}
 
