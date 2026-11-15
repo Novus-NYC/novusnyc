@@ -31,12 +31,12 @@ export const studentPipelinePartners: PartnerGroupEntry[] = [
     name: "TKS (The Knowledge Society)",
     detail: "An innovation program for students and part of the network connecting young people with Novus.",
     website: "https://www.tks.world/",
-    logo: "/partners/logos/tks.jpg",
+    logo: "/partners/logos/tks-transparent.png",
   },
   {
     name: "Train & Earn",
     detail: "A youth career program we work with in collaboration with NYC's Department of Youth and Community Development (DYCD).",
     website: "https://www.nyc.gov/employment/programs/train-earn",
-    logo: "/partners/logos/dycd.webp",
+    logo: "/partners/logos/dycd-dark.png",
   },
 ];

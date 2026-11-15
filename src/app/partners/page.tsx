@@ -4,11 +4,19 @@ import AnimatedSection from "@/components/AnimatedSection";
 import CityNetwork from "@/components/partnerships/CityNetwork";
 import PartnerDirectory from "@/components/partnerships/PartnerDirectory";
 import { studentPipelinePartners } from "@/data/partnerGroups";
+import { marqueeSchools } from "@/data";
 import { EMAIL } from "@/lib/mail";
 import { getPublicPartnerships } from "@/lib/server/publicPartnerships";
 
 const DESCRIPTION =
   "Meet the community organizations supporting Novus in New York and Chicago, and the programs connecting students to our work.";
+
+const SCHOOL_TILE_STYLES = [
+  "-rotate-2 border-n-orange/30 bg-n-orange/10",
+  "rotate-1 border-n-purple/40 bg-n-purple/10",
+  "-rotate-1 border-white/20 bg-white/5",
+  "rotate-2 border-n-orange/25 bg-white/5",
+];
 
 // Open Graph and Twitter are set here so the page does not inherit the root
 // layout's pricing language while the founder settles it.
@@ -77,16 +85,26 @@ export default async function PartnersPage() {
 
       <section id="student-pipeline" aria-labelledby="student-pipeline-heading" className="scroll-mt-20 border-t border-white/10 bg-n-dark py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-5 md:px-8">
-          <h2 id="student-pipeline-heading" className="font-display text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl">Student Pipeline:</h2>
-          <div className="mx-auto mt-10 grid max-w-5xl grid-cols-2 gap-4 sm:gap-8 md:mt-12 md:gap-12">
+          <h2 id="student-pipeline-heading" className="text-center font-display text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl">Student Pipeline</h2>
+          <div className="mx-auto mt-10 grid max-w-2xl grid-cols-2 gap-4 sm:gap-12 md:mt-12">
             {studentPipelinePartners.map((partner) => (
-              <a key={partner.name} href={partner.website} target="_blank" rel="noopener noreferrer" className="group block text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-n-orange">
-                <span className="flex h-40 items-center justify-center rounded-2xl bg-white p-4 transition-transform group-hover:-translate-y-1 sm:h-56 sm:p-7 md:h-64 md:p-9">
-                  <Image src={partner.logo} alt="" width={440} height={260} className="h-full w-full object-contain" />
+              <a key={partner.name} href={partner.website} target="_blank" rel="noopener noreferrer" className="group block rounded-xl text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-n-orange">
+                <span className="flex h-32 items-center justify-center transition-transform group-hover:-translate-y-1 sm:h-40">
+                  <Image src={partner.logo} alt="" width={320} height={220} className="h-full w-full max-w-56 object-contain" />
                 </span>
-                <span className="mt-5 block font-display text-base font-bold leading-snug text-white group-hover:text-n-orange sm:text-xl md:text-2xl">{partner.name}</span>
+                <span className="mt-4 block font-display text-base font-bold leading-snug text-white group-hover:text-n-orange sm:text-xl">{partner.name}</span>
               </a>
             ))}
+          </div>
+          <div className="mt-16 border-t border-white/10 pt-10 sm:mt-20">
+            <h3 className="text-center font-display text-2xl font-bold text-white sm:text-3xl">Schools our members come from</h3>
+            <div className="mx-auto mt-8 flex max-w-6xl flex-wrap items-center justify-center gap-3 py-3 sm:gap-4">
+              {marqueeSchools.map((school, index) => (
+                <span key={school} className={`inline-flex min-h-14 max-w-64 items-center justify-center rounded-xl border px-4 py-3 text-center font-body text-sm font-semibold leading-snug text-white/90 sm:px-5 sm:text-base ${SCHOOL_TILE_STYLES[index % SCHOOL_TILE_STYLES.length]}`}>
+                  {school}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
       </section>
