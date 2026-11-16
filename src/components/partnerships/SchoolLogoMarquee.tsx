@@ -22,15 +22,15 @@ function LogoRow({ label, logos, motion }: { label: string; logos: SchoolLogo[];
         {[false, true].map((duplicate) => (
           <div key={String(duplicate)} className="school-logo-group" aria-hidden={duplicate}>
             {displayLogos.map((school, index) => (
-              <div key={`${school.name}-${index}`} aria-hidden={index >= logos.length} className={`flex h-24 w-36 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/[0.07] p-3 sm:h-28 sm:w-40 ${index >= logos.length ? "school-logo-repeat" : ""}`}>
+              <div key={`${school.name}-${index}`} aria-hidden={index >= logos.length} className={`flex h-24 w-40 shrink-0 items-center justify-center px-2 sm:h-28 sm:w-48 ${index >= logos.length ? "school-logo-repeat" : ""}`}>
                 <Image
                   src={school.logo}
                   alt={index < logos.length && !duplicate ? school.name : ""}
-                  width={160}
+                  width={192}
                   height={112}
-                  sizes="160px"
+                  sizes="192px"
                   loading="eager"
-                  className="h-full w-full object-contain"
+                  className={`h-full w-full object-contain drop-shadow-[0_5px_14px_rgba(0,0,0,0.35)] ${school.brighten ? "brightness-150" : ""}`}
                 />
               </div>
             ))}

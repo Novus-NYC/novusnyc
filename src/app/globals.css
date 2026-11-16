@@ -1207,17 +1207,17 @@ body:has(.home-scroll-story) footer::before {
 .school-logo-track {
   display: flex;
   width: max-content;
-  animation: school-logo-scroll 48s linear infinite;
+  animation: school-logo-scroll 58s linear infinite;
   will-change: transform;
 }
 
 .school-logo-track-reverse {
   animation-direction: reverse;
-  animation-duration: 54s;
+  animation-duration: 64s;
 }
 
 .school-logo-track-short {
-  animation-duration: 30s;
+  animation-duration: 38s;
 }
 
 .school-logo-marquee:hover .school-logo-track {
@@ -1227,8 +1227,8 @@ body:has(.home-scroll-story) footer::before {
 .school-logo-group {
   display: flex;
   flex: none;
-  gap: 1rem;
-  padding-right: 1rem;
+  gap: 2rem;
+  padding-right: 2rem;
 }
 
 @keyframes school-logo-scroll {
