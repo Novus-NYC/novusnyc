@@ -22,16 +22,21 @@ function LogoRow({ label, logos, motion }: { label: string; logos: SchoolLogo[];
         {[false, true].map((duplicate) => (
           <div key={String(duplicate)} className="school-logo-group" aria-hidden={duplicate}>
             {displayLogos.map((school, index) => (
-              <div key={`${school.name}-${index}`} aria-hidden={index >= logos.length} className={`flex h-24 w-40 shrink-0 items-center justify-center px-2 sm:h-28 sm:w-48 ${index >= logos.length ? "school-logo-repeat" : ""}`}>
-                <Image
-                  src={school.logo}
-                  alt={index < logos.length && !duplicate ? school.name : ""}
-                  width={192}
-                  height={112}
-                  sizes="192px"
-                  loading="eager"
-                  className={`h-full w-full object-contain drop-shadow-[0_5px_14px_rgba(0,0,0,0.35)] ${school.brighten ? "brightness-150" : ""}`}
-                />
+              <div key={`${school.name}-${index}`} aria-hidden={index >= logos.length} className={`flex h-36 w-44 shrink-0 flex-col items-center justify-center px-2 sm:w-52 ${index >= logos.length ? "school-logo-repeat" : ""}`}>
+                <div className="flex h-20 w-full items-center justify-center">
+                  <Image
+                    src={school.logo}
+                    alt=""
+                    width={192}
+                    height={112}
+                    sizes="192px"
+                    loading="eager"
+                    className={`h-full w-full object-contain ${school.glow ? "drop-shadow-[0_0_5px_rgba(255,255,255,0.65)]" : "drop-shadow-[0_5px_14px_rgba(0,0,0,0.35)]"} ${school.brighten ? "brightness-150" : ""}`}
+                  />
+                </div>
+                <span className="mt-2 flex h-12 items-start justify-center text-center text-[11px] font-medium leading-tight text-white/75 sm:text-xs">
+                  {school.name}
+                </span>
               </div>
             ))}
           </div>

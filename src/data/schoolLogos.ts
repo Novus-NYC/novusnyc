@@ -2,6 +2,7 @@ export interface SchoolLogo {
   name: string;
   logo: string;
   brighten?: boolean;
+  glow?: boolean;
 }
 
 export const collegeLogos: SchoolLogo[] = [
@@ -37,6 +38,6 @@ export const featuredHighSchoolLogos: SchoolLogo[] = [
 export const otherHighSchoolLogos: SchoolLogo[] = [
   { name: "Bronx High School of Science", logo: "/schools/logos/bronx-science.png" },
   { name: "NEST+m", logo: "/schools/logos/nest-m-mark.png" },
-  { name: "Academy for Mathematics, Science, and Engineering", logo: "/schools/logos/amse-mark.png" },
+  { name: "Academy for Mathematics, Science, and Engineering", logo: "/schools/logos/amse-emblem.png", glow: true },
   { name: "International Academy East", logo: "/schools/logos/international-academy-east.png" },
 ];
