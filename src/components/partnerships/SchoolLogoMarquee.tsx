@@ -7,7 +7,7 @@ import {
 } from "@/data/schoolLogos";
 
 const ROWS = [
-  { label: "Colleges", logos: collegeLogos, motion: "school-logo-track" },
+  { label: "Colleges", logos: collegeLogos, motion: "school-logo-track school-logo-track-colleges" },
   { label: "High schools", logos: featuredHighSchoolLogos, motion: "school-logo-track school-logo-track-reverse" },
   { label: "More high schools", logos: otherHighSchoolLogos, motion: "school-logo-track school-logo-track-short" },
 ];
@@ -30,7 +30,7 @@ function LogoRow({ label, logos, motion }: { label: string; logos: SchoolLogo[];
                     width={192}
                     height={112}
                     sizes="192px"
-                    loading="eager"
+                    loading={index < 5 && !duplicate ? "eager" : "lazy"}
                     className={`h-full w-full object-contain ${school.glow ? "drop-shadow-[0_0_5px_rgba(255,255,255,0.65)]" : "drop-shadow-[0_5px_14px_rgba(0,0,0,0.35)]"} ${school.brighten ? "brightness-150" : ""}`}
                   />
                 </div>

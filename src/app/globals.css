@@ -1211,6 +1211,10 @@ body:has(.home-scroll-story) footer::before {
   will-change: transform;
 }
 
+.school-logo-track-colleges {
+  animation-duration: 120s;
+}
+
 .school-logo-track-reverse {
   animation-direction: reverse;
   animation-duration: 64s;
