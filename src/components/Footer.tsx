@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import Wordmark from "@/components/Wordmark";
+import BridgeArc from "@/components/BridgeArc";
 import { ArrowUpRightIcon, InstagramIcon, LinkedInIcon, MailIcon } from "@/components/Icons";
 import { EMAIL } from "@/lib/mail";
 import { SOCIAL } from "@/lib/social";
@@ -17,67 +18,57 @@ const footerLinks = [
 
 export default function Footer() {
   return (
-    <footer className="site-footer relative overflow-hidden bg-n-dark py-14 text-white/70 md:py-16">
-      {/*
-        The top-left glow used to center at 8% 0% — exactly on the seam where a
-        preceding bg-n-dark section (showcase/businesses CTAs) meets the
-        footer. That put the gradient's steepest falloff right on the boundary
-        line, which read as a visible seam between two "identical" dark
-        surfaces. Moving the center down and widening the falloff keeps the
-        glow but removes the hard edge at the exact seam.
-      */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_8%_18%,rgba(190,162,186,0.12),transparent_42%),radial-gradient(circle_at_90%_100%,rgba(246,183,141,0.12),transparent_34%)]" />
+    <footer className="site-footer blueprint blueprint--dark relative overflow-hidden bg-n-night pb-24 pt-0 text-white/75 md:pb-10">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_8%_30%,rgba(243,226,141,0.10),transparent_40%),radial-gradient(circle_at_92%_30%,rgba(190,162,186,0.14),transparent_40%)]" />
       <div className="relative mx-auto max-w-7xl px-5 md:px-8">
-        <div className="grid gap-10 lg:grid-cols-[1fr_auto] lg:items-end">
-          <div className="max-w-md">
-            <Link href="/" className="inline-flex items-center gap-3">
-              <Image src="/logo.png" alt="Novus NYC logo" width={223} height={200} className="h-16 w-auto object-contain sm:h-[4.5rem]" />
-              <Wordmark className="text-4xl text-n-orange sm:text-5xl" />
+        {/* The closing span: businesses on one side, students on the other. */}
+        <div className="relative pt-14 md:pt-16">
+          <BridgeArc variant="span" className="absolute inset-x-0 top-6 h-16 w-full text-n-orange/45 md:top-4 md:h-24" strokeWidth={1.5} />
+          <div className="relative flex justify-center">
+            <Link href="/" className="inline-flex items-center gap-3 rounded-full bg-n-night px-5 py-2" aria-label="Novus NYC home">
+              <Image src="/logo.png" alt="" width={223} height={200} className="h-12 w-auto object-contain sm:h-14" />
+              <Wordmark className="text-3xl text-n-orange sm:text-4xl" />
             </Link>
-            <p className="mt-5 font-body text-sm leading-relaxed text-white/55">
-              A New York nonprofit connecting student teams with NYC small businesses.
-            </p>
           </div>
-
-          <div className="max-w-sm lg:pb-1 lg:text-right">
-            <p className="font-display text-[11px] font-bold uppercase tracking-[0.18em] text-n-orange">Get involved</p>
-            <p className="mt-2 font-display text-xl font-semibold leading-snug text-white sm:text-2xl">
-              Support for businesses. Real client work for students.
-            </p>
-            <div className="mt-5 flex flex-wrap gap-3 lg:justify-end">
-              <Link
-                href="/businesses"
-                className="inline-flex items-center gap-2 rounded-full bg-n-orange px-4 py-2.5 font-body text-sm font-semibold text-n-ink transition-transform hover:-translate-y-0.5"
-              >
-                Get business support
-                <ArrowUpRightIcon className="h-4 w-4" />
-              </Link>
-              <Link
-                href="/join"
-                className="inline-flex items-center rounded-full border border-white/15 px-4 py-2.5 font-body text-sm font-medium text-white/80 transition-colors hover:border-white/35 hover:text-white"
-              >
-                Join as a student
-              </Link>
-            </div>
-          </div>
+          <p className="mx-auto mt-4 max-w-md text-center font-body text-base leading-relaxed text-white/70">
+            A New York nonprofit connecting student teams with NYC small businesses.
+          </p>
         </div>
 
-        <nav aria-label="Footer" className="mt-12 border-y border-white/10 py-5">
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+        <div className="mt-12 text-center">
+          <p className="font-mono text-[0.8125rem] font-semibold uppercase tracking-[0.12em] text-n-orange">Get involved</p>
+          <p className="mx-auto mt-3 max-w-xl font-display text-2xl font-semibold leading-snug text-white sm:text-3xl">
+            Support for businesses. Real client work for students.
+          </p>
+        </div>
+
+        <div className="mx-auto mt-8 grid max-w-2xl gap-3 sm:grid-cols-2">
+          <Link href="/businesses" className="btn btn-lg btn-business w-full">
+            Get business support
+            <ArrowUpRightIcon className="btn-arrow h-4 w-4" />
+          </Link>
+          <Link href="/join" className="btn btn-lg btn-student w-full">
+            Join as a student
+            <span aria-hidden="true" className="btn-arrow">→</span>
+          </Link>
+        </div>
+
+        <nav aria-label="Footer" className="mt-14 border-y border-white/10 py-5">
+          <div className="flex flex-wrap items-center justify-center gap-x-7 gap-y-2">
             {footerLinks.map((link) => (
-              <Link key={link.href} href={link.href} className="font-body text-sm text-white/60 transition-colors hover:text-n-orange">
+              <Link key={link.href} href={link.href} className="font-body text-[0.9375rem] text-white/75 transition-colors duration-1 hover:text-n-orange">
                 {link.label}
               </Link>
             ))}
           </div>
         </nav>
 
-        <div className="flex flex-col gap-5 pt-6 sm:flex-row sm:items-center sm:justify-between">
-          <p className="font-body text-xs text-white/35">© 2026 Novus Inc.</p>
-          <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-col items-center gap-5 pt-6 sm:flex-row sm:justify-between">
+          <p className="font-mono text-[0.8125rem] text-white/60">© 2026 Novus Inc.</p>
+          <div className="flex flex-wrap items-center justify-center gap-3">
             <a
               href={`mailto:${EMAIL.info}`}
-              className="inline-flex items-center gap-2 font-body text-xs text-n-orange/85 transition-colors hover:text-n-orange"
+              className="inline-flex min-h-11 items-center gap-2 font-mono text-[0.8125rem] text-n-orange transition-colors hover:text-white"
             >
               <MailIcon className="h-4 w-4" />
               {EMAIL.info}
@@ -87,7 +78,7 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Novus NYC on LinkedIn"
-              className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-n-purple/35 text-n-purple transition-colors hover:border-n-purple hover:bg-n-purple/10"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-n-purple/45 text-n-purple transition-colors hover:border-n-purple hover:bg-n-purple/10"
             >
               <LinkedInIcon className="h-4 w-4" />
             </a>
@@ -96,12 +87,12 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Novus NYC on Instagram"
-              className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-n-yellow/35 text-n-yellow transition-colors hover:border-n-yellow hover:bg-n-yellow/10"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-n-yellow/45 text-n-yellow transition-colors hover:border-n-yellow hover:bg-n-yellow/10"
             >
               <InstagramIcon className="h-4 w-4" />
             </a>
-            <span className="hidden h-4 w-px bg-white/10 sm:block" />
-            <Link href="/privacy" className="font-body text-xs text-n-orange/75 transition-colors hover:text-n-orange">Privacy Policy</Link>
+            <span className="hidden h-4 w-px bg-white/15 sm:block" />
+            <Link href="/privacy" className="inline-flex min-h-11 items-center font-mono text-[0.8125rem] text-white/75 transition-colors hover:text-n-orange">Privacy Policy</Link>
           </div>
         </div>
       </div>

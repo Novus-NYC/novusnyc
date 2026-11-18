@@ -57,6 +57,10 @@ function normalizeProjectDisplayStatus(value: string): ProjectDisplayStatus {
   return "Upcoming";
 }
 
+function normalizeBorough(value: string): string {
+  return extractBoroughFromNeighborhood(value) || value.trim();
+}
+
 function extractBoroughFromNeighborhood(neighborhood: string): string {
   const lower = neighborhood.toLowerCase();
   if (lower.includes("brooklyn")) return "Brooklyn";
@@ -75,12 +79,20 @@ export default async function Showcase() {
     getPublicStatSnapshot(),
   ]);
 
+  // Neighborhood strings rarely name the borough ("Bayside"), but the map
+  // entries carry it, so filtering by borough leans on those first.
+  const boroughByName = new Map(
+    publicMapEntries
+      .filter((entry) => entry.borough)
+      .map((entry) => [entry.name, normalizeBorough(entry.borough ?? "")]),
+  );
+
   const projects = publicShowcase.length > 0
     ? publicShowcase.map((card) => ({
       name: card.name,
       type: card.type,
       neighborhood: card.neighborhood,
-      borough: extractBoroughFromNeighborhood(card.neighborhood),
+      borough: boroughByName.get(card.name) || extractBoroughFromNeighborhood(card.neighborhood),
       services: card.services,
       status: normalizeProjectDisplayStatus(card.status),
       colorClass: SHOWCASE_COLOR_CLASS[card.color] ?? "bg-violet-300",

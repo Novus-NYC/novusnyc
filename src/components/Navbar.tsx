@@ -17,20 +17,31 @@ const links = [
   { href: "/join", label: "For Students" },
 ];
 
-const moreLinks = [
-  { href: "/members", label: "Member Portal" },
+const memberLink = { href: "/members", label: "Member Portal" };
+
+// The mobile sheet groups the same links by who they are for.
+const mobileGroups = [
+  { title: "For businesses", tone: "text-n-yellow", links: [links[3], links[0], links[1]] },
+  { title: "For students", tone: "text-n-purple", links: [links[4], { href: "/apply", label: "Apply Now" }] },
+  { title: "Novus", tone: "text-n-orange", links: [links[2], memberLink] },
 ];
 
-// The navbar is always dark. The palette is pastel, so a light bar washes the
-// accents out and the mid-scroll theme flip read as a glitch. A constant dark
-// surface also means the header markup no longer depends on scroll position,
-// which removes a server/client hydration mismatch.
+// The navbar is always a warm, translucent dark. The palette is pastel, so a
+// light bar washes the accents out and a mid-scroll theme flip read as a
+// glitch. A constant surface also keeps the header markup independent of
+// scroll position, which avoids a server/client hydration mismatch.
+
+function ActiveArc() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 60 8" preserveAspectRatio="none" className="absolute bottom-2 left-0 h-2 w-full text-n-orange">
+      <path d="M2 2 Q30 10 58 2" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
+    </svg>
+  );
+}
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
-  const [moreOpen, setMoreOpen] = useState(false);
-  const moreRef = useRef<HTMLDivElement>(null);
-  const moreButtonRef = useRef<HTMLButtonElement>(null);
+  const progressRef = useRef<HTMLSpanElement>(null);
   const mobileButtonRef = useRef<HTMLButtonElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
@@ -39,28 +50,30 @@ export default function Navbar() {
 
   useEffect(() => {
     setOpen(false);
-    setMoreOpen(false);
   }, [currentPathname]);
 
+  // Browsers without scroll-driven animations get the header progress bar
+  // from a passive scroll listener instead.
   useEffect(() => {
-    if (!moreOpen) return;
-    const handlePointerDown = (event: MouseEvent) => {
-      if (!moreRef.current?.contains(event.target as Node)) setMoreOpen(false);
+    const bar = progressRef.current;
+    if (!bar || CSS.supports("animation-timeline: scroll()")) return;
+    let frame = 0;
+    const update = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        bar.style.setProperty("--scroll-progress", String(max > 0 ? window.scrollY / max : 0));
+      });
     };
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        event.preventDefault();
-        setMoreOpen(false);
-        moreButtonRef.current?.focus();
-      }
-    };
-    document.addEventListener("mousedown", handlePointerDown);
-    document.addEventListener("keydown", handleKeyDown);
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
     return () => {
-      document.removeEventListener("mousedown", handlePointerDown);
-      document.removeEventListener("keydown", handleKeyDown);
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
     };
-  }, [moreOpen]);
+  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -93,116 +106,65 @@ export default function Navbar() {
     };
   }, [open]);
 
-  const navTextClass = "text-white/75 hover:text-white";
-  const moreActive = moreLinks.some((l) => currentPathname === l.href) || currentPathname.startsWith("/members");
+  const isActive = (href: string) => currentPathname === href;
 
   return (
     <>
       <header
-        className="fixed left-0 right-0 z-[70] isolate border-b border-white/15 bg-[#17151a]/[0.97] text-white backdrop-blur-md shadow-[0_10px_30px_rgba(0,0,0,0.3)]"
+        className="fixed left-0 right-0 z-[70] isolate border-b border-white/10 bg-n-night/[0.86] text-white backdrop-blur-xl backdrop-saturate-150 shadow-[0_10px_30px_rgba(0,0,0,0.22)]"
         style={{ top: "var(--banner-h, 0px)" }}
       >
-        <div className="max-w-7xl mx-auto px-5 md:px-8 h-16 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-1.5 md:gap-2 group">
+        <div className="max-w-7xl mx-auto px-4 sm:px-5 md:px-8 h-16 flex items-center justify-between gap-4">
+          <Link href="/" className="flex shrink-0 items-center gap-1.5 md:gap-2 group" aria-label="Novus NYC home">
             <Image
               src="/logo.png"
-              alt="Novus NYC logo"
+              alt=""
               width={223}
               height={200}
-              className="h-9 w-auto object-contain"
+              className="h-9 w-auto object-contain transition-transform duration-2 ease-out group-hover:-translate-y-0.5"
             />
             <Wordmark className="text-xl text-n-orange" />
           </Link>
 
-          <nav className="hidden lg:flex items-center gap-6 xl:gap-8">
+          <nav aria-label="Main" className="hidden lg:flex items-center gap-5 xl:gap-7">
             {links.map((l) => (
               <Link
                 key={l.href}
                 href={l.href}
-                className={`relative flex h-16 items-center font-body text-sm font-semibold transition-colors after:absolute after:bottom-1 after:left-0 after:h-0.5 after:w-full after:origin-left after:bg-n-orange after:transition-transform after:duration-200 ${
-                  currentPathname === l.href
-                    ? "text-n-orange after:scale-x-100"
-                    : `${navTextClass} after:scale-x-0 hover:after:scale-x-100`
+                aria-current={isActive(l.href) ? "page" : undefined}
+                className={`relative flex h-16 items-center font-body text-[0.9375rem] font-semibold transition-colors duration-1 ${
+                  isActive(l.href) ? "text-n-orange" : "text-white/80 hover:text-white"
                 }`}
               >
                 {l.label}
+                {isActive(l.href) ? <ActiveArc /> : null}
               </Link>
             ))}
 
-            {/* More dropdown */}
-            <div
-              ref={moreRef}
-              className="relative"
-              onMouseEnter={() => setMoreOpen(true)}
-              onMouseLeave={() => setMoreOpen(false)}
-            >
-              <button
-                ref={moreButtonRef}
-                type="button"
-                onClick={() => setMoreOpen((v) => !v)}
-                aria-expanded={moreOpen}
-                aria-haspopup="true"
-                aria-controls={moreOpen ? "desktop-more-menu" : undefined}
-                className={`relative flex h-16 items-center gap-1 font-body text-sm font-semibold transition-colors after:absolute after:bottom-1 after:left-0 after:h-0.5 after:w-full after:origin-left after:bg-n-orange after:transition-transform after:duration-200 ${
-                  moreActive
-                    ? "text-n-orange after:scale-x-100"
-                    : `${navTextClass} after:scale-x-0 hover:after:scale-x-100`
-                }`}
-              >
-                More
-                <svg
-                  className={`w-3 h-3 transition-transform duration-200 ${moreOpen ? "rotate-180" : ""}`}
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2.5}
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-              <AnimatePresence>
-                {moreOpen && (
-                  <motion.div
-                    id="desktop-more-menu"
-                    initial={{ opacity: 0, y: -4 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -4 }}
-                    transition={{ duration: 0.15 }}
-                    className="absolute top-full right-0 pt-3 min-w-[160px]"
-                  >
-                    <div className="bg-[#221f26] border border-white/10 rounded-xl shadow-[0_16px_40px_rgba(0,0,0,0.45)] py-1.5 overflow-hidden">
-                      {moreLinks.map((l) => (
-                        <Link
-                          key={l.href}
-                          href={l.href}
-                          className={`block px-4 py-2.5 font-body text-sm transition-colors hover:bg-white/8 ${
-                            l.href === "/members" || currentPathname === l.href
-                              ? "text-n-orange font-semibold"
-                              : "text-white/75 hover:text-white"
-                          }`}
-                        >
-                          {l.label}
-                        </Link>
-                      ))}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-
             <Link
-              href="/apply"
-              className="bg-n-orange text-n-ink font-display font-bold text-sm px-5 py-2.5 rounded-full hover:bg-n-orange-dark transition-colors"
+              href={memberLink.href}
+              className={`hidden xl:flex h-16 items-center font-mono text-[0.8125rem] transition-colors duration-1 ${
+                currentPathname.startsWith("/members") ? "text-n-orange" : "text-white/60 hover:text-white"
+              }`}
             >
-              Apply Now
+              {memberLink.label}
             </Link>
+
+            <span aria-hidden="true" className="hidden h-6 w-px bg-white/15 xl:block" />
+
+            <div className="flex items-center gap-2">
+              <Link href="/businesses#contact" className="btn btn-sm btn-business hidden xl:inline-flex">
+                Get business support
+              </Link>
+              <Link href="/apply" className="btn btn-sm btn-student">
+                <span className="rounded-full bg-n-ink/10 px-1.5 py-0.5 font-mono text-[0.6875rem] font-semibold uppercase tracking-wider">Students</span>
+                Apply Now
+              </Link>
+            </div>
           </nav>
 
-          <div className="flex items-center gap-1 lg:hidden">
-            <Link
-              href="/apply"
-              className="rounded-full bg-n-orange px-3.5 py-2 font-display text-sm font-bold text-n-ink transition-colors hover:bg-n-orange-dark"
-            >
+          <div className="flex items-center gap-1.5 lg:hidden">
+            <Link href="/apply" className="btn btn-sm btn-student !min-h-10 !px-3.5">
               Apply
             </Link>
             <button
@@ -217,9 +179,8 @@ export default function Navbar() {
               {/*
                 Three absolutely-positioned 2px divs used to render as a
                 solid white blob on mobile Chrome/Safari, both under the
-                header's backdrop-blur-md — a hairline-flattening artifact,
-                not a layout bug (positions/CSS were correct in devtools).
-                An SVG with real strokes doesn't hit it.
+                header's backdrop blur — a hairline-flattening artifact,
+                not a layout bug. An SVG with real strokes doesn't hit it.
               */}
               <svg aria-hidden="true" viewBox="0 0 28 20" className="h-5 w-7 overflow-visible">
                 <line x1="0" y1={open ? "10" : "1"} x2="28" y2={open ? "10" : "1"} stroke="white" strokeWidth="2" strokeLinecap="round" className="transition-[y1,y2,opacity,transform] duration-200 ease-out" style={{ transform: open ? "rotate(45deg)" : "none", transformOrigin: "14px 10px" }} />
@@ -229,9 +190,10 @@ export default function Navbar() {
             </button>
           </div>
         </div>
+        <span ref={progressRef} aria-hidden="true" className="scroll-progress" />
       </header>
 
-      {/* Mobile menu */}
+      {/* Mobile menu: a full-height sheet grouped by audience */}
       <AnimatePresence>
         {open && (
           <motion.div
@@ -240,49 +202,45 @@ export default function Navbar() {
             role="dialog"
             aria-modal="true"
             aria-label="Main navigation"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-x-0 bottom-0 z-40 flex flex-col gap-4 overflow-y-auto bg-[#17151a] px-5 pb-8 pt-6 lg:hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.16 }}
+            className="fixed inset-x-0 bottom-0 z-[65] flex flex-col overflow-y-auto bg-n-night px-5 pb-6 pt-4 lg:hidden"
             style={{ top: "calc(var(--banner-h, 0px) + 4rem)" }}
           >
-            {links.map((l) => (
-              <Link
-                key={l.href}
-                href={l.href}
-                className={`font-display font-bold text-xl border-b border-white/10 py-3 pl-3 border-l-2 ${
-                  currentPathname === l.href ? "text-n-orange border-l-n-orange" : "text-white/85 border-l-transparent"
-                }`}
-              >
-                {l.label}
+            <nav aria-label="Main" className="flex flex-1 flex-col gap-6">
+              {mobileGroups.map((group) => (
+                <div key={group.title}>
+                  <p className={`mb-1 font-mono text-[0.8125rem] font-semibold uppercase tracking-[0.12em] ${group.tone}`}>{group.title}</p>
+                  <ul className="border-t border-white/10">
+                    {group.links.map((l) => (
+                      <li key={l.href}>
+                        <Link
+                          href={l.href}
+                          aria-current={isActive(l.href) ? "page" : undefined}
+                          className={`flex min-h-14 items-center justify-between border-b border-white/10 font-display text-xl font-bold ${
+                            isActive(l.href) ? "text-n-orange" : "text-white/90"
+                          }`}
+                        >
+                          {l.label}
+                          <span aria-hidden="true" className="text-white/35">→</span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </nav>
+
+            <div className="mt-8 grid gap-3">
+              <Link href="/businesses#contact" className="btn btn-lg btn-business w-full">
+                Get business support
               </Link>
-            ))}
-
-            {/* More section in mobile */}
-            <div className="border-b border-white/10 py-3">
-              <p className="font-display font-bold text-xl text-white/85 mb-3">More</p>
-              <div className="flex flex-col gap-2 pl-2">
-                {moreLinks.map((l) => (
-                  <Link
-                    key={l.href}
-                    href={l.href}
-                    className={`font-body text-base transition-colors ${
-                      l.href === "/members" ? "text-n-orange font-semibold" : "text-white/60 hover:text-white"
-                    }`}
-                  >
-                    {l.label}
-                  </Link>
-                ))}
-              </div>
+              <Link href="/apply" className="btn btn-lg btn-student w-full">
+                Apply Now
+              </Link>
             </div>
-
-            <Link
-              href="/apply"
-              className="bg-n-orange text-n-ink font-display font-bold text-lg px-6 py-4 rounded-xl text-center mt-2"
-            >
-              Apply Now
-            </Link>
           </motion.div>
         )}
       </AnimatePresence>

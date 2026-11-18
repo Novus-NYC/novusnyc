@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 import AnimatedSection from "@/components/AnimatedSection";
 import ApplicationJourney from "@/components/ApplicationJourney";
-import BrandTexture from "@/components/BrandTexture";
+import Eyebrow from "@/components/Eyebrow";
 import FaqAccordion from "@/components/FaqAccordion";
-import PageHeroContent from "@/components/PageHeroContent";
+import Illustration, { type IllustrationName } from "@/components/Illustrations";
+import NextStep from "@/components/NextStep";
+import PageHeroContent, { HeroAccentText } from "@/components/PageHeroContent";
 import ParallaxHero from "@/components/ParallaxHero";
+import PausableMarquee from "@/components/PausableMarquee";
 import SectionProgressNav from "@/components/SectionProgressNav";
 import TracksTabbed from "@/components/TracksTabbed";
-import TracksParallax from "@/components/TracksParallax";
 import { joinFaqs, marqueeSchools } from "@/data";
 import cornellPhoto from "../../../public/cornell-campus-photo.jpg";
 
@@ -44,6 +46,12 @@ const leadershipSteps = [
     desc: "Run a project from start to finish. You lead the team and own the client relationship.",
   },
 ];
+
+const ROLE_ILLUSTRATION: Record<string, IllustrationName> = {
+  "Neighborhood Liaison": "handshake",
+  "School Ambassador": "people",
+  "Head of City Expansion": "search",
+};
 
 const otherRoles = [
   {
@@ -99,104 +107,119 @@ export default async function Join() {
       <ParallaxHero
         image={cornellPhoto}
         alt="Cornell University campus, one of the schools represented in Novus"
-        className="relative flex min-h-[100svh] flex-col overflow-hidden pt-32"
+        className="relative flex min-h-[92svh] flex-col overflow-hidden pt-32"
         imageClassName="object-cover object-[54%_center] md:object-center"
         parallaxRange={[0, 290]}
       >
-        <div className="relative mx-auto flex w-full max-w-7xl flex-1 items-center px-5 pb-16 md:px-8">
+        <div className="relative mx-auto flex w-full max-w-7xl flex-1 items-center px-5 pb-12 md:px-8">
           <PageHeroContent
             eyebrow="For students"
-            title={<>Build <span className="text-n-purple">real skills</span> through projects with <span className="text-n-purple">real impact.</span></>}
+            title={<>Build <HeroAccentText accent="purple">real skills</HeroAccentText> through projects with <HeroAccentText accent="purple">real impact.</HeroAccentText></>}
             description="Join a student team doing real client work for NYC small businesses. Build experience you can show in applications, portfolios, and interviews."
             primaryAction={{ href: "/apply", label: "Start your application" }}
             secondaryAction={{ href: "#tracks", label: "Explore the tracks" }}
             accent="purple"
           />
         </div>
-        {/* Marquee sits over photo, separated by a subtle top border */}
-        <div className="relative border-t border-white/10 overflow-hidden py-3">
-          <div className="marquee-track">
-            {[...marqueeSchools, ...marqueeSchools].map((school, i) => (
-              <span
-                key={`${school}-${i}`}
-                className="inline-flex items-center gap-4 font-body text-xs text-white/75 whitespace-nowrap px-2 select-none"
-              >
-                {school}
-                <span className="w-1.5 h-1.5 rounded-full bg-n-purple opacity-80 flex-shrink-0" />
-              </span>
-            ))}
-          </div>
+        <div className="relative border-t border-white/15 bg-n-night/40 backdrop-blur-sm">
+          <PausableMarquee label="school names" dark className="mx-auto max-w-7xl px-5 pt-3 md:px-8">
+            <div className="marquee-fade -mx-5 overflow-hidden pb-4 md:-mx-8">
+              <div className="marquee-track">
+                {[0, 1].map((copy) => (
+                  <ul key={copy} className="flex shrink-0" aria-hidden={copy === 1 || undefined}>
+                    {marqueeSchools.map((school) => (
+                      <li
+                        key={`${copy}-${school}`}
+                        className="inline-flex select-none items-center gap-4 whitespace-nowrap px-2 font-mono text-[0.8125rem] text-white/85"
+                      >
+                        {school}
+                        <span aria-hidden="true" className="h-1.5 w-1.5 shrink-0 rounded-full bg-n-purple" />
+                      </li>
+                    ))}
+                  </ul>
+                ))}
+              </div>
+            </div>
+          </PausableMarquee>
         </div>
       </ParallaxHero>
 
       {/* ── TRACKS ─────────────────────────────────────────── */}
-      <TracksParallax>
-          <AnimatedSection className="mb-8">
-            <h2 className="page-section-heading text-white">The three tracks</h2>
-            <p className="font-body text-white/80 mt-3 max-w-xl">
+      <section id="tracks" className="bg-n-bg py-16 md:py-20">
+        <div className="mx-auto max-w-7xl px-5 md:px-8">
+          <AnimatedSection className="mb-10">
+            <Eyebrow tone="student" index={1}>Tracks</Eyebrow>
+            <h2 className="type-h2 mt-3 text-n-ink">The three tracks</h2>
+            <p className="measure mt-4 font-body text-base leading-relaxed text-n-muted">
               Every project is staffed by students across our three tracks. Pick the one that fits your skills and interests.
             </p>
           </AnimatedSection>
-          <AnimatedSection>
-            <TracksTabbed />
-          </AnimatedSection>
-      </TracksParallax>
+          <TracksTabbed />
+        </div>
+      </section>
 
       {/* ── LEADERSHIP TRACK ───────────────────────────────── */}
-      <section id="leadership" className="relative isolate overflow-hidden py-14 bg-[#f9f5f8]">
-        <BrandTexture tone="lavender" />
-        <div className="relative z-10 max-w-5xl mx-auto px-5 md:px-8">
-          <AnimatedSection className="mb-10">
-            <h2 className="page-section-heading text-n-ink">The leadership track</h2>
-            <p className="font-body text-n-muted text-lg mt-3 max-w-xl">
-              We promote based on the work you do, not how long you have been here. Strong contributors move up quickly.
-            </p>
-          </AnimatedSection>
-          <div className="relative">
-            {/* Single connecting line behind all circles */}
-            <div className="hidden md:block absolute top-5 left-[10%] right-[10%] h-0.5 bg-n-purple/30 z-0" />
-            <div className="grid md:grid-cols-5 gap-6">
-              {leadershipSteps.map((step, i) => (
-                <AnimatedSection key={step.role} delay={i * 0.1}>
-                  <div className="relative flex flex-col items-start md:items-center">
-                    <div className="w-10 h-10 rounded-full bg-n-purple flex items-center justify-center mb-4 z-10 flex-shrink-0">
-                      <span className="font-display font-bold text-white text-sm">{i + 1}</span>
-                    </div>
-                    <h3 className="font-display font-bold text-n-ink text-base mb-2 md:text-center">{step.role}</h3>
-                    <p className="font-body text-sm text-n-muted leading-relaxed md:text-center">{step.desc}</p>
-                  </div>
-                </AnimatedSection>
-              ))}
-            </div>
-          </div>
-          <AnimatedSection className="mt-10">
-            <h3 className="font-body text-xs font-semibold text-n-muted uppercase tracking-widest mb-4">Other roles</h3>
-            <div className="grid md:grid-cols-3 gap-4">
+      <section id="leadership" className="blueprint bg-n-bg py-16 md:py-20">
+        <div className="mx-auto grid max-w-7xl gap-12 px-5 md:px-8 lg:grid-cols-[0.9fr_1.1fr]">
+          <div>
+            <AnimatedSection>
+              <Eyebrow tone="student" index={2}>Leadership</Eyebrow>
+              <h2 className="type-h2 mt-3 text-n-ink">The leadership track</h2>
+              <p className="measure mt-4 font-body text-lg leading-relaxed text-n-muted">
+                We promote based on the work you do, not how long you have been here. Strong contributors move up quickly.
+              </p>
+            </AnimatedSection>
+
+            <h3 className="eyebrow mt-10 text-n-ink/70">Other roles</h3>
+            <ul className="mt-4 space-y-3">
               {otherRoles.map((role) => (
-                <div key={role.role} className="bg-n-bg border border-n-border rounded-2xl p-5">
-                  <h4 className="font-display font-bold text-n-ink text-base mb-2">{role.role}</h4>
-                  <p className="font-body text-sm text-n-muted leading-relaxed">{role.desc}</p>
-                </div>
+                <li key={role.role} className="flex gap-4 rounded-card border border-n-border bg-white p-5 shadow-e1">
+                  <Illustration name={ROLE_ILLUSTRATION[role.role] ?? "people"} className="h-14 w-14 shrink-0" />
+                  <div>
+                    <h4 className="font-display text-[1.0625rem] font-bold text-n-ink">{role.role}</h4>
+                    <p className="mt-1.5 font-body text-[0.9375rem] leading-relaxed text-n-muted">{role.desc}</p>
+                  </div>
+                </li>
               ))}
-            </div>
-          </AnimatedSection>
+            </ul>
+          </div>
+
+          {/* A vertical ladder: one rung per role, bottom to top reads as growth. */}
+          <ol className="relative space-y-4 before:absolute before:bottom-6 before:left-[1.4rem] before:top-6 before:w-0.5 before:bg-n-purple/60">
+            {leadershipSteps.map((step, i) => (
+              <li key={step.role} className="relative flex gap-5">
+                <span className="relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 border-n-ink bg-n-purple font-mono text-base font-semibold text-n-ink">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <div className="flex-1 rounded-card border border-n-purple/45 bg-white p-5 shadow-e1">
+                  <h3 className="font-display text-lg font-bold text-n-ink">{step.role}</h3>
+                  <p className="mt-1.5 font-body text-[0.9375rem] leading-relaxed text-n-muted">{step.desc}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
         </div>
       </section>
 
       <ApplicationJourney />
 
       {/* ── FAQ ────────────────────────────────────────────── */}
-      <section id="faq" className="relative isolate overflow-hidden py-14 bg-[#fffbea]">
-        <BrandTexture tone="yellow" />
-        <div className="relative z-10 max-w-3xl mx-auto px-5 md:px-8">
+      <section id="faq" className="bg-n-bg py-16 md:py-20">
+        <div className="mx-auto max-w-3xl px-5 md:px-8">
           <AnimatedSection className="mb-10">
-            <h2 className="page-section-heading text-n-ink">Frequently Asked Questions</h2>
+            <Eyebrow tone="student" index={4}>FAQ</Eyebrow>
+            <h2 className="type-h2 mt-3 text-n-ink">Frequently Asked Questions</h2>
           </AnimatedSection>
-          <AnimatedSection>
-            <FaqAccordion categories={JOIN_FAQ_CATEGORIES} />
-          </AnimatedSection>
+          <FaqAccordion categories={JOIN_FAQ_CATEGORIES} />
         </div>
       </section>
+
+      <NextStep
+        eyebrow="Student application"
+        title="Start your Novus application."
+        description="Join a student-led team doing real client work. The application takes about five minutes."
+        links={[{ href: "/apply", label: "Start your application", tone: "student" }]}
+      />
     </>
   );
 }

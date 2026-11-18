@@ -47,6 +47,8 @@ const config: Config = {
         "n-purple-dark": "rgb(var(--color-purple-dark) / <alpha-value>)",
         "n-orange-ink":  "rgb(var(--color-orange-ink) / <alpha-value>)",
         "n-purple-ink":  "rgb(var(--color-purple-ink) / <alpha-value>)",
+        "n-yellow-ink":  "rgb(var(--color-yellow-ink) / <alpha-value>)",
+        "n-night":       "rgb(var(--color-night) / <alpha-value>)",
         "n-on-accent":   "rgb(var(--color-on-accent) / <alpha-value>)",
         "n-control-border": "rgb(var(--color-control-border) / <alpha-value>)",
         "n-error":       "rgb(var(--color-error) / <alpha-value>)",
@@ -60,6 +62,28 @@ const config: Config = {
       fontFamily: {
         display: ["var(--font-space-grotesk)", "sans-serif"],
         body: ["var(--font-dm-sans)", "sans-serif"],
+        mono: ["var(--font-plex-mono)", "ui-monospace", "monospace"],
+      },
+      fontSize: {
+        meta: ["0.8125rem", { lineHeight: "1.35" }],
+      },
+      boxShadow: {
+        e1: "var(--elev-1)",
+        e2: "var(--elev-2)",
+        e3: "var(--elev-3)",
+      },
+      borderRadius: {
+        card: "var(--radius-card)",
+        field: "var(--radius-field)",
+      },
+      transitionTimingFunction: {
+        out: "var(--ease-out)",
+        cable: "var(--ease-cable)",
+      },
+      transitionDuration: {
+        1: "var(--dur-1)",
+        2: "var(--dur-2)",
+        3: "var(--dur-3)",
       },
       keyframes: {
         marquee: {

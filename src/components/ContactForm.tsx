@@ -3,13 +3,14 @@
 import { useState, useEffect } from "react";
 import { CheckIcon } from "@/components/Icons";
 import Combobox from "@/components/Combobox";
+import Illustration from "@/components/Illustrations";
 import { validateContactForm, type ContactFormValues } from "@/lib/schemas";
 import { EMAIL } from "@/lib/mail";
 import { trackEvent, GA_EVENTS } from "@/lib/analytics";
 
 type Lang = "en" | "es" | "zh" | "ko" | "ar" | "fr";
 
-const LANG_LABELS: Record<Lang, string> = {
+export const LANG_LABELS: Record<Lang, string> = {
   en: "English",
   es: "Español",
   zh: "中文",
@@ -17,7 +18,32 @@ const LANG_LABELS: Record<Lang, string> = {
   ar: "العربية",
   fr: "Français",
 };
-const LANG_ORDER: Lang[] = ["en", "es", "fr", "zh", "ko", "ar"];
+export const LANG_ORDER: Lang[] = ["en", "es", "fr", "zh", "ko", "ar"];
+
+// The businesses hero offers the same languages; it dispatches this event so a
+// choice made there switches the form before the owner scrolls to it.
+export const FORM_LANGUAGE_EVENT = "novus:form-language";
+
+const SECTION_TITLES: Record<Lang, [string, string, string]> = {
+  en: ["About you", "What you need", "Anything else"],
+  es: ["Sobre usted", "Lo que necesita", "Algo más"],
+  fr: ["À propos de vous", "Vos besoins", "Autre chose"],
+  zh: ["关于您", "您的需求", "其他信息"],
+  ko: ["귀하에 대해", "필요한 도움", "기타 사항"],
+  ar: ["عنك", "ما تحتاجه", "معلومات أخرى"],
+};
+
+function FormSection({ index, title, children }: { index: number; title: string; children: React.ReactNode }) {
+  return (
+    <div className="space-y-5 border-t border-n-border pt-6 first:border-t-0 first:pt-0">
+      <h3 className="flex items-center gap-3 font-display text-lg font-bold text-n-ink">
+        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-n-yellow font-mono text-[0.8125rem] font-semibold">{index}</span>
+        {title}
+      </h3>
+      {children}
+    </div>
+  );
+}
 
 const SERVICES_BY_LANG: Record<Lang, string[]> = {
   en: ["Website Design & Development", "Social Media & Content", "Graphic Design", "Grant Research & Writing", "SEO & Google Maps Visibility", "Sales & Financial Analysis", "Other"],
@@ -102,6 +128,32 @@ export default function ContactForm() {
 
   const c = COPY[lang];
   const serviceList = SERVICES_BY_LANG[lang];
+  const sectionTitles = SECTION_TITLES[lang];
+
+  // Preserve selections by index so switching language keeps the same items
+  // checked (e.g. slot 2 in EN maps to slot 2 in ES).
+  const switchLang = (l: Lang) => {
+    setFormData((p) => {
+      const oldList = SERVICES_BY_LANG[lang];
+      const newList = SERVICES_BY_LANG[l];
+      const preserved = p.services
+        .map((s) => oldList.indexOf(s))
+        .filter((i) => i >= 0 && i < newList.length)
+        .map((i) => newList[i]);
+      return { ...p, services: preserved };
+    });
+    setLang(l);
+    setErrors({});
+  };
+
+  useEffect(() => {
+    const onLanguage = (event: Event) => {
+      const next = (event as CustomEvent<string>).detail;
+      if (next in LANG_LABELS) switchLang(next as Lang);
+    };
+    window.addEventListener(FORM_LANGUAGE_EVENT, onLanguage);
+    return () => window.removeEventListener(FORM_LANGUAGE_EVENT, onLanguage);
+  });
 
   const toggleService = (s: string) =>
     setFormData((prev) => ({
@@ -167,9 +219,10 @@ export default function ContactForm() {
 
   if (status === "success") {
     return (
-      <div role="status" aria-live="polite" className="bg-white border border-n-border rounded-2xl p-10 text-center" dir={c.dir} lang={lang}>
-        <div aria-hidden="true" className="w-14 h-14 rounded-full bg-n-orange/20 flex items-center justify-center mx-auto mb-4">
-          <CheckIcon className="w-7 h-7 text-n-orange" />
+      <div role="status" aria-live="polite" className="rounded-card border border-n-border bg-white p-10 text-center shadow-e2" dir={c.dir} lang={lang}>
+        <Illustration name="handshake" className="mx-auto mb-4 h-24 w-24" />
+        <div aria-hidden="true" className="mx-auto -mt-2 mb-4 flex h-9 w-9 items-center justify-center rounded-full bg-n-yellow">
+          <CheckIcon className="h-5 w-5 text-n-ink" />
         </div>
         <h3 className="font-display font-bold text-2xl text-n-ink mb-3">{c.successTitle}</h3>
         <p className="font-body text-n-muted">{c.successBody}</p>
@@ -180,35 +233,22 @@ export default function ContactForm() {
   return (
     <div>
       {/* Language toggle */}
-      <div className="flex flex-wrap gap-2 mb-6">
+      <div className="mb-6 flex flex-wrap gap-2" role="group" aria-label="Form language">
         {LANG_ORDER.map((l) => (
           <button
             key={l}
             type="button"
             aria-pressed={lang === l}
-            onClick={() => {
-              // Preserve selections by index so switching language keeps the
-              // same items checked (e.g. slot 2 in EN maps to slot 2 in ES).
-              setFormData((p) => {
-                const oldList = SERVICES_BY_LANG[lang];
-                const newList = SERVICES_BY_LANG[l];
-                const preserved = p.services
-                  .map((s) => oldList.indexOf(s))
-                  .filter((i) => i >= 0 && i < newList.length)
-                  .map((i) => newList[i]);
-                return { ...p, services: preserved };
-              });
-              setLang(l);
-              setErrors({});
-            }}
-            className={`px-4 py-1.5 rounded-full border font-body text-sm font-medium transition-all ${lang === l ? "bg-n-ink text-white border-n-ink" : "bg-white border-n-border text-n-muted hover:border-n-ink"}`}
+            onClick={() => switchLang(l)}
+            className="filter-chip !font-body"
           >
             {LANG_LABELS[l]}
           </button>
         ))}
       </div>
 
-      <form id="partner-contact-form" onSubmit={handleSubmit} noValidate className="bg-white border border-n-border rounded-2xl p-8 md:p-10 space-y-5" dir={c.dir} lang={lang}>
+      <form id="partner-contact-form" onSubmit={handleSubmit} noValidate className="space-y-6 rounded-card border border-n-border bg-white p-6 shadow-e1 md:p-10" dir={c.dir} lang={lang}>
+        <FormSection index={1} title={sectionTitles[0]}>
         <div className="grid md:grid-cols-2 gap-5">
           <div>
             <label htmlFor="contact-business-name" className="block font-body text-sm font-semibold text-n-ink mb-2">{c.businessName}</label>
@@ -275,6 +315,8 @@ export default function ContactForm() {
             />
           </div>
         </div>
+        </FormSection>
+        <FormSection index={2} title={sectionTitles[1]}>
         <fieldset>
           <legend className="block font-body text-sm font-semibold text-n-ink mb-3">{c.services}</legend>
           <div className="flex flex-wrap gap-2">
@@ -284,8 +326,11 @@ export default function ContactForm() {
                 type="button"
                 aria-pressed={formData.services.includes(s)}
                 onClick={() => toggleService(s)}
-                className={`text-sm font-body font-medium px-4 py-2 rounded-full border transition-all ${formData.services.includes(s) ? "bg-n-orange border-n-orange text-n-ink" : "bg-white border-n-border text-n-muted hover:border-n-ink"}`}
+                className={`inline-flex min-h-11 items-center gap-2 rounded-full border-2 px-4 py-2 font-body text-[0.9375rem] font-semibold transition-colors duration-1 ${formData.services.includes(s) ? "border-n-ink bg-n-yellow text-n-ink" : "border-n-border bg-white text-n-ink/75 hover:border-n-ink/60"}`}
               >
+                <span aria-hidden="true" className={`flex h-4 w-4 items-center justify-center rounded-full border ${formData.services.includes(s) ? "border-n-ink bg-n-ink text-white" : "border-n-control-border"}`}>
+                  {formData.services.includes(s) ? <CheckIcon className="h-3 w-3" /> : null}
+                </span>
                 {s}
               </button>
             ))}
@@ -321,6 +366,8 @@ export default function ContactForm() {
             </div>
           )}
         </div>
+        </FormSection>
+        <FormSection index={3} title={sectionTitles[2]}>
         <div>
           <label htmlFor="contact-message" className="block font-body text-sm font-semibold text-n-ink mb-2">{c.message}</label>
           <textarea
@@ -332,15 +379,16 @@ export default function ContactForm() {
             placeholder={c.messagePlaceholder}
           />
         </div>
+        </FormSection>
         <button
           type="submit"
           disabled={status === "loading"}
-          className="w-full bg-n-orange text-n-ink font-display font-bold text-base py-4 rounded-xl hover:bg-n-orange-dark transition-colors disabled:opacity-60"
+          className="btn btn-lg btn-business w-full disabled:opacity-60"
         >
           {status === "loading" ? c.submitting : c.submit}
         </button>
         {status === "error" && <p role="alert" className="text-red-500 text-sm text-center font-body">{c.errorMsg}</p>}
-        <p className="text-xs text-n-muted text-center font-body">{c.footerNote}</p>
+        <p className="text-center font-body text-sm text-n-muted">{c.footerNote}</p>
       </form>
     </div>
   );

@@ -14,22 +14,30 @@ import "maplibre-gl/dist/maplibre-gl.css";
 
 setWorkerUrl("/maplibre/maplibre-gl-worker.mjs");
 
-function MapLoadingState() {
+// Static preview drawn from the same coordinates the map will show, so the
+// section reads as a map of the city before the tiles arrive.
+const PREVIEW_BOUNDS = { west: -74.27, east: -73.69, north: 40.92, south: 40.49 };
+
+function MapLoadingState({ markers }: { markers: Array<{ lat: number; lng: number; hex: string; isBid: boolean; name: string }> }) {
+  const width = 1000;
+  const height = 760;
   return (
-    <div className="flex h-full w-full items-center justify-center bg-n-bg" role="status" aria-label="Loading project map">
-      <div className="w-full max-w-xl px-8">
-        <div className="mb-5 flex items-center gap-3">
-          <span className="h-3 w-3 animate-pulse rounded-full bg-n-orange" />
-          <span className="h-2.5 w-32 animate-pulse rounded-full bg-n-border" />
-        </div>
-        <div className="relative h-56 overflow-hidden rounded-xl border border-n-border bg-white">
-          <span className="absolute -left-8 top-16 h-px w-[120%] rotate-[13deg] bg-n-purple/20" />
-          <span className="absolute -left-8 top-32 h-px w-[120%] -rotate-[9deg] bg-n-orange/20" />
-          <span className="absolute left-[28%] top-[38%] h-4 w-4 rounded-full bg-n-orange/40 ring-8 ring-n-orange/10" />
-          <span className="absolute left-[63%] top-[62%] h-3 w-3 rounded-full bg-n-purple/45 ring-8 ring-n-purple/10" />
-          <span className="absolute left-[78%] top-[25%] h-3 w-3 rounded-full bg-n-yellow/55 ring-8 ring-n-yellow/20" />
-        </div>
-      </div>
+    <div className="relative h-full w-full overflow-hidden bg-[#f6f1ec]" role="status" aria-label="Loading project map">
+      <svg viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="xMidYMid meet" className="h-full w-full" aria-hidden="true">
+        {markers.map((marker) => {
+          const x = ((marker.lng - PREVIEW_BOUNDS.west) / (PREVIEW_BOUNDS.east - PREVIEW_BOUNDS.west)) * width;
+          const y = ((PREVIEW_BOUNDS.north - marker.lat) / (PREVIEW_BOUNDS.north - PREVIEW_BOUNDS.south)) * height;
+          return marker.isBid ? (
+            <circle key={`${marker.name}-${x}-${y}`} cx={x} cy={y} r="16" fill={marker.hex} fillOpacity="0.16" stroke={marker.hex} strokeOpacity="0.5" />
+          ) : (
+            <circle key={`${marker.name}-${x}-${y}`} cx={x} cy={y} r="5" fill={marker.hex} stroke="#fff" strokeWidth="1.5" />
+          );
+        })}
+      </svg>
+      <span className="absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full bg-white/90 px-3 py-1.5 font-mono text-[0.8125rem] text-n-ink shadow-e1">
+        <span className="h-2 w-2 animate-pulse rounded-full bg-n-orange" />
+        Loading map
+      </span>
     </div>
   );
 }
@@ -338,14 +346,14 @@ export default function NeighborhoodMap({ projects }: NeighborhoodMapProps) {
       />
 
       {mapUnavailable ? (
-        <div className="absolute inset-0 z-[2] flex items-center justify-center bg-n-bg px-6 text-center">
-          <p className="max-w-sm font-body text-sm leading-relaxed text-n-muted">
+        <div className="absolute inset-0 z-[2] flex items-center justify-center bg-n-bg/80 px-6 text-center">
+          <p className="max-w-sm rounded-card bg-white px-5 py-4 font-body text-sm leading-relaxed text-n-muted shadow-e2">
             This map needs WebGL, which your browser has turned off. Our projects are listed below.
           </p>
         </div>
       ) : !mapLoaded && (
         <div className="absolute inset-0 z-[2]">
-          <MapLoadingState />
+          <MapLoadingState markers={markers} />
         </div>
       )}
 

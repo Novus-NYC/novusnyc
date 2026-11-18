@@ -47,7 +47,7 @@ export default function ParallaxHero({
           placeholder="blur"
           quality={75}
           sizes="(max-width: 768px) 1200px, (max-width: 1280px) 1800px, 2400px"
-          className={imageClassName}
+          className={`photo-grade ${imageClassName}`}
         />
       </motion.div>
       <div className="page-photo-hero-overlay absolute inset-0" />

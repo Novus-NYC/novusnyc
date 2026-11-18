@@ -1,8 +1,6 @@
-"use client";
-
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { useId, useRef, useState } from "react";
-import { AwardIcon, BuildingIcon, CheckIcon, PencilIcon, UsersIcon } from "@/components/Icons";
+import BridgeArc from "@/components/BridgeArc";
+import Eyebrow from "@/components/Eyebrow";
+import Illustration from "@/components/Illustrations";
 
 const steps = [
   {
@@ -11,10 +9,7 @@ const steps = [
     title: "Share your interests and availability.",
     detail: "Start with a short application covering your school, preferred track, and availability.",
     note: "Tell us what you want to work on and when you can contribute.",
-    icon: PencilIcon,
-    accent: "bg-n-purple",
-    soft: "bg-n-purple/10",
-    text: "text-n-purple-dark",
+    illustration: "grants",
   },
   {
     label: "Application review",
@@ -22,10 +17,7 @@ const steps = [
     title: "We review applications for current openings.",
     detail: "We look at your interests, availability, and the teams that are currently onboarding. Not every applicant will have a call.",
     note: "We will contact you if there is an opening that fits.",
-    icon: UsersIcon,
-    accent: "bg-n-orange",
-    soft: "bg-n-orange/10",
-    text: "text-n-orange-dark",
+    illustration: "people",
   },
   {
     label: "Onboarding email",
@@ -33,10 +25,7 @@ const steps = [
     title: "Receive your next steps by email.",
     detail: "When there is an opening that matches your interests and availability, we will send an onboarding email with your track, team, and what to do next.",
     note: "Applicants are onboarded as teams have room to grow.",
-    icon: CheckIcon,
-    accent: "bg-n-yellow",
-    soft: "bg-n-yellow/20",
-    text: "text-amber-700",
+    illustration: "handshake",
   },
   {
     label: "Work with a business",
@@ -44,10 +33,7 @@ const steps = [
     title: "Join a team serving a real business.",
     detail: "Work with a business on a website, marketing plan, social content, grant research, or another practical project. You will receive feedback, meet deadlines, and contribute to deliverables that go live.",
     note: "You can point to the work when you apply for future opportunities.",
-    icon: BuildingIcon,
-    accent: "bg-n-orange-dark",
-    soft: "bg-n-orange/10",
-    text: "text-n-orange-dark",
+    illustration: "website",
   },
   {
     label: "Show your work",
@@ -55,101 +41,47 @@ const steps = [
     title: "Leave with work you can explain clearly.",
     detail: "Keep examples of what you built, what you owned, and what changed for the business. Team leads can speak to your contribution, and strong contributors can move into leadership roles.",
     note: "Your portfolio grows from real projects, not practice exercises.",
-    icon: AwardIcon,
-    accent: "bg-n-purple-dark",
-    soft: "bg-n-purple/10",
-    text: "text-n-purple-dark",
+    illustration: "design",
   },
 ] as const;
 
+// The whole path is visible at once: five piers joined by the bridge cable.
 export default function ApplicationJourney() {
-  const [active, setActive] = useState(0);
-  const id = useId();
-  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const reducedMotion = useReducedMotion();
-  const step = steps[active];
-
-  const handleKeyDown = (event: React.KeyboardEvent, index: number) => {
-    let next = index;
-    if (event.key === "ArrowDown" || event.key === "ArrowRight") next = (index + 1) % steps.length;
-    else if (event.key === "ArrowUp" || event.key === "ArrowLeft") next = (index - 1 + steps.length) % steps.length;
-    else if (event.key === "Home") next = 0;
-    else if (event.key === "End") next = steps.length - 1;
-    else return;
-
-    event.preventDefault();
-    setActive(next);
-    tabRefs.current[next]?.focus();
-  };
-
   return (
-    <section id="journey" className="relative overflow-hidden bg-[#fffbea] py-14" aria-labelledby="application-journey-heading">
-      <div className="mx-auto max-w-6xl px-5 md:px-8">
-        <div className="mb-9 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+    <section id="journey" className="band-student relative overflow-hidden py-16 md:py-20" aria-labelledby="application-journey-heading">
+      <div className="mx-auto max-w-7xl px-5 md:px-8">
+        <div className="mb-12 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
-            <p className="font-body mb-3 text-xs font-bold uppercase tracking-[0.22em] text-amber-700">Your Novus journey</p>
-            <h2 id="application-journey-heading" className="page-section-heading text-n-ink">Work you can put on your resume.</h2>
+            <Eyebrow tone="student" index={3}>Your Novus journey</Eyebrow>
+            <h2 id="application-journey-heading" className="type-h2 mt-3 text-n-ink">Work you can put on your resume.</h2>
           </div>
-          <p className="max-w-md font-body text-sm leading-relaxed text-n-muted md:text-right">Follow the steps from application to work you can use in college applications, interviews, and future roles.</p>
+          <p className="max-w-md font-body text-base leading-relaxed text-n-ink/75">Follow the steps from application to work you can use in college applications, interviews, and future roles.</p>
         </div>
 
-        <div
-          className="grid overflow-hidden rounded-lg border border-n-yellow/55 bg-white/70 md:grid-cols-[15rem_minmax(0,1fr)]"
-        >
-          <div role="tablist" aria-label="Novus student journey" className="grid border-b border-n-yellow/40 bg-white/45 sm:grid-cols-5 md:block md:border-b-0 md:border-r">
-            {steps.map((item, index) => {
-              const selected = active === index;
-              return (
-                <button
-                  key={item.label}
-                  ref={(element) => { tabRefs.current[index] = element; }}
-                  role="tab"
-                  id={`${id}-tab-${index}`}
-                  aria-selected={selected}
-                  aria-controls={`${id}-panel`}
-                  tabIndex={selected ? 0 : -1}
-                  onClick={() => setActive(index)}
-                  onKeyDown={(event) => handleKeyDown(event, index)}
-                  className={`relative flex min-h-20 items-center gap-3 px-4 py-3 text-left transition-colors focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-n-purple md:min-h-0 md:px-5 md:py-4 ${selected ? "bg-white text-n-ink" : "text-n-muted hover:bg-white/70"}`}
-                >
-                  {selected ? <motion.span layoutId={`${id}-active-step`} className={`absolute inset-y-0 left-0 w-1 ${item.accent}`} /> : null}
-                  <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-md ${selected ? item.soft : "bg-n-bg"}`}>
-                    <item.icon className={`h-4 w-4 ${selected ? item.text : "text-n-muted"}`} aria-hidden="true" />
-                  </span>
-                  <span className="min-w-0">
-                    <span className="block font-body text-[10px] font-semibold uppercase tracking-[0.14em] text-n-muted">{index + 1}</span>
-                    <span className="mt-0.5 block font-display text-sm font-bold leading-tight">{item.label}</span>
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-
-          <div role="tabpanel" id={`${id}-panel`} aria-labelledby={`${id}-tab-${active}`} tabIndex={0} className="min-h-[250px] p-6 md:p-9">
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.div
-                key={step.label}
-                initial={reducedMotion ? false : { opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={reducedMotion ? undefined : { opacity: 0, y: -8 }}
-                transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-                className="flex h-full flex-col justify-between"
-              >
-                <div>
-                  <div className="mb-7 flex items-center gap-4">
-                    <span className={`flex h-12 w-12 items-center justify-center rounded-lg ${step.soft}`}>
-                      <step.icon className={`h-6 w-6 ${step.text}`} aria-hidden="true" />
-                    </span>
-                    <p className={`font-body text-xs font-bold uppercase tracking-[0.18em] ${step.text}`}>{step.eyebrow}</p>
-                  </div>
-                  <h3 className="max-w-xl font-display text-2xl font-bold leading-tight text-n-ink md:text-3xl">{step.title}</h3>
-                  <p className="mt-4 max-w-2xl font-body text-base leading-relaxed text-n-muted">{step.detail}</p>
+        <ol className="relative grid gap-5 lg:grid-cols-5 lg:gap-4">
+          {steps.map((step, index) => (
+            <li key={step.label} className="relative flex flex-col">
+              {index < steps.length - 1 ? (
+                <BridgeArc variant="arch" className="absolute -right-[calc(50%+0.5rem)] top-2 z-0 hidden h-10 w-full text-n-purple-ink/45 lg:block" strokeWidth={1.5} />
+              ) : null}
+              <div className="relative z-10 flex items-center gap-3 lg:flex-col lg:items-start">
+                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 border-n-ink bg-n-purple font-mono text-base font-semibold text-n-ink">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <p className="font-display text-lg font-bold leading-tight text-n-ink">{step.label}</p>
+              </div>
+              <div className="relative z-10 mt-4 flex flex-1 flex-col rounded-card border border-n-purple/50 bg-white p-5 shadow-e1">
+                <div className="flex items-start justify-between gap-3">
+                  <p className="eyebrow eyebrow--student">{step.eyebrow}</p>
+                  <Illustration name={step.illustration} className="-mt-1 h-12 w-12 shrink-0" />
                 </div>
-                <p className="mt-8 border-t border-n-border pt-4 font-body text-sm font-semibold text-n-ink">{step.note}</p>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-        </div>
+                <h3 className="mt-2 font-display text-[1.125rem] font-bold leading-snug text-n-ink">{step.title}</h3>
+                <p className="mt-2 mb-4 font-body text-[0.9375rem] leading-relaxed text-n-ink/75">{step.detail}</p>
+                <p className="mt-auto border-t border-n-border pt-3 font-body text-[0.9375rem] font-semibold text-n-ink">{step.note}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
       </div>
     </section>
   );
