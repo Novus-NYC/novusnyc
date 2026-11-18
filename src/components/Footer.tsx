@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import Wordmark from "@/components/Wordmark";
-import BridgeArc from "@/components/BridgeArc";
+import BridgeIllustration from "@/components/BridgeIllustration";
 import { ArrowUpRightIcon, InstagramIcon, LinkedInIcon, MailIcon } from "@/components/Icons";
 import { EMAIL } from "@/lib/mail";
 import { SOCIAL } from "@/lib/social";
@@ -22,10 +22,10 @@ export default function Footer() {
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_8%_30%,rgba(243,226,141,0.10),transparent_40%),radial-gradient(circle_at_92%_30%,rgba(190,162,186,0.14),transparent_40%)]" />
       <div className="relative mx-auto max-w-7xl px-5 md:px-8">
         {/* The closing span: businesses on one side, students on the other. */}
-        <div className="relative pt-14 md:pt-16">
-          <BridgeArc variant="span" className="absolute inset-x-0 top-6 h-16 w-full text-n-orange/45 md:top-4 md:h-24" strokeWidth={1.5} />
-          <div className="relative flex justify-center">
-            <Link href="/" className="inline-flex items-center gap-3 rounded-full bg-n-night px-5 py-2" aria-label="Novus NYC home">
+        <div className="relative pt-12 md:pt-14">
+          <BridgeIllustration className="mx-auto w-full max-w-4xl text-n-orange/60 [--bridge-surface:rgb(var(--color-night))]" />
+          <div className="relative mt-6 flex justify-center">
+            <Link href="/" className="inline-flex items-center gap-3" aria-label="Novus NYC home">
               <Image src="/logo.png" alt="" width={223} height={200} className="h-12 w-auto object-contain sm:h-14" />
               <Wordmark className="text-3xl text-n-orange sm:text-4xl" />
             </Link>

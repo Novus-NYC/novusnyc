@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import BridgeArc from "@/components/BridgeArc";
+import BridgeIllustration from "@/components/BridgeIllustration";
 import Eyebrow from "@/components/Eyebrow";
 import type { CommunityPartner } from "@/data";
 import storefront from "../../public/petite-dumpling-storefront.jpg";
@@ -26,7 +26,7 @@ export default function HomeHero({
           <Eyebrow>NYC / In motion</Eyebrow>
           <h1 className="mt-5 max-w-[18ch] font-display text-[clamp(2.5rem,1.3rem+3.7vw,4.6rem)] font-bold leading-[1.0] tracking-[-0.04em] text-n-ink [text-wrap:balance]">
             Free websites and marketing support for{" "}
-            <span className="arc-underline">NYC small businesses.</span>
+            <span className="marker-highlight">NYC small businesses.</span>
           </h1>
           <p className="measure mt-7 font-body text-lg leading-relaxed text-n-ink/75">
             Built by student teams. Businesses get practical help, and students gain experience they can use in applications and interviews.
@@ -55,16 +55,8 @@ export default function HomeHero({
 
         {/* Business on the left pier, students on the right, the span between. */}
         <div className="relative mx-auto w-full max-w-xl lg:max-w-none" aria-hidden="true">
-          <div className="relative grid grid-cols-2 items-end gap-4 pt-16 sm:gap-6 sm:pt-20">
-            <BridgeArc variant="arch" motion="load" className="absolute inset-x-[12%] top-0 h-28 w-[76%] text-n-orange sm:h-36" strokeWidth={2.5} />
-            <Image
-              src="/logo.png"
-              alt=""
-              width={223}
-              height={200}
-              className="absolute left-1/2 top-0 h-12 w-auto -translate-x-1/2 -translate-y-3 sm:h-14"
-              priority
-            />
+          <BridgeIllustration water={false} className="relative z-0 w-full text-n-orange-ink/80" />
+          <div className="relative z-10 mt-3 grid grid-cols-2 items-start gap-4 px-[8%] sm:gap-6">
             <figure className="relative -rotate-2 overflow-hidden rounded-card border-4 border-white bg-white shadow-e3">
               <Image
                 src={storefront}
@@ -78,7 +70,7 @@ export default function HomeHero({
                 For businesses
               </figcaption>
             </figure>
-            <figure className="relative mb-8 rotate-2 overflow-hidden rounded-card border-4 border-white bg-white shadow-e3 sm:mb-12">
+            <figure className="relative mt-8 rotate-2 overflow-hidden rounded-card border-4 border-white bg-white shadow-e3 sm:mt-12">
               <Image
                 src={students}
                 alt=""

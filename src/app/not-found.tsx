@@ -1,15 +1,13 @@
 import Link from "next/link";
-import BridgeArc from "@/components/BridgeArc";
+import BridgeIllustration from "@/components/BridgeIllustration";
 import { EMAIL } from "@/lib/mail";
 
 export default function NotFound() {
   return (
     <section className="blueprint flex min-h-[70vh] items-center justify-center bg-n-bg px-5 pb-16 pt-32">
       <div className="max-w-lg text-center">
-        <div className="relative mx-auto mb-4 w-64">
-          <BridgeArc variant="span" motion="load" className="h-16 w-full text-n-orange" strokeWidth={2} />
-          <p className="stat-value -mt-2 font-display text-7xl font-bold text-n-ink">404</p>
-        </div>
+        <BridgeIllustration className="mx-auto mb-2 w-full max-w-md text-n-orange-ink" />
+        <p className="stat-value mb-2 font-display text-7xl font-bold text-n-ink">404</p>
         <h1 className="type-h2 mb-3 text-n-ink">
           Page not found
         </h1>

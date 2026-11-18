@@ -9,16 +9,16 @@ type HeroAction = {
   label: string;
 };
 
-const ACCENT: Record<HeroAccent, { button: string; tone: "brand" | "student" | "business"; text: string; underline: string }> = {
-  orange: { button: "btn-brand", tone: "brand", text: "text-n-orange", underline: "arc-underline--peach" },
-  purple: { button: "btn-student", tone: "student", text: "text-n-purple", underline: "arc-underline--purple" },
-  yellow: { button: "btn-business", tone: "business", text: "text-n-yellow", underline: "arc-underline--yellow" },
+const ACCENT: Record<HeroAccent, { button: string; tone: "brand" | "student" | "business"; text: string }> = {
+  orange: { button: "btn-brand", tone: "brand", text: "hero-accent--peach" },
+  purple: { button: "btn-student", tone: "student", text: "hero-accent--purple" },
+  yellow: { button: "btn-business", tone: "business", text: "hero-accent--yellow" },
 };
 
-/** An emphasized phrase in a photo hero: full-strength pastel with the arc under it. */
+/** An emphasized phrase in a photo hero: in a tint lifted for photography. */
 export function HeroAccentText({ children, accent = "orange" }: { children: ReactNode; accent?: HeroAccent }) {
   return (
-    <span className={`arc-underline ${ACCENT[accent].underline} ${ACCENT[accent].text}`}>{children}</span>
+    <span className={ACCENT[accent].text}>{children}</span>
   );
 }
 

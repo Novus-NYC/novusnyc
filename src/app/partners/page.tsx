@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import AnimatedSection from "@/components/AnimatedSection";
-import BridgeArc from "@/components/BridgeArc";
+import BridgeIllustration from "@/components/BridgeIllustration";
 import Eyebrow from "@/components/Eyebrow";
 import Illustration from "@/components/Illustrations";
 import NextStep from "@/components/NextStep";
@@ -114,9 +114,9 @@ export default async function PartnersPage() {
             </p>
           </AnimatedSection>
           {/* The two sides of a partnership, joined by the span. */}
-          <div className="relative mt-12">
-            <BridgeArc variant="arch" className="absolute left-[20%] right-[20%] -top-8 hidden h-20 w-[60%] text-n-orange md:block" strokeWidth={2} />
-            <div className="relative grid gap-5 md:grid-cols-2 md:gap-8">
+          <div className="relative mt-10">
+            <BridgeIllustration water={false} className="relative z-0 hidden w-full text-n-orange-ink/70 md:block" />
+            <div className="relative z-10 grid gap-5 md:-mt-6 md:grid-cols-2 md:gap-8">
               {DIVISION_OF_WORK.map((column, columnIndex) => (
                 <div key={column.heading} className={`rounded-card border bg-white p-6 shadow-e1 md:p-8 ${columnIndex === 0 ? "border-n-purple/50" : "border-n-orange/60"}`}>
                   <div className="flex items-center gap-4 border-b border-n-border pb-4">

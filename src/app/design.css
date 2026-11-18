@@ -32,6 +32,24 @@
 }
 
 
+/* Highlighter behind a phrase on light backgrounds; wraps line by line. */
+.marker-highlight {
+  padding: 0 0.12em;
+  margin: 0 -0.12em;
+  background-image: linear-gradient(104deg, transparent 0.4%, rgb(var(--color-yellow)) 1.6%, rgb(var(--color-yellow)) 97%, transparent 98.6%);
+  background-repeat: no-repeat;
+  background-position: 0 88%;
+  background-size: 100% 42%;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+/* Accent words over photo heroes: lifted tints that stay readable on mid-tone
+   photography where the base pastels go muddy. */
+.hero-accent--peach { color: #ffcaa5; }
+.hero-accent--purple { color: #e2c6de; }
+.hero-accent--yellow { color: #f6e692; }
+
 /* ── Blueprint texture (replaces the diagonal cable-fan lines) ─────────────── */
 .blueprint {
   position: relative;
@@ -75,19 +93,27 @@
   color: rgb(var(--color-orange-ink));
 }
 .eyebrow-num {
-  color: rgb(var(--color-ink) / 0.68);
-  font-weight: 500;
+  display: inline-flex;
+  height: 1.5rem;
+  min-width: 1.75rem;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid currentColor;
+  border-radius: 0.375rem;
+  padding: 0 0.3rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
 }
-.eyebrow-tick {
-  display: inline-block;
-  width: 1.4rem;
-  height: 0.55rem;
+.eyebrow-dot {
+  width: 0.5rem;
+  height: 0.5rem;
   flex: none;
+  border-radius: 999px;
+  background: currentColor;
 }
 .eyebrow--business { color: rgb(var(--color-yellow-ink)); }
 .eyebrow--student { color: rgb(var(--color-purple-ink)); }
 .eyebrow--light { color: rgb(var(--color-orange)); }
-.eyebrow--light .eyebrow-num { color: rgb(255 253 249 / 0.75); }
 .eyebrow--light.eyebrow--business { color: rgb(var(--color-yellow)); }
 .eyebrow--light.eyebrow--student { color: rgb(var(--color-purple)); }
 
@@ -139,59 +165,6 @@
 .btn-outline-student:hover { border-color: rgb(var(--color-purple-ink)); background: rgb(var(--color-purple) / 0.24); }
 .btn-outline-light { border-color: rgb(255 253 249 / 0.5); color: #fffdf9; background: transparent; }
 .btn-outline-light:hover { border-color: #fffdf9; background: rgb(255 253 249 / 0.1); }
-
-/* ── Bridge arc motif ─────────────────────────────────────────────────────── */
-.bridge-arc path,
-.bridge-arc line {
-  vector-effect: non-scaling-stroke;
-}
-/* Drawn by growing the dash, so it works with non-scaling strokes and any
-   path length up to 800 units. */
-@keyframes arc-draw {
-  from { stroke-dasharray: 0 800; }
-  to { stroke-dasharray: 800 0; }
-}
-
-/* A word underline that follows line wraps: each line fragment gets its own
-   cable, via box-decoration-break. */
-.arc-underline {
-  padding-bottom: 0.08em;
-  background-repeat: no-repeat;
-  background-position: 0 100%;
-  background-size: 100% 0.26em;
-  -webkit-box-decoration-break: clone;
-  box-decoration-break: clone;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 20' preserveAspectRatio='none'%3E%3Cpath d='M2 5 Q100 22 198 5' fill='none' stroke='%23E9A77E' stroke-width='3.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
-}
-.arc-underline--peach {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 20' preserveAspectRatio='none'%3E%3Cpath d='M2 5 Q100 22 198 5' fill='none' stroke='%23F6B78D' stroke-width='3.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
-}
-.arc-underline--yellow {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 20' preserveAspectRatio='none'%3E%3Cpath d='M2 5 Q100 22 198 5' fill='none' stroke='%23F3E28D' stroke-width='3.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
-}
-.arc-underline--purple {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 20' preserveAspectRatio='none'%3E%3Cpath d='M2 5 Q100 22 198 5' fill='none' stroke='%23BEA2BA' stroke-width='3.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
-}
-
-@keyframes arc-tower {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: none; }
-}
-
-.bridge-arc--load .arc-cable {
-  animation: arc-draw var(--dur-3) var(--ease-cable) 120ms both;
-}
-.bridge-arc--load .arc-tower {
-  animation: arc-tower var(--dur-2) var(--ease-out) 80ms both;
-}
-
-@supports (animation-timeline: view()) {
-  .bridge-arc--view .arc-cable {
-    animation: arc-draw linear both;
-    animation-timeline: view();
-    animation-range: entry 10% cover 40%;
-  }
-}
 
 /* ── Audience color bands ─────────────────────────────────────────────────── */
 .band-business { background-color: #fdf6d6; }
@@ -508,3 +481,58 @@
 .group:hover .duotone::after,
 .group:focus-visible .duotone::after,
 .duotone.is-selected::after { opacity: 0; }
+
+/* ── Bridge illustration ──────────────────────────────────────────────────── */
+.bridge-illustration { display: block; overflow: visible; }
+.bridge-illustration .bridge-cable { stroke-width: 2.6; }
+.bridge-illustration .bridge-tower path { stroke-width: 2.2; }
+.bridge-illustration .bridge-deck path { stroke-width: 2; }
+.bridge-illustration .bridge-fine,
+.bridge-illustration .bridge-tower .bridge-fine,
+.bridge-illustration .bridge-deck .bridge-fine { stroke-width: 0.9; opacity: 0.5; }
+.bridge-illustration .bridge-hangers path { stroke-width: 1; opacity: 0.7; }
+.bridge-illustration .bridge-stays path { stroke-width: 0.9; opacity: 0.4; }
+.bridge-illustration .bridge-water path { stroke-width: 1.1; opacity: 0.3; }
+.bridge-illustration .bridge-shade { fill: currentColor; fill-opacity: 0.18; stroke-width: 1.2; }
+.bridge-illustration .bridge-shade--light { fill-opacity: 0.07; }
+.bridge-illustration .bridge-face { fill: var(--bridge-surface, rgb(var(--color-bg))); }
+.bridge-illustration .bridge-plane--back { opacity: 0.42; }
+
+.bridge-illustration.is-armed .bridge-cable,
+.bridge-illustration.is-armed .bridge-hangers,
+.bridge-illustration.is-armed .bridge-stays,
+.bridge-illustration.is-armed .bridge-tower { opacity: 0; }
+
+@keyframes bridge-draw {
+  from { stroke-dasharray: 0 1600; }
+  to { stroke-dasharray: 1600 0; }
+}
+@keyframes bridge-rise {
+  from { opacity: 0; transform: translateY(6px); }
+}
+@keyframes bridge-hang {
+  from { opacity: 0; }
+}
+
+.bridge-illustration--animate .bridge-cable {
+  animation: bridge-draw 1.4s var(--ease-cable) 0.15s both;
+}
+.bridge-illustration--animate .bridge-tower {
+  animation: bridge-rise var(--dur-3) var(--ease-out) both;
+}
+.bridge-illustration--animate .bridge-hangers path {
+  animation: bridge-hang 0.5s var(--ease-out) both;
+  animation-delay: calc(0.5s + var(--i, 0) * 14ms);
+}
+.bridge-illustration--animate .bridge-stays {
+  animation: bridge-hang 0.8s var(--ease-out) 0.9s both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bridge-illustration--animate .bridge-cable,
+  .bridge-illustration--animate .bridge-tower,
+  .bridge-illustration--animate .bridge-hangers path,
+  .bridge-illustration--animate .bridge-stays {
+    animation: none !important;
+  }
+}

@@ -286,6 +286,7 @@ export default async function Home() {
       <SectionBand
         index={1}
         tone="brand"
+        bridge
         eyebrow="THE RIGHT CONNECTIONS"
         title="A citywide network of local partnerships."
         detail="Novus works with neighborhood organizations that know the businesses they serve and help us connect with owners who could use support."

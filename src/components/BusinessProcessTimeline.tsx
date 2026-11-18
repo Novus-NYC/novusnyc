@@ -1,4 +1,3 @@
-import BridgeArc from "@/components/BridgeArc";
 import Eyebrow from "@/components/Eyebrow";
 
 const stages = [
@@ -37,9 +36,7 @@ export default function BusinessProcessTimeline() {
         </div>
 
         <div className="relative">
-          {/* The span runs pier to pier across the four stages on wide screens. */}
-          <BridgeArc variant="span" className="absolute inset-x-[6%] -top-6 hidden h-16 w-[88%] text-n-yellow-ink/40 md:block" strokeWidth={1.5} />
-          <ol className="relative grid gap-4 md:grid-cols-4 md:gap-5 md:pt-14">
+          <ol className="relative grid gap-4 md:grid-cols-4 md:gap-5">
             {stages.map((stage, index) => (
               <li key={stage.title} className="relative rounded-card border border-n-yellow-dark/70 bg-white p-5 shadow-e1">
                 <span className="mb-4 flex h-11 w-11 items-center justify-center rounded-full border-2 border-n-ink bg-n-yellow font-mono text-base font-semibold text-n-ink">

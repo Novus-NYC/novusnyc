@@ -1,5 +1,5 @@
 import Image from "next/image";
-import BridgeArc from "@/components/BridgeArc";
+import BridgeIllustration from "@/components/BridgeIllustration";
 import Eyebrow from "@/components/Eyebrow";
 
 type BandTone = "brand" | "business" | "student";
@@ -10,10 +10,10 @@ const BAND_CLASS: Record<BandTone, string> = {
   student: "band-student",
 };
 
-const ARC_CLASS: Record<BandTone, string> = {
-  brand: "text-n-orange",
-  business: "text-n-yellow-dark",
-  student: "text-n-purple",
+const BRIDGE_CLASS: Record<BandTone, string> = {
+  brand: "text-n-orange-ink/45 [--bridge-surface:#fdeadf]",
+  business: "text-n-yellow-ink/40 [--bridge-surface:#fdf6d6]",
+  student: "text-n-purple-ink/40 [--bridge-surface:#f3ebf2]",
 };
 
 /** A solid audience-colored band that opens a homepage chapter. */
@@ -25,6 +25,7 @@ export default function SectionBand({
   imageSrc,
   tone,
   id,
+  bridge = false,
 }: {
   index: number;
   eyebrow: string;
@@ -33,6 +34,7 @@ export default function SectionBand({
   imageSrc: string;
   tone: BandTone;
   id?: string;
+  bridge?: boolean;
 }) {
   return (
     <section id={id} className={`${BAND_CLASS[tone]} relative overflow-hidden py-14 md:py-20`}>
@@ -43,12 +45,14 @@ export default function SectionBand({
           <p className="measure mt-6 font-body text-lg leading-relaxed text-n-ink/75">{detail}</p>
         </div>
         <div className="relative">
-          <BridgeArc variant="span" className={`absolute -top-6 left-0 h-12 w-full ${ARC_CLASS[tone]}`} strokeWidth={2} />
-          <div className="relative mt-6 overflow-hidden rounded-card border-4 border-white shadow-e3">
+          <div className="relative overflow-hidden rounded-card border-4 border-white shadow-e3">
             <Image src={imageSrc} alt="" width={1200} height={800} sizes="(min-width: 1024px) 520px, 92vw" className="photo-grade aspect-[3/2] w-full object-cover" />
           </div>
         </div>
       </div>
+      {bridge ? (
+        <BridgeIllustration className={`pointer-events-none mx-auto mt-10 w-full max-w-7xl px-5 md:-mt-6 md:px-8 ${BRIDGE_CLASS[tone]}`} />
+      ) : null}
     </section>
   );
 }

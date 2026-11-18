@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import BridgeArc from "@/components/BridgeArc";
 
 type EyebrowTone = "brand" | "business" | "student";
 
@@ -28,8 +27,9 @@ export default function Eyebrow({
     <Tag className={`eyebrow ${TONE_CLASS[tone]} ${onDark ? "eyebrow--light" : ""} ${className}`}>
       {index !== undefined ? (
         <span className="eyebrow-num">{String(index).padStart(2, "0")}</span>
-      ) : null}
-      <BridgeArc variant="tick" motion="none" className="eyebrow-tick" strokeWidth={2} />
+      ) : (
+        <span aria-hidden="true" className="eyebrow-dot" />
+      )}
       <span>{children}</span>
     </Tag>
   );

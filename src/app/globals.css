@@ -1888,9 +1888,6 @@ summary:focus-visible {
 
 @media (prefers-reduced-motion: reduce) {
   .status-chip--ongoing .status-dot::after,
-  .bridge-arc--load .arc-cable,
-  .bridge-arc--load .arc-tower,
-  .bridge-arc--view .arc-cable,
   .scroll-progress,
   .page-enter {
     animation: none !important;

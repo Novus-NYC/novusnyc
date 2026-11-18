@@ -143,10 +143,14 @@ export default function Navbar() {
 
             <Link
               href={memberLink.href}
-              className={`hidden xl:flex h-16 items-center font-mono text-[0.8125rem] transition-colors duration-1 ${
+              className={`hidden xl:flex h-16 items-center gap-1.5 font-body text-sm font-medium transition-colors duration-1 ${
                 currentPathname.startsWith("/members") ? "text-n-orange" : "text-white/60 hover:text-white"
               }`}
             >
+              <svg aria-hidden="true" viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="7" width="10" height="7" rx="1.5" />
+                <path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2" />
+              </svg>
               {memberLink.label}
             </Link>
 
@@ -157,7 +161,6 @@ export default function Navbar() {
                 Get business support
               </Link>
               <Link href="/apply" className="btn btn-sm btn-student">
-                <span className="rounded-full bg-n-ink/10 px-1.5 py-0.5 font-mono text-[0.6875rem] font-semibold uppercase tracking-wider">Students</span>
                 Apply Now
               </Link>
             </div>

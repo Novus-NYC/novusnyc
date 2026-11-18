@@ -1,4 +1,3 @@
-import BridgeArc from "@/components/BridgeArc";
 import Eyebrow from "@/components/Eyebrow";
 import Illustration from "@/components/Illustrations";
 
@@ -59,11 +58,9 @@ export default function ApplicationJourney() {
         </div>
 
         <ol className="relative grid gap-5 lg:grid-cols-5 lg:gap-4">
+          <li aria-hidden="true" className="pointer-events-none absolute left-6 right-6 top-6 hidden h-0.5 bg-n-purple-ink/30 lg:block" />
           {steps.map((step, index) => (
             <li key={step.label} className="relative flex flex-col">
-              {index < steps.length - 1 ? (
-                <BridgeArc variant="arch" className="absolute -right-[calc(50%+0.5rem)] top-2 z-0 hidden h-10 w-full text-n-purple-ink/45 lg:block" strokeWidth={1.5} />
-              ) : null}
               <div className="relative z-10 flex items-center gap-3 lg:flex-col lg:items-start">
                 <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 border-n-ink bg-n-purple font-mono text-base font-semibold text-n-ink">
                   {String(index + 1).padStart(2, "0")}
