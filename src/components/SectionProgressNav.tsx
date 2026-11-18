@@ -41,7 +41,21 @@ export default function SectionProgressNav({ sections, accent = "orange" }: { se
   const [activeId, setActiveId] = useState(sections[0]?.id);
   const [useDarkText, setUseDarkText] = useState(true);
   const [isOverDarkBoundary, setIsOverDarkBoundary] = useState(false);
+  const [chipsVisible, setChipsVisible] = useState(false);
   const navRef = useRef<HTMLElement>(null);
+  const chipRowRef = useRef<HTMLOListElement>(null);
+
+  useEffect(() => {
+    document.body.classList.add("has-section-chips");
+    return () => document.body.classList.remove("has-section-chips");
+  }, []);
+
+  useEffect(() => {
+    const row = chipRowRef.current;
+    const chip = row?.querySelector<HTMLElement>(`[data-section="${activeId}"]`);
+    if (!row || !chip) return;
+    row.scrollTo({ left: chip.offsetLeft - row.clientWidth / 2 + chip.clientWidth / 2, behavior: "auto" });
+  }, [activeId]);
 
   useEffect(() => {
     const elements = sections
@@ -91,6 +105,11 @@ export default function SectionProgressNav({ sections, accent = "orange" }: { se
         if (firstSection && firstSection.getBoundingClientRect().top > window.innerHeight * 0.5) {
           setActiveId(sections[0].id);
         }
+        const footer = document.querySelector<HTMLElement>(".site-footer");
+        setChipsVisible(
+          Boolean(firstSection && firstSection.getBoundingClientRect().top < window.innerHeight * 0.4)
+          && !(footer && footer.getBoundingClientRect().top < window.innerHeight * 0.6),
+        );
 
         const nav = navRef.current;
         if (!nav || !darkRegions.length) return;
@@ -115,6 +134,37 @@ export default function SectionProgressNav({ sections, accent = "orange" }: { se
   const showDarkText = useDarkText && !isOverDarkBoundary;
 
   return (
+    <>
+    <nav
+      aria-label="Page sections"
+      className={`fixed inset-x-0 z-[60] border-b border-n-border bg-n-bg/92 backdrop-blur-lg transition duration-2 ease-out min-[1730px]:hidden ${
+        chipsVisible ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-2 opacity-0"
+      }`}
+      style={{ top: "calc(var(--banner-h, 0px) + 4rem)" }}
+      aria-hidden={!chipsVisible}
+    >
+      <ol ref={chipRowRef} className="mx-auto flex max-w-7xl gap-2 overflow-x-auto px-5 py-2 [scrollbar-width:none] md:px-8 [&::-webkit-scrollbar]:hidden">
+        {sections.map((section) => {
+          const active = activeId === section.id;
+          return (
+            <li key={section.id} className="shrink-0">
+              <a
+                href={`#${section.id}`}
+                data-section={section.id}
+                tabIndex={chipsVisible ? undefined : -1}
+                aria-current={active ? "location" : undefined}
+                className={`inline-flex min-h-10 items-center gap-2 rounded-full border px-3.5 font-body text-[0.9375rem] font-semibold transition-colors duration-1 ${
+                  active ? "border-n-ink bg-n-ink text-white" : "border-n-border bg-white text-n-ink/75 hover:border-n-ink/40"
+                }`}
+              >
+                <span aria-hidden="true" className={`h-2 w-2 rounded-full ${colors.dot.split(" ")[1]}`} />
+                {section.label}
+              </a>
+            </li>
+          );
+        })}
+      </ol>
+    </nav>
     <nav
       ref={navRef}
       aria-label="Page sections"
@@ -162,5 +212,6 @@ export default function SectionProgressNav({ sections, accent = "orange" }: { se
         </ol>
       </div>
     </nav>
+    </>
   );
 }

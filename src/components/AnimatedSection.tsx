@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { ReactNode } from "react";
+import { DUR, EASE_OUT } from "@/lib/motion";
 
 interface Props {
   children: ReactNode;
@@ -11,31 +12,32 @@ interface Props {
   direction?: "up" | "left" | "right" | "none";
 }
 
+// Content is always painted at full opacity from the server HTML. The reveal
+// only moves it a few pixels, so the largest paint never waits on hydration.
 export default function AnimatedSection({
   children,
   className = "",
   delay = 0,
-  duration = 0.55,
+  duration = DUR.base,
   direction = "up",
 }: Props) {
   const reduced = useReducedMotion();
 
-  if (reduced) {
+  if (reduced || direction === "none") {
     return <div className={className}>{children}</div>;
   }
 
   const initial = {
-    opacity: 0,
-    y: direction === "up" ? 24 : 0,
-    x: direction === "left" ? -24 : direction === "right" ? 24 : 0,
+    y: direction === "up" ? 14 : 0,
+    x: direction === "left" ? -14 : direction === "right" ? 14 : 0,
   };
 
   return (
     <motion.div
       initial={initial}
-      whileInView={{ opacity: 1, y: 0, x: 0 }}
-      transition={{ duration, delay, ease: [0.22, 1, 0.36, 1] }}
-      viewport={{ once: true, margin: "-80px" }}
+      whileInView={{ y: 0, x: 0 }}
+      transition={{ duration, delay, ease: EASE_OUT }}
+      viewport={{ once: true, margin: "-60px" }}
       className={className}
     >
       {children}

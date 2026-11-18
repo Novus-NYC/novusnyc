@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import AnimatedSection from "@/components/AnimatedSection";
+import Eyebrow from "@/components/Eyebrow";
+import NextStep from "@/components/NextStep";
 import ApplicationForm from "@/components/ApplicationForm";
 import { getApplicationsStatus } from "@/lib/server/publicShowcase";
 
@@ -24,23 +25,22 @@ export default async function Apply() {
 
   return (
     <>
-      <section id="application-details" className="section-flush-bottom public-surface public-surface-lavender bg-n-bg pt-32 pb-0">
-        <div className="max-w-5xl mx-auto px-5 md:px-8">
-          <AnimatedSection>
+      <section id="application-details" className="section-flush-bottom blueprint band-student pt-32 pb-0">
+        <div className="max-w-6xl mx-auto px-5 md:px-8">
             <div className="grid md:grid-cols-5 gap-12 lg:gap-16 items-start pb-16">
-              {/* Left: what to expect */}
-              <div className="md:col-span-2 md:pt-2">
-                <p className="mb-4 font-body text-xs font-bold uppercase tracking-[0.2em] text-n-orange sm:text-sm">
+              {/* Left: what to expect — stays in view beside the long form */}
+              <div className="md:sticky md:top-28 md:col-span-2 md:pt-2">
+                <Eyebrow tone="student" className="mb-4">
                   Student application
-                </p>
-                <h1 className="mb-5 max-w-[12ch] font-display text-[clamp(2.8rem,5vw,4.4rem)] font-bold leading-[0.98] tracking-[-0.04em] text-n-ink">
+                </Eyebrow>
+                <h1 className="type-display mb-5 max-w-[12ch] text-n-ink">
                   Start your Novus application.
                 </h1>
                 <p className="mb-6 font-body text-lg leading-relaxed text-n-muted">
                   Join a student-led team doing real client work. The application takes about five minutes.
                 </p>
                 <div className="space-y-5 border-t border-n-border pt-7">
-                  <p className="font-body text-xs font-semibold text-n-muted uppercase tracking-widest">
+                  <p className="eyebrow text-n-ink/70">
                     What happens next
                   </p>
                   {[
@@ -61,12 +61,12 @@ export default async function Apply() {
                     },
                   ].map((s) => (
                     <div key={s.n} className="flex gap-4">
-                      <span className="font-display font-bold text-n-orange text-lg leading-none flex-shrink-0 mt-0.5">
-                        {s.n}
+                      <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full border-2 border-n-ink bg-n-purple font-mono text-[0.8125rem] font-semibold text-n-ink">
+                        {s.n.padStart(2, "0")}
                       </span>
                       <div>
-                        <p className="font-display font-bold text-n-ink text-sm">{s.title}</p>
-                        <p className="font-body text-xs text-n-muted mt-0.5">{s.desc}</p>
+                        <p className="font-display font-bold text-n-ink text-base">{s.title}</p>
+                        <p className="font-body text-[0.9375rem] text-n-muted mt-0.5">{s.desc}</p>
                       </div>
                     </div>
                   ))}
@@ -76,7 +76,7 @@ export default async function Apply() {
               {/* Right: form or paused notice */}
               <div id="application-form" className="md:col-span-3">
                 {paused ? (
-                  <div className="border border-n-border rounded-2xl bg-white p-8 text-center">
+                  <div className="rounded-card border border-n-border bg-white p-8 text-center shadow-e1">
                     <div className="w-12 h-12 rounded-full bg-n-bg border border-n-border flex items-center justify-center mx-auto mb-4">
                       <svg className="w-5 h-5 text-n-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" />
@@ -92,9 +92,14 @@ export default async function Apply() {
                 )}
               </div>
             </div>
-          </AnimatedSection>
         </div>
       </section>
+
+      <NextStep
+        eyebrow="Tracks"
+        title="The three tracks"
+        links={[{ href: "/join#tracks", label: "Explore the tracks", tone: "student" }]}
+      />
     </>
   );
 }

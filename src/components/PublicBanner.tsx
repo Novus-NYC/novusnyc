@@ -39,7 +39,7 @@ export default function PublicBanner() {
   return (
     <div
       ref={ref}
-      className="fixed left-0 right-0 z-[60] flex items-center justify-center px-10 py-2.5 text-sm font-body font-semibold text-center"
+      className="fixed left-0 right-0 z-[75] flex min-h-9 items-center justify-center px-12 py-2 text-center font-mono text-[0.75rem] font-semibold uppercase tracking-[0.16em]"
       style={{ top: 0, backgroundColor: bg, color: text }}
     >
       <span>{message}</span>
@@ -47,7 +47,7 @@ export default function PublicBanner() {
         type="button"
         onClick={() => setDismissed(true)}
         aria-label="Dismiss"
-        className="absolute right-3 top-1/2 -translate-y-1/2 opacity-60 hover:opacity-100 transition-opacity text-base leading-none"
+        className="absolute right-2 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center text-base leading-none opacity-70 transition-opacity hover:opacity-100"
         style={{ color: text }}
       >
         ✕

@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { CheckIcon } from "@/components/Icons";
+import Illustration from "@/components/Illustrations";
 import { validateApplicationForm, REFERRAL_NEEDS_NAME, type ApplicationFormValues } from "@/lib/schemas";
 import { TRACK_NAMES, MARKETING_TRACK, MARKETING_SUBTRACKS } from "@/data";
 import { CLASS_GRADE_OPTIONS } from "@/lib/grades";
@@ -51,6 +52,14 @@ export default function ApplicationForm({ chapters }: { chapters: string[] }) {
 
   const clearError = (k: string) =>
     setErrors((p) => { const next = { ...p }; delete next[k]; return next; });
+
+  // Check a text field as soon as the applicant leaves it, using the same
+  // rules the submit runs, so mistakes surface where they were made.
+  const validateOnBlur = (k: keyof ApplicationFormValues) => {
+    const result = validateApplicationForm(form);
+    const message = result.success ? undefined : result.errors[k];
+    if (message && String(form[k] ?? "").trim() !== "") setErrors((p) => ({ ...p, [k]: message }));
+  };
 
   // Dropping Marketing must also drop the focus area, or a stale one submits.
   const toggleTrack = (t: string) => {
@@ -156,9 +165,10 @@ export default function ApplicationForm({ chapters }: { chapters: string[] }) {
 
   if (status === "success") {
     return (
-      <div role="status" aria-live="polite" className="bg-white border border-n-border rounded-2xl p-12 text-center">
-        <div className="w-16 h-16 rounded-full bg-n-orange/20 flex items-center justify-center mx-auto mb-5">
-          <CheckIcon className="w-8 h-8 text-n-orange" aria-hidden="true" />
+      <div role="status" aria-live="polite" className="rounded-card border border-n-border bg-white p-12 text-center shadow-e2">
+        <Illustration name="people" className="mx-auto mb-3 h-24 w-24" />
+        <div className="mx-auto mb-5 flex h-10 w-10 items-center justify-center rounded-full bg-n-purple">
+          <CheckIcon className="h-5 w-5 text-n-ink" aria-hidden="true" />
         </div>
         <h3 className="font-display font-bold text-2xl text-n-ink mb-3">Application received.</h3>
         <p className="font-body text-n-muted max-w-sm mx-auto">
@@ -169,7 +179,7 @@ export default function ApplicationForm({ chapters }: { chapters: string[] }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="space-y-9">
+    <form onSubmit={handleSubmit} noValidate className="space-y-9 rounded-card border border-n-border bg-white p-6 shadow-e1 md:p-9">
 
       <div>
         <label htmlFor="application-full-name" className="block font-body text-sm font-semibold text-n-ink mb-2">Full Name *</label>
@@ -177,6 +187,7 @@ export default function ApplicationForm({ chapters }: { chapters: string[] }) {
           id="application-full-name"
           value={form.fullName}
           onChange={(e) => { set("fullName", e.target.value); clearError("fullName"); }}
+          onBlur={() => validateOnBlur("fullName")}
           aria-invalid={Boolean(errors.fullName)}
           aria-describedby={errors.fullName ? "application-full-name-error" : undefined}
           className={`novus-input ${errors.fullName ? "border-red-400" : ""}`}
@@ -195,6 +206,7 @@ export default function ApplicationForm({ chapters }: { chapters: string[] }) {
           type="email"
           value={form.email}
           onChange={(e) => { set("email", e.target.value); clearError("email"); }}
+          onBlur={() => validateOnBlur("email")}
           aria-invalid={Boolean(errors.email)}
           aria-describedby={`application-email-help${errors.email ? " application-email-error" : ""}`}
           className={`novus-input ${errors.email ? "border-red-400" : ""}`}
@@ -222,7 +234,7 @@ export default function ApplicationForm({ chapters }: { chapters: string[] }) {
         />
         {loadingSchools && (
           <p className="mt-2 flex items-center gap-2 font-body text-xs text-n-muted" aria-live="polite">
-            <span aria-hidden="true" className="h-1.5 w-1.5 animate-pulse rounded-full bg-n-orange" />
+            <span aria-hidden="true" className="h-1.5 w-1.5 animate-pulse rounded-full bg-n-purple-ink" />
             Loading school suggestions
           </p>
         )}
@@ -376,7 +388,7 @@ export default function ApplicationForm({ chapters }: { chapters: string[] }) {
       <fieldset aria-describedby={errors.tracks ? "application-tracks-error" : undefined}>
         <legend className="block font-body text-sm font-semibold text-n-ink mb-1">
           Select your track(s) *{" "}
-          <a href="/join#tracks" target="_blank" rel="noopener noreferrer" className="text-n-orange font-normal hover:underline text-xs">
+          <a href="/join#tracks" target="_blank" rel="noopener noreferrer" className="font-normal text-n-purple-ink underline-offset-2 hover:underline text-xs">
             (see what each track does →)
           </a>
         </legend>
@@ -391,10 +403,10 @@ export default function ApplicationForm({ chapters }: { chapters: string[] }) {
                 aria-pressed={active}
                 onClick={() => { toggleTrack(t); clearError("tracks"); }}
                 className={`w-full text-left px-5 py-3 rounded-xl border font-body text-sm font-medium transition-all flex items-center gap-3 ${
-                  active ? "bg-n-orange/10 border-n-orange text-n-ink" : "bg-white border-n-border text-n-muted hover:border-n-ink"
+                  active ? "bg-n-purple/15 border-n-purple-ink text-n-ink" : "bg-white border-n-border text-n-muted hover:border-n-ink"
                 }`}
               >
-                <span className={`w-4 h-4 rounded border-2 flex-shrink-0 flex items-center justify-center transition-all ${active ? "bg-n-orange border-n-orange" : "border-n-border"}`}>
+                <span className={`w-4 h-4 rounded border-2 flex-shrink-0 flex items-center justify-center transition-all ${active ? "bg-n-purple border-n-purple-ink" : "border-n-border"}`}>
                   {active && <CheckIcon className="w-3 h-3 text-n-ink" />}
                 </span>
                 {t}
@@ -421,7 +433,7 @@ export default function ApplicationForm({ chapters }: { chapters: string[] }) {
                 <div
                   key={sub.title}
                   className={`rounded-xl border transition-all ${
-                    active ? "bg-n-orange/10 border-n-orange" : "bg-white border-n-border"
+                    active ? "bg-n-purple/15 border-n-purple-ink" : "bg-white border-n-border"
                   }`}
                 >
                   <div className="flex items-stretch">
@@ -431,8 +443,8 @@ export default function ApplicationForm({ chapters }: { chapters: string[] }) {
                       aria-pressed={active}
                       className="flex flex-1 items-center gap-3 px-5 py-3 text-left font-body text-sm font-medium"
                     >
-                      <span className={`w-4 h-4 rounded-full border-2 flex-shrink-0 flex items-center justify-center ${active ? "border-n-orange" : "border-n-border"}`}>
-                        {active && <span className="w-2 h-2 rounded-full bg-n-orange" />}
+                      <span className={`w-4 h-4 rounded-full border-2 flex-shrink-0 flex items-center justify-center ${active ? "border-n-purple-ink" : "border-n-border"}`}>
+                        {active && <span className="w-2 h-2 rounded-full bg-n-purple-ink" />}
                       </span>
                       <span className={active ? "text-n-ink" : "text-n-muted"}>{sub.title}</span>
                     </button>
@@ -483,7 +495,7 @@ export default function ApplicationForm({ chapters }: { chapters: string[] }) {
             role="radio"
             aria-checked={form.hasResume === true}
             onClick={() => { set("hasResume", true); clearError("hasResume"); }}
-            className={`flex-1 py-3 rounded-xl border font-body text-sm font-medium transition-all ${form.hasResume === true ? "bg-n-orange border-n-orange text-n-ink" : "bg-white border-n-border text-n-muted hover:border-n-ink"}`}
+            className={`flex-1 py-3 rounded-xl border font-body text-sm font-medium transition-all ${form.hasResume === true ? "bg-n-purple border-n-purple-ink text-n-ink" : "bg-white border-n-border text-n-muted hover:border-n-ink"}`}
           >
             Yes, attach resume
           </button>
@@ -503,7 +515,7 @@ export default function ApplicationForm({ chapters }: { chapters: string[] }) {
           <div className="mt-5">
             <p id="application-resume-label" className="block font-body text-sm font-semibold text-n-ink mb-2">Attach Resume *</p>
             <div className="flex flex-wrap items-center gap-3">
-              <label className="inline-flex cursor-pointer items-center rounded-full bg-n-orange px-5 py-2.5 font-body text-sm font-semibold text-n-ink transition-colors hover:bg-n-orange-dark focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-n-ink">
+              <label className="inline-flex cursor-pointer items-center rounded-full bg-n-purple px-5 py-2.5 font-body text-sm font-semibold text-n-ink transition-colors hover:bg-n-purple-dark focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-n-ink">
                 Choose file
                 <input
                   id="application-resume-file"
@@ -528,7 +540,7 @@ export default function ApplicationForm({ chapters }: { chapters: string[] }) {
         )}
 
         {form.hasResume === false && (
-          <div className="mt-6 space-y-6 border-l-2 border-n-orange pl-5">
+          <div className="mt-6 space-y-6 border-l-2 border-n-purple pl-5">
             <div>
               <label htmlFor="application-tools" className="block font-body text-sm font-semibold text-n-ink mb-2">
                 List any specific tools or software you have experience with *
@@ -568,7 +580,7 @@ export default function ApplicationForm({ chapters }: { chapters: string[] }) {
       <button
         type="submit"
         disabled={status === "loading"}
-        className="w-full bg-n-orange text-n-ink font-display font-bold text-base py-4 rounded-xl hover:bg-n-orange-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        className="btn btn-lg btn-student w-full disabled:cursor-not-allowed disabled:opacity-50"
       >
         {status === "loading"
           ? uploadProgress || "Submitting…"
@@ -580,7 +592,7 @@ export default function ApplicationForm({ chapters }: { chapters: string[] }) {
           Something went wrong. Email us at {EMAIL.info}
         </p>
       )}
-      <p className="text-xs text-n-muted text-center font-body">
+      <p className="text-center font-body text-sm text-n-muted">
         Rolling admissions. We review applications as teams have room to grow.
       </p>
     </form>

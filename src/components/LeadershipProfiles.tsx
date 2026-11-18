@@ -59,13 +59,13 @@ export default function LeadershipProfiles({ members }: { members: LeadershipMem
                 onClick={() => setSelectedName(selectedCard ? null : member.name)}
                 aria-expanded={selectedCard}
                 aria-controls={selectedCard ? "leadership-profile" : undefined}
-                className={`group w-full overflow-hidden rounded-xl border bg-white text-left transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-n-orange focus-visible:ring-offset-2 ${
+                className={`group w-full overflow-hidden rounded-card border bg-white text-left shadow-e1 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-n-orange focus-visible:ring-offset-2 ${
                   selectedCard
                     ? "border-n-orange shadow-[0_10px_24px_rgba(246,183,141,0.2)]"
                     : "border-n-border hover:-translate-y-0.5 hover:border-n-orange/55 hover:shadow-md"
                 }`}
               >
-                <div className="aspect-[4/5] bg-n-border flex items-center justify-center overflow-hidden">
+                <div className={`duotone ${selectedCard ? "is-selected" : ""} aspect-[4/5] bg-n-border flex items-center justify-center overflow-hidden`}>
                   {member.photo ? (
                     <Image src={member.photo} alt={member.name} width={400} height={533} sizes="(max-width: 639px) 50vw, (max-width: 1087px) 25vw, 247px" className="w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-[1.025]" />
                   ) : (

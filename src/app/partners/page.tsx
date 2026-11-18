@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import AnimatedSection from "@/components/AnimatedSection";
+import BridgeIllustration from "@/components/BridgeIllustration";
+import Eyebrow from "@/components/Eyebrow";
+import Illustration from "@/components/Illustrations";
+import NextStep from "@/components/NextStep";
+import PausableMarquee from "@/components/PausableMarquee";
 import CityNetwork from "@/components/partnerships/CityNetwork";
 import PartnerDirectory from "@/components/partnerships/PartnerDirectory";
 import SchoolLogoMarquee from "@/components/partnerships/SchoolLogoMarquee";
@@ -46,21 +51,19 @@ export default async function PartnersPage() {
 
   return (
     <>
-      <section className="relative overflow-hidden bg-n-dark pb-6 pt-32" data-home-dark-end="true">
+      <section className="blueprint blueprint--dark band-night relative overflow-hidden pb-6 pt-32" data-home-dark-end="true">
         <div className="mx-auto max-w-7xl px-4 sm:px-5 md:px-8">
-          <AnimatedSection>
-            <p className="mb-4 font-body text-sm font-semibold uppercase tracking-widest text-n-orange">Partners</p>
-            <h1 className="max-w-4xl font-display font-bold leading-[1.02] tracking-tight text-white" style={{ fontSize: "clamp(2.3rem, 5.4vw, 4.2rem)" }}>
-              The organizations behind our work.
-            </h1>
-            <p className="mt-6 max-w-2xl font-body text-lg leading-relaxed text-white/80">
-              Community partners help us reach local businesses, while student programs connect young people with work they can own. Our network began in New York and now reaches Chicago.
-            </p>
-          </AnimatedSection>
+          <Eyebrow onDark>Partners</Eyebrow>
+          <h1 className="type-display mt-5 max-w-[16ch] text-white">
+            The organizations behind our work.
+          </h1>
+          <p className="measure mt-6 font-body text-lg leading-relaxed text-white/80">
+            Community partners help us reach local businesses, while student programs connect young people with work they can own. Our network began in New York and now reaches Chicago.
+          </p>
         </div>
       </section>
 
-      <section id="introductions" className="relative scroll-mt-20 bg-n-dark pb-8 pt-4">
+      <section id="introductions" className="band-night relative scroll-mt-20 pb-8 pt-4">
         <div className="mx-auto max-w-7xl px-5 md:px-8">
           <a
             href="#student-pipeline"
@@ -76,38 +79,50 @@ export default async function PartnersPage() {
 
       <PartnerDirectory partners={partners} />
 
-      <section id="student-pipeline" aria-labelledby="student-pipeline-heading" className="scroll-mt-20 border-t border-white/10 bg-n-dark py-16 md:py-20">
+      <section id="student-pipeline" aria-labelledby="student-pipeline-heading" className="blueprint blueprint--dark band-night scroll-mt-20 border-t border-white/10 py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-5 md:px-8">
-          <h2 id="student-pipeline-heading" className="text-center font-display text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl">Student Pipeline</h2>
+          <div className="flex justify-center">
+            <Eyebrow onDark tone="student">For students</Eyebrow>
+          </div>
+          <h2 id="student-pipeline-heading" className="type-display mt-4 text-center text-white">Student Pipeline</h2>
           <div className="mx-auto mt-10 grid max-w-2xl grid-cols-2 gap-4 sm:gap-12 md:mt-12">
             {studentPipelinePartners.map((partner) => (
               <a key={partner.name} href={partner.website} target="_blank" rel="noopener noreferrer" className="group block rounded-xl text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-n-orange">
                 <span className="flex h-32 items-center justify-center transition-transform group-hover:-translate-y-1 sm:h-40">
                   <Image src={partner.logo} alt="" width={320} height={220} className="h-full w-full max-w-56 object-contain" />
                 </span>
-                <span className="mt-4 block font-display text-base font-bold leading-snug text-white group-hover:text-n-orange sm:text-xl">{partner.name}</span>
+                <span className="mt-4 block font-display text-base font-bold leading-snug text-white transition-colors duration-1 group-hover:text-n-purple sm:text-xl">{partner.name}</span>
               </a>
             ))}
           </div>
           <div className="mt-16 border-t border-white/10 pt-10 sm:mt-20">
-            <h3 className="text-center font-display text-2xl font-bold text-white sm:text-3xl">Schools our members come from</h3>
-            <SchoolLogoMarquee />
+            <h3 className="type-h3 text-center text-white">Schools our members come from</h3>
+            <PausableMarquee label="school logos" dark className="mt-6">
+              <SchoolLogoMarquee />
+            </PausableMarquee>
           </div>
         </div>
       </section>
 
-      <section id="what-partnering-means" className="scroll-mt-20 bg-white py-16 md:py-20">
+      <section id="what-partnering-means" className="scroll-mt-20 bg-n-bg py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-5 md:px-8">
           <AnimatedSection>
-            <p className="mb-4 font-body text-sm font-semibold uppercase tracking-widest text-n-orange-ink">For organizations</p>
-            <h2 className="page-section-heading text-n-ink">What partnering means</h2>
-            <p className="mt-4 max-w-2xl font-body text-lg leading-relaxed text-n-muted">
+            <Eyebrow>For organizations</Eyebrow>
+            <h2 className="type-h2 mt-3 text-n-ink">What partnering means</h2>
+            <p className="measure mt-4 font-body text-lg leading-relaxed text-n-muted">
               A partnership splits the work. You know the owners in your area. We build what they need online and keep it current.
             </p>
-            <div className="mt-10 grid gap-10 md:grid-cols-2 md:gap-12">
+          </AnimatedSection>
+          {/* The two sides of a partnership, joined by the span. */}
+          <div className="relative mt-10">
+            <BridgeIllustration water={false} className="relative z-0 hidden w-full text-n-orange-ink/70 md:block" />
+            <div className="relative z-10 grid gap-5 md:-mt-6 md:grid-cols-2 md:gap-8">
               {DIVISION_OF_WORK.map((column, columnIndex) => (
-                <div key={column.heading}>
-                  <h3 className="border-b border-n-border pb-3 font-display text-xl font-bold text-n-ink">{column.heading}</h3>
+                <div key={column.heading} className={`rounded-card border bg-white p-6 shadow-e1 md:p-8 ${columnIndex === 0 ? "border-n-purple/50" : "border-n-orange/60"}`}>
+                  <div className="flex items-center gap-4 border-b border-n-border pb-4">
+                    <Illustration name={columnIndex === 0 ? "handshake" : "website"} className="h-14 w-14 shrink-0" />
+                    <h3 className="font-display text-xl font-bold text-n-ink">{column.heading}</h3>
+                  </div>
                   <ol className="mt-4 space-y-3">
                     {column.items.map((item) => (
                       <li key={item} className="flex gap-3 font-body text-base leading-relaxed text-n-ink">
@@ -122,20 +137,29 @@ export default async function PartnersPage() {
                 </div>
               ))}
             </div>
+          </div>
+          <div>
             <div className="mt-12 flex flex-col gap-4 border-t border-n-border pt-8 sm:flex-row sm:items-center">
               <a
                 href={`mailto:${EMAIL.info}?subject=${encodeURIComponent("Working with Novus")}`}
-                className="inline-flex min-h-12 items-center justify-center rounded-full bg-n-orange px-7 py-3 font-display text-base font-bold text-n-ink transition-colors hover:bg-n-orange-dark focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-n-orange-ink/40"
+                className="btn btn-lg btn-brand"
               >
                 Email us to start
+                <span aria-hidden="true" className="btn-arrow">→</span>
               </a>
               <p className="font-body text-sm text-n-muted">
                 Or write to <a href={`mailto:${EMAIL.info}`} className="font-semibold text-n-ink underline underline-offset-4">{EMAIL.info}</a>
               </p>
             </div>
-          </AnimatedSection>
+          </div>
         </div>
       </section>
+
+      <NextStep
+        eyebrow="Our work"
+        title="Projects across New York City"
+        links={[{ href: "/showcase", label: "See our work", tone: "brand" }]}
+      />
     </>
   );
 }
