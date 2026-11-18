@@ -1,9 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { useId, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { useId, useRef, useState } from "react";
 import { joinTracks } from "@/data";
 import Illustration, { type IllustrationName } from "@/components/Illustrations";
+import { DUR, EASE_OUT } from "@/lib/motion";
 
 type Track = (typeof joinTracks)[number];
 
@@ -115,14 +117,21 @@ function SampleProject({ track }: { track: Track }) {
   );
 }
 
-function TrackDetail({ track }: { track: Track }) {
+function TrackDetail({ track, headingLevel = "h3" }: { track: Track; headingLevel?: "h3" | "h4" }) {
   const style = TRACK_STYLE[track.name];
+  const Heading = headingLevel;
 
   return (
     <div className="flex h-full flex-col gap-6">
-      {"description" in track && track.description ? (
-        <p className="measure font-body text-base leading-relaxed text-n-ink/75">{track.description}</p>
-      ) : null}
+      <div className="flex items-start gap-4">
+        <Illustration name={style.illustration} className="h-16 w-16 shrink-0" />
+        <div>
+          <Heading className="font-display text-2xl font-bold text-n-ink">{track.name}</Heading>
+          {"description" in track && track.description ? (
+            <p className="mt-2 font-body text-[0.9375rem] leading-relaxed text-n-ink/75">{track.description}</p>
+          ) : null}
+        </div>
+      </div>
 
       <div>
         <p className={`eyebrow ${style.ink}`}>Responsibilities</p>
@@ -185,74 +194,97 @@ function TrackDetail({ track }: { track: Track }) {
   );
 }
 
-const SPINE_CLASS: Record<string, string> = {
-  "Digital & Tech": "bg-n-purple",
-  Marketing: "bg-n-orange",
-  "Finance & Operations": "bg-n-yellow",
-};
-
-/**
- * The three tracks as a row of book spines: one open, the others standing as
- * vertical spines on wide screens and as stacked bars on phones.
- */
 export default function TracksTabbed() {
   const [active, setActive] = useState(0);
   const uid = useId();
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const reducedMotion = useReducedMotion();
   const orderedTracks = [...joinTracks].sort((a, b) => TRACK_ORDER[a.name] - TRACK_ORDER[b.name]);
+  const track = orderedTracks[active];
+  const activeStyle = TRACK_STYLE[track.name];
+
+  const tabId = (index: number) => `${uid}-tab-${index}`;
+  const panelId = `${uid}-panel`;
+
+  const handleKeyDown = (event: React.KeyboardEvent, index: number) => {
+    let next = index;
+    if (event.key === "ArrowRight") next = (index + 1) % orderedTracks.length;
+    else if (event.key === "ArrowLeft") next = (index - 1 + orderedTracks.length) % orderedTracks.length;
+    else if (event.key === "Home") next = 0;
+    else if (event.key === "End") next = orderedTracks.length - 1;
+    else return;
+
+    event.preventDefault();
+    setActive(next);
+    tabRefs.current[next]?.focus();
+  };
 
   return (
-    <div className="flex flex-col gap-3 lg:flex-row lg:items-stretch">
-      {orderedTracks.map((track, index) => {
-        const style = TRACK_STYLE[track.name];
-        const open = index === active;
-        const panelId = `${uid}-panel-${index}`;
-        const number = String(index + 1).padStart(2, "0");
+    <div>
+      {/* Desktop: all three tracks side by side */}
+      <div className="hidden gap-5 lg:grid lg:grid-cols-3">
+        {orderedTracks.map((item) => {
+          const style = TRACK_STYLE[item.name];
+          return (
+            <section key={item.name} aria-label={item.name} className={`relative overflow-hidden rounded-card border ${style.border} bg-white p-6 shadow-e1`}>
+              <span aria-hidden="true" className={`absolute inset-x-0 top-0 h-1.5 ${style.accent}`} />
+              <TrackDetail track={item} />
+            </section>
+          );
+        })}
+      </div>
 
-        return (
-          <section
-            key={track.name}
-            aria-label={track.name}
-            className={`spine-item overflow-hidden rounded-card border shadow-e1 ${style.border} ${
-              open ? "is-open bg-white lg:flex-1" : `${SPINE_CLASS[track.name]} lg:w-[5.5rem] lg:flex-none`
-            }`}
-          >
-            <h3 className="m-0">
+      {/* Phones and tablets: tabs */}
+      <div className="lg:hidden">
+        <div role="tablist" aria-label="Student tracks" className="mb-5 grid gap-2 sm:grid-cols-3">
+          {orderedTracks.map((item, index) => {
+            const style = TRACK_STYLE[item.name];
+            const selected = active === index;
+
+            return (
               <button
-                type="button"
-                aria-expanded={open}
+                key={item.name}
+                ref={(element) => { tabRefs.current[index] = element; }}
+                role="tab"
+                id={tabId(index)}
+                aria-selected={selected}
                 aria-controls={panelId}
+                tabIndex={selected ? 0 : -1}
                 onClick={() => setActive(index)}
-                className={`flex w-full items-center gap-4 text-left ${
-                  open
-                    ? `border-b ${style.border} px-5 py-4 md:px-7`
-                    : "min-h-16 px-5 py-3 lg:h-full lg:min-h-[38rem] lg:flex-col lg:justify-between lg:px-0 lg:py-6"
+                onKeyDown={(event) => handleKeyDown(event, index)}
+                className={`relative flex min-h-16 w-full items-center gap-3 overflow-hidden rounded-card border-2 px-3 py-2 text-left transition duration-1 ${
+                  selected ? `${style.border} bg-white shadow-e2` : "border-n-border bg-white/70 hover:border-n-ink/30"
                 }`}
               >
-                <span className={`font-mono text-[0.8125rem] font-semibold ${open ? style.ink : "text-n-ink/70"}`}>{number}</span>
-                {open ? <Illustration name={style.illustration} className="h-12 w-12 shrink-0" /> : null}
-                <span
-                  className={`flex-1 font-display font-bold leading-tight text-n-ink ${
-                    open ? "text-2xl md:text-3xl" : "text-xl lg:flex-none lg:text-[1.6rem] lg:[writing-mode:vertical-rl] lg:rotate-180"
-                  }`}
-                >
-                  {open ? <>{track.name.split(" ")[0]} <span className="accent-serif">{track.name.split(" ").slice(1).join(" ")}</span></> : track.name}
-                </span>
-                <span
-                  aria-hidden="true"
-                  className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full border text-lg ${
-                    open ? "border-n-control-border text-n-ink" : "border-n-ink/40 bg-white/40 text-n-ink"
-                  }`}
-                >
-                  {open ? "−" : "+"}
-                </span>
+                {selected ? <motion.span layoutId={`${uid}-active-track`} className={`absolute inset-x-0 top-0 h-1.5 ${style.accent}`} /> : null}
+                <Illustration name={style.illustration} className="h-11 w-11 shrink-0" />
+                <span className="font-display text-base font-bold leading-tight text-n-ink">{item.name}</span>
               </button>
-            </h3>
-            <div id={panelId} hidden={!open} className="spine-panel p-5 md:p-7">
-              {open ? <TrackDetail track={track} /> : null}
-            </div>
-          </section>
-        );
-      })}
+            );
+          })}
+        </div>
+
+        <div
+          role="tabpanel"
+          id={panelId}
+          aria-labelledby={tabId(active)}
+          tabIndex={0}
+          className={`tracks-tabbed-panel overflow-hidden rounded-card border ${activeStyle.border} bg-white shadow-e1`}
+        >
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={track.name}
+              initial={reducedMotion ? false : { opacity: 0.4, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={reducedMotion ? undefined : { opacity: 0.4, y: -6 }}
+              transition={{ duration: DUR.quick, ease: EASE_OUT }}
+              className="p-5 sm:p-7"
+            >
+              <TrackDetail track={track} />
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </div>
     </div>
   );
 }

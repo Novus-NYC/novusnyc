@@ -1,9 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import BridgeIllustration from "@/components/BridgeIllustration";
-import Accent from "@/components/Accent";
 import Eyebrow from "@/components/Eyebrow";
-import RotatingAudience from "@/components/RotatingAudience";
 import type { CommunityPartner } from "@/data";
 import storefront from "../../public/petite-dumpling-storefront.jpg";
 import students from "../../public/novus2.jpeg";
@@ -28,10 +26,9 @@ export default function HomeHero({
           <Eyebrow>NYC / In motion</Eyebrow>
           <h1 className="mt-5 max-w-[18ch] font-display text-[clamp(2.5rem,1.3rem+3.7vw,4.6rem)] font-bold leading-[1.0] tracking-[-0.04em] text-n-ink [text-wrap:balance]">
             Free websites and marketing support for{" "}
-            <span className="marker-highlight">NYC <Accent>small businesses.</Accent></span>
+            <span className="marker-highlight">NYC small businesses.</span>
           </h1>
-          <RotatingAudience className="mt-6" />
-          <p className="measure mt-5 font-body text-lg leading-relaxed text-n-ink/75">
+          <p className="measure mt-7 font-body text-lg leading-relaxed text-n-ink/75">
             Built by student teams. Businesses get practical help, and students gain experience they can use in applications and interviews.
           </p>
 
@@ -59,13 +56,6 @@ export default function HomeHero({
         {/* Business on the left pier, students on the right, the span between. */}
         <div className="relative mx-auto w-full max-w-xl lg:max-w-none" aria-hidden="true">
           <BridgeIllustration water={false} className="relative z-0 w-full text-n-orange-ink/80" />
-          <p aria-hidden="true" className="script-note absolute -bottom-10 right-[4%] z-20 flex items-end gap-1 text-n-purple-ink sm:-bottom-12">
-            <svg viewBox="0 0 48 36" className="mb-3 h-8 w-10 -scale-x-100" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round">
-              <path d="M4 32 C 12 10, 28 6, 42 8" />
-              <path d="M34 2 L42 8 L35 15" />
-            </svg>
-            student-built
-          </p>
           <div className="relative z-10 mt-3 grid grid-cols-2 items-start gap-4 px-[8%] sm:gap-6">
             <figure className="relative -rotate-2 overflow-hidden rounded-card border-4 border-white bg-white shadow-e3">
               <Image

@@ -222,7 +222,7 @@ export default async function Partners() {
           <AnimatedSection className="mb-8">
             <Eyebrow tone="business" index={1}>Get support</Eyebrow>
             <h2 className="type-h2 mt-3 mb-4 text-n-ink">
-              Tell us what you <span className="accent-serif">need</span>
+              Tell us what you need
             </h2>
             <p className="measure font-body text-base leading-relaxed text-n-muted">
               Share a few details about your business and the support you are looking for.
@@ -242,7 +242,7 @@ export default async function Partners() {
           <AnimatedSection className="mb-10">
             <Eyebrow tone="business" index={3}>Services</Eyebrow>
             <h2 className="type-h2 mt-3 text-n-ink">
-              What we build for <span className="accent-serif">small businesses</span>
+              What we build for small businesses
             </h2>
             <p className="measure mt-4 font-body text-base leading-relaxed text-n-muted">
               Your student team scopes the work with you, shares regular updates, and hands over clear, usable deliverables at the end of the project.

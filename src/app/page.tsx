@@ -2,16 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
 import AnimatedSection from "@/components/AnimatedSection";
-import Accent from "@/components/Accent";
 import Eyebrow from "@/components/Eyebrow";
 import HomeHero from "@/components/HomeHero";
 import HomeNetworkSection from "@/components/HomeNetworkSection";
 import PartnerLogoTile from "@/components/PartnerLogoTile";
 import PausableMarquee from "@/components/PausableMarquee";
 import ProjectCard, { type ProjectCardData } from "@/components/ProjectCard";
-import ProjectHoverList from "@/components/ProjectHoverList";
 import SectionBand from "@/components/SectionBand";
-import ServiceMarquee from "@/components/ServiceMarquee";
 import WorkCollage from "@/components/WorkCollage";
 import TracksTabbed from "@/components/TracksTabbed";
 import { currentProjects as fallbackCurrentProjects, type CommunityPartner } from "@/data";
@@ -96,7 +93,7 @@ function ProjectsHeader({ serviceCounts }: { serviceCounts: Record<string, numbe
     <div className="mb-8 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
       <div>
         <Eyebrow tone="business">Our work</Eyebrow>
-        <h2 className="type-h2 mt-3 text-n-ink">Selected <Accent>projects</Accent></h2>
+        <h2 className="type-h2 mt-3 text-n-ink">Selected projects</h2>
       </div>
       <div className="flex flex-col gap-3 md:items-end">
         {filters.length > 0 ? (
@@ -148,15 +145,11 @@ async function CurrentProjectsSection() {
         <ProjectsHeader serviceCounts={serviceCounts} />
         {spotlight ? (
           <>
-            <div className="hidden lg:block">
-              <ProjectHoverList projects={projects} />
-            </div>
-            <div className="lg:hidden">
             <ProjectCard project={spotlight} spotlight />
             {rest.length > 0 ? (
               <>
                 <p className="mono-meta mt-8 text-n-muted sm:hidden" aria-hidden="true">Swipe for more projects →</p>
-                <ul className="-mx-5 mt-3 flex gap-4 overflow-x-auto px-5 pb-4 sm:mx-0 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-5 sm:overflow-visible sm:px-0 sm:pb-0" aria-label="More selected projects">
+                <ul className="-mx-5 mt-3 flex gap-4 overflow-x-auto px-5 pb-4 sm:mx-0 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-5 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-3" aria-label="More selected projects">
                   {rest.map((project) => (
                     <li key={project.name} className="w-[82vw] max-w-[22rem] shrink-0 sm:w-auto sm:max-w-none">
                       <ProjectCard project={project} />
@@ -165,7 +158,6 @@ async function CurrentProjectsSection() {
                 </ul>
               </>
             ) : null}
-            </div>
           </>
         ) : (
           <div className="rounded-card border border-n-border bg-white px-6 py-8 text-center">
@@ -208,7 +200,7 @@ async function CommunityPartnersSection() {
           <div>
             <Eyebrow>Community partners</Eyebrow>
             <h2 className="type-h2 mt-3 max-w-[20ch] text-n-ink">
-              Working with the organizations trusted by NYC <Accent>small businesses.</Accent>
+              Working with the organizations trusted by NYC small businesses.
             </h2>
           </div>
           <div className="max-w-md">
@@ -297,7 +289,7 @@ export default async function Home() {
         tone="brand"
         bridge
         eyebrow="THE RIGHT CONNECTIONS"
-        title={<>A citywide <Accent>network</Accent> of local partnerships.</>}
+        title="A citywide network of local partnerships."
         detail="Novus works with neighborhood organizations that know the businesses they serve and help us connect with owners who could use support."
         imageSrc="/brooklyn-bridge.jpg"
       />
@@ -306,12 +298,11 @@ export default async function Home() {
         <CommunityPartnersSection />
       </Suspense>
 
-      <ServiceMarquee />
 
       <WorkCollage
         index={2}
         eyebrow="SUPPORT WITH A PURPOSE"
-        title={<>One small business <Accent className="text-n-yellow">stronger.</Accent> One city moving forward.</>}
+        title="One small business stronger. One city moving forward."
         detail="We turn a business owner’s priorities into websites, marketing, and other practical work they can use."
       />
 
@@ -323,7 +314,7 @@ export default async function Home() {
         index={3}
         tone="student"
         eyebrow="FIND YOUR PLACE"
-        title={<>Three <Accent>ways</Accent> to work with local businesses.</>}
+        title="Three ways to work with local businesses."
         align="right"
         detail="Choose Digital & Tech, Marketing, or Finance & Operations and help deliver work that businesses can use."
         imageSrc="/student-collaboration-wide.webp"
@@ -334,7 +325,7 @@ export default async function Home() {
         <div className="mx-auto max-w-7xl px-5 md:px-8">
           <AnimatedSection className="mb-10">
             <Eyebrow tone="student">For students</Eyebrow>
-            <h2 className="type-h2 mt-3 text-n-ink">The <Accent>three</Accent> tracks</h2>
+            <h2 className="type-h2 mt-3 text-n-ink">The three tracks</h2>
             <p className="measure mt-4 font-body text-base leading-relaxed text-n-muted">
               Every project is staffed by students across our three tracks. Work ships to production quickly and includes ongoing support after delivery.
             </p>

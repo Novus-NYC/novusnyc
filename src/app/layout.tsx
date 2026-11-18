@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, DM_Sans, IBM_Plex_Mono, Instrument_Serif, Caveat } from "next/font/google";
+import { Space_Grotesk, DM_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./design.css";
 import "./globals.css";
 import ConditionalLayout from "@/components/ConditionalLayout";
@@ -19,21 +19,6 @@ const dmSans = DM_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-dm-sans",
-  display: "swap",
-});
-
-const instrumentSerif = Instrument_Serif({
-  subsets: ["latin"],
-  weight: ["400"],
-  style: ["italic", "normal"],
-  variable: "--font-serif",
-  display: "swap",
-});
-
-const caveat = Caveat({
-  subsets: ["latin"],
-  weight: ["500", "600"],
-  variable: "--font-script",
   display: "swap",
 });
 
@@ -94,7 +79,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${spaceGrotesk.variable} ${dmSans.variable} ${plexMono.variable} ${instrumentSerif.variable} ${caveat.variable}`}>
+    <html lang="en" className={`${spaceGrotesk.variable} ${dmSans.variable} ${plexMono.variable}`}>
       <head>
         <script
           type="application/ld+json"

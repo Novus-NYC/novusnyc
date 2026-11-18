@@ -64,10 +64,8 @@
      peach instead of the cool blue-grey it replaced. */
   --color-night:            30 24 26;
 
-  /* Deep anchors for one bold band per page: plum for students, ochre for
-     businesses. Pastels sit on them as text and accents. */
+  /* Deep plum for the one bold student band on a page. */
   --color-plum:             72 42 70;
-  --color-ochre:            92 66 18;
 
   /* Type scale */
   --text-display: clamp(2.6rem, 1.55rem + 4.4vw, 5.4rem);
@@ -1387,12 +1385,12 @@ summary:focus-visible {
   color: rgb(var(--color-purple-ink));
 }
 
-.public-site :where(.bg-n-dark, .bg-n-night, .band-night, .band-plum, .band-ochre, .home-network-section, [data-home-dark-end="true"])
+.public-site :where(.bg-n-dark, .bg-n-night, .band-night, .band-plum, .home-network-section, [data-home-dark-end="true"])
   :where(.text-n-orange, .text-n-orange-dark) {
   color: rgb(var(--color-orange));
 }
 
-.public-site :where(.bg-n-dark, .bg-n-night, .band-night, .band-plum, .band-ochre, .home-network-section, [data-home-dark-end="true"])
+.public-site :where(.bg-n-dark, .bg-n-night, .band-night, .band-plum, .home-network-section, [data-home-dark-end="true"])
   :where(.text-n-purple, .text-n-purple-dark) {
   color: rgb(var(--color-purple));
 }

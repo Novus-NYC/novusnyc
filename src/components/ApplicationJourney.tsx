@@ -52,7 +52,7 @@ export default function ApplicationJourney() {
         <div className="mb-12 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
             <Eyebrow tone="student" index={3} onDark>Your Novus journey</Eyebrow>
-            <h2 id="application-journey-heading" className="type-h2 mt-3 text-white">Work you can put on <span className="accent-serif text-n-purple">your resume.</span></h2>
+            <h2 id="application-journey-heading" className="type-h2 mt-3 text-white">Work you can put on your resume.</h2>
           </div>
           <p className="max-w-md font-body text-base leading-relaxed text-white/80">Follow the steps from application to work you can use in college applications, interviews, and future roles.</p>
         </div>

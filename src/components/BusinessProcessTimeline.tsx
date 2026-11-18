@@ -21,13 +21,13 @@ const stages = [
 
 export default function BusinessProcessTimeline() {
   return (
-    <section id="process" className="band-ochre py-16 md:py-20" aria-labelledby="business-process-heading">
+    <section id="process" className="band-night blueprint blueprint--dark py-16 md:py-20" aria-labelledby="business-process-heading">
       <div className="mx-auto max-w-6xl px-5 md:px-8">
         <div className="mb-12 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
             <Eyebrow tone="business" index={2} onDark>Working with Novus</Eyebrow>
             <h2 id="business-process-heading" className="type-h2 mt-3 max-w-[20ch] text-white">
-              Clear steps, regular updates, and <span className="accent-serif text-n-yellow">work you can use.</span>
+              Clear steps, regular updates, and work you can use.
             </h2>
           </div>
           <p className="max-w-sm font-body text-base leading-relaxed text-white/80">

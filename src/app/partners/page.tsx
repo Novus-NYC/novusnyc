@@ -55,7 +55,7 @@ export default async function PartnersPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-5 md:px-8">
           <Eyebrow onDark>Partners</Eyebrow>
           <h1 className="type-display mt-5 max-w-[16ch] text-white">
-            The organizations <span className="accent-serif text-n-orange">behind our work.</span>
+            The organizations behind our work.
           </h1>
           <p className="measure mt-6 font-body text-lg leading-relaxed text-white/80">
             Community partners help us reach local businesses, while student programs connect young people with work they can own. Our network began in New York and now reaches Chicago.
@@ -108,7 +108,7 @@ export default async function PartnersPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-5 md:px-8">
           <AnimatedSection>
             <Eyebrow>For organizations</Eyebrow>
-            <h2 className="type-h2 mt-3 text-n-ink">What partnering <span className="accent-serif">means</span></h2>
+            <h2 className="type-h2 mt-3 text-n-ink">What partnering means</h2>
             <p className="measure mt-4 font-body text-lg leading-relaxed text-n-muted">
               A partnership splits the work. You know the owners in your area. We build what they need online and keep it current.
             </p>

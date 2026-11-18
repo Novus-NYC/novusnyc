@@ -533,28 +533,8 @@
   }
 }
 
-/* ── Editorial voices ─────────────────────────────────────────────────────── */
-/* One italic serif word or phrase inside a grotesk headline. */
-.accent-serif {
-  font-family: var(--font-serif), Georgia, serif;
-  font-style: italic;
-  font-weight: 400;
-  letter-spacing: -0.01em;
-  font-size: 1.08em;
-  line-height: 0.9;
-}
-/* Handwritten note beside a photo; decorative, so pair it with aria-hidden. */
-.script-note {
-  font-family: var(--font-script), cursive;
-  font-weight: 600;
-  font-size: clamp(1.35rem, 1.1rem + 0.8vw, 1.8rem);
-  line-height: 1;
-  transform: rotate(-4deg);
-}
-
-/* ── Deep bands ───────────────────────────────────────────────────────────── */
+/* ── Deep student band ───────────────────────────────────────────────────────────── */
 .band-plum { background-color: rgb(var(--color-plum)); color: #fffdf9; }
-.band-ochre { background-color: rgb(var(--color-ochre)); color: #fffdf9; }
 
 /* ── Paper grain over the whole public site ───────────────────────────────── */
 .paper-grain {
@@ -565,33 +545,4 @@
   opacity: 0.07;
   mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.25 0 0 0 0 0.2 0 0 0 0 0.18 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-/* ── Rotating word: every item shares one grid cell, so the pill keeps the
-   width of the longest word and nothing reflows as it cycles. ────────────── */
-.word-rotator { display: inline-grid; overflow: hidden; }
-.word-rotator > span {
-  grid-area: 1 / 1;
-  opacity: 0;
-  animation: word-rotate 10s var(--ease-out) infinite;
-  animation-delay: calc(var(--i, 0) * 2.5s);
-}
-@keyframes word-rotate {
-  0% { opacity: 0; transform: translateY(70%); }
-  4%, 22% { opacity: 1; transform: none; }
-  26%, 100% { opacity: 0; transform: translateY(-70%); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .word-rotator { display: inline; }
-  .word-rotator > span { opacity: 1; animation: none !important; }
-  .word-rotator > span:not(:last-child)::after { content: ", "; }
-}
-
-/* ── Book-spine tracks ────────────────────────────────────────────────────── */
-.spine-item { transition: background-color var(--dur-2) var(--ease-out), box-shadow var(--dur-2) var(--ease-out); }
-.spine-item:not(.is-open):hover { box-shadow: var(--elev-2); filter: brightness(1.03); }
-.spine-item.is-open .spine-panel { animation: spine-open var(--dur-2) var(--ease-out) both; }
-@keyframes spine-open {
-  from { opacity: 0; transform: translateX(-12px); }
-  to { opacity: 1; transform: none; }
 }
