@@ -75,7 +75,7 @@
   color: rgb(var(--color-orange-ink));
 }
 .eyebrow-num {
-  color: rgb(var(--color-ink) / 0.45);
+  color: rgb(var(--color-ink) / 0.68);
   font-weight: 500;
 }
 .eyebrow-tick {
@@ -87,7 +87,7 @@
 .eyebrow--business { color: rgb(var(--color-yellow-ink)); }
 .eyebrow--student { color: rgb(var(--color-purple-ink)); }
 .eyebrow--light { color: rgb(var(--color-orange)); }
-.eyebrow--light .eyebrow-num { color: rgb(255 253 249 / 0.6); }
+.eyebrow--light .eyebrow-num { color: rgb(255 253 249 / 0.75); }
 .eyebrow--light.eyebrow--business { color: rgb(var(--color-yellow)); }
 .eyebrow--light.eyebrow--student { color: rgb(var(--color-purple)); }
 
@@ -429,6 +429,7 @@
 
 /* Marquee: edge-faded and pausable (durations live in globals.css). */
 [data-paused="true"] .partner-marquee-track,
+[data-paused="true"] .school-logo-track,
 [data-paused="true"] .marquee-track {
   animation-play-state: paused;
 }

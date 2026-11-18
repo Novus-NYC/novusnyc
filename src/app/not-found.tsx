@@ -1,40 +1,35 @@
 import Link from "next/link";
+import BridgeArc from "@/components/BridgeArc";
 import { EMAIL } from "@/lib/mail";
 
 export default function NotFound() {
   return (
-    <section className="min-h-[70vh] flex items-center justify-center bg-n-bg px-5">
-      <div className="text-center max-w-md">
-        <p className="font-display font-bold text-n-orange text-6xl mb-4">404</p>
-        <h1 className="font-display font-bold text-n-ink text-2xl md:text-3xl mb-3">
+    <section className="blueprint flex min-h-[70vh] items-center justify-center bg-n-bg px-5 pb-16 pt-32">
+      <div className="max-w-lg text-center">
+        <div className="relative mx-auto mb-4 w-64">
+          <BridgeArc variant="span" motion="load" className="h-16 w-full text-n-orange" strokeWidth={2} />
+          <p className="stat-value -mt-2 font-display text-7xl font-bold text-n-ink">404</p>
+        </div>
+        <h1 className="type-h2 mb-3 text-n-ink">
           Page not found
         </h1>
-        <p className="font-body text-n-muted mb-8">
+        <p className="mb-8 font-body text-base leading-relaxed text-n-muted">
           This page doesn&apos;t exist or may have moved. Try one of the links below.
         </p>
-        <div className="flex flex-wrap gap-3 justify-center">
-          <Link
-            href="/"
-            className="bg-n-orange text-n-ink font-display font-bold text-sm px-6 py-3 rounded-full hover:bg-n-orange-dark transition-colors"
-          >
+        <div className="flex flex-wrap justify-center gap-3">
+          <Link href="/" className="btn btn-brand">
             Go home
           </Link>
-          <Link
-            href="/businesses"
-            className="border border-n-border text-n-ink font-display font-bold text-sm px-6 py-3 rounded-full hover:border-n-ink/40 transition-colors"
-          >
+          <Link href="/businesses" className="btn btn-business">
             For Businesses
           </Link>
-          <Link
-            href="/join"
-            className="border border-n-border text-n-ink font-display font-bold text-sm px-6 py-3 rounded-full hover:border-n-ink/40 transition-colors"
-          >
+          <Link href="/join" className="btn btn-student">
             For Students
           </Link>
         </div>
         <a
           href={`mailto:${EMAIL.info}?subject=Broken%20link%20on%20novusnyc.org`}
-          className="mt-6 inline-flex font-body text-sm font-semibold text-violet-700 hover:underline"
+          className="mt-6 inline-flex min-h-11 items-center font-body text-sm font-semibold text-n-purple-ink underline-offset-4 hover:underline"
         >
           Report a broken link
         </a>

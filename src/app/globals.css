@@ -1859,7 +1859,8 @@ summary:focus-visible {
   scroll-margin-top: calc(var(--banner-h, 0px) + 4rem + 1.5rem);
 }
 @media (max-width: 1729px) {
-  .has-section-chips [id] {
+  .has-section-chips [id],
+  .has-section-chips .public-site section[id] {
     scroll-margin-top: calc(var(--banner-h, 0px) + 7rem + 1rem);
   }
 }

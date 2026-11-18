@@ -5,6 +5,7 @@ import BridgeArc from "@/components/BridgeArc";
 import Eyebrow from "@/components/Eyebrow";
 import Illustration from "@/components/Illustrations";
 import NextStep from "@/components/NextStep";
+import PausableMarquee from "@/components/PausableMarquee";
 import CityNetwork from "@/components/partnerships/CityNetwork";
 import PartnerDirectory from "@/components/partnerships/PartnerDirectory";
 import SchoolLogoMarquee from "@/components/partnerships/SchoolLogoMarquee";
@@ -96,7 +97,9 @@ export default async function PartnersPage() {
           </div>
           <div className="mt-16 border-t border-white/10 pt-10 sm:mt-20">
             <h3 className="type-h3 text-center text-white">Schools our members come from</h3>
-            <SchoolLogoMarquee />
+            <PausableMarquee label="school logos" dark className="mt-6">
+              <SchoolLogoMarquee />
+            </PausableMarquee>
           </div>
         </div>
       </section>

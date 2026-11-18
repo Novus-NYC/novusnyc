@@ -21,12 +21,12 @@ const linkClass = "font-semibold text-violet-700 underline decoration-violet-300
 
 export default function PrivacyPage() {
   return (
-    <div className="public-surface public-surface-lavender bg-n-bg pb-20 pt-32">
+    <div className="bg-n-bg pb-20 pt-32">
       <section className="mx-auto max-w-6xl px-5 md:px-8">
-        <div className="overflow-hidden rounded-[2rem] border border-n-border bg-n-dark text-white shadow-[0_24px_70px_rgba(45,40,46,0.16)]">
+        <div className="blueprint blueprint--dark overflow-hidden rounded-card border border-n-border bg-n-night text-white shadow-e3">
           <div className="h-2 bg-gradient-to-r from-n-orange via-n-yellow to-n-purple" />
           <div className="px-6 py-9 md:px-10 md:py-12">
-            <p className="font-body text-xs font-bold uppercase tracking-[0.2em] text-n-orange">
+            <p className="eyebrow eyebrow--light">
               Privacy policy · Updated August 10, 2026
             </p>
             <h1 className="mt-4 max-w-[13ch] font-display text-[clamp(2.8rem,6vw,4.8rem)] font-bold leading-[0.98] tracking-[-0.04em]">
@@ -41,7 +41,7 @@ export default function PrivacyPage() {
         <div className="mt-8 grid gap-6 sm:grid-cols-[13rem_minmax(0,1fr)] sm:items-start md:grid-cols-[15rem_minmax(0,1fr)] md:gap-8">
           <PrivacySectionNav />
 
-          <article className="rounded-[2rem] border border-n-border bg-white px-6 py-8 shadow-[0_18px_50px_rgba(45,40,46,0.06)] md:px-10 md:py-10">
+          <article className="rounded-card border border-n-border bg-white px-6 py-8 shadow-e1 md:px-10 md:py-10">
             <section id="scope" className="scroll-mt-28">
               <h2 className={headingClass}>1. Scope</h2>
               <div className={bodyClass}>

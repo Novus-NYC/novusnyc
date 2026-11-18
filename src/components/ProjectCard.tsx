@@ -121,7 +121,7 @@ export default function ProjectCard({
           </div>
         ) : null}
         {spotlight ? (
-          <div className="pointer-events-none absolute bottom-7 right-6 flex flex-col items-end gap-2 sm:bottom-9 sm:right-9">
+          <div aria-hidden="true" className="pointer-events-none absolute bottom-7 right-6 flex flex-col items-end gap-2 sm:bottom-9 sm:right-9">
             <span className="sticker sticker--student">Student-built</span>
             {project.url ? <span className="sticker sticker--live rotate-2">Live site</span> : null}
           </div>

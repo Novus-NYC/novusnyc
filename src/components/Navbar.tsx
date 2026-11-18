@@ -115,7 +115,7 @@ export default function Navbar() {
         style={{ top: "var(--banner-h, 0px)" }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-5 md:px-8 h-16 flex items-center justify-between gap-4">
-          <Link href="/" className="flex shrink-0 items-center gap-1.5 md:gap-2 group" aria-label="Novus NYC home">
+          <Link href="/" className="flex min-h-11 shrink-0 items-center gap-1.5 md:gap-2 group" aria-label="Novus NYC home">
             <Image
               src="/logo.png"
               alt=""
