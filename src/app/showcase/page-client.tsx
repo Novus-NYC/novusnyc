@@ -115,7 +115,7 @@ export default function ShowcaseClient({
           <div className="mt-4 flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
             <h1 className="type-display text-white">
               Projects across<br />
-              <span className="text-n-orange">New York City</span>
+              <span className="accent-serif text-n-orange">New York City</span>
             </h1>
             <dl className="flex gap-3 md:pb-2">
               <div className="rounded-card border border-white/15 px-5 py-4">
@@ -143,7 +143,7 @@ export default function ShowcaseClient({
         <div className="mx-auto max-w-7xl px-5 md:px-8">
           <AnimatedSection className="mb-6">
             <Eyebrow tone="business">Our work</Eyebrow>
-            <h2 className="type-h2 mt-3 text-n-ink">Selected Projects</h2>
+            <h2 className="type-h2 mt-3 text-n-ink">Selected <span className="accent-serif">Projects</span></h2>
           </AnimatedSection>
 
           {projects.length === 0 ? (

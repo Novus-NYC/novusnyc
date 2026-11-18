@@ -119,6 +119,7 @@ export default async function Join() {
             primaryAction={{ href: "/apply", label: "Start your application" }}
             secondaryAction={{ href: "#tracks", label: "Explore the tracks" }}
             accent="purple"
+            note="real client work"
           />
         </div>
         <div className="relative border-t border-white/15 bg-n-night/40 backdrop-blur-sm">
@@ -149,7 +150,7 @@ export default async function Join() {
         <div className="mx-auto max-w-7xl px-5 md:px-8">
           <AnimatedSection className="mb-10">
             <Eyebrow tone="student" index={1}>Tracks</Eyebrow>
-            <h2 className="type-h2 mt-3 text-n-ink">The three tracks</h2>
+            <h2 className="type-h2 mt-3 text-n-ink">The <span className="accent-serif">three</span> tracks</h2>
             <p className="measure mt-4 font-body text-base leading-relaxed text-n-muted">
               Every project is staffed by students across our three tracks. Pick the one that fits your skills and interests.
             </p>
@@ -164,7 +165,7 @@ export default async function Join() {
           <div>
             <AnimatedSection>
               <Eyebrow tone="student" index={2}>Leadership</Eyebrow>
-              <h2 className="type-h2 mt-3 text-n-ink">The leadership track</h2>
+              <h2 className="type-h2 mt-3 text-n-ink">The <span className="accent-serif">leadership</span> track</h2>
               <p className="measure mt-4 font-body text-lg leading-relaxed text-n-muted">
                 We promote based on the work you do, not how long you have been here. Strong contributors move up quickly.
               </p>

@@ -49,6 +49,8 @@ const config: Config = {
         "n-purple-ink":  "rgb(var(--color-purple-ink) / <alpha-value>)",
         "n-yellow-ink":  "rgb(var(--color-yellow-ink) / <alpha-value>)",
         "n-night":       "rgb(var(--color-night) / <alpha-value>)",
+        "n-plum":        "rgb(var(--color-plum) / <alpha-value>)",
+        "n-ochre":       "rgb(var(--color-ochre) / <alpha-value>)",
         "n-on-accent":   "rgb(var(--color-on-accent) / <alpha-value>)",
         "n-control-border": "rgb(var(--color-control-border) / <alpha-value>)",
         "n-error":       "rgb(var(--color-error) / <alpha-value>)",
@@ -63,6 +65,8 @@ const config: Config = {
         display: ["var(--font-space-grotesk)", "sans-serif"],
         body: ["var(--font-dm-sans)", "sans-serif"],
         mono: ["var(--font-plex-mono)", "ui-monospace", "monospace"],
+        serif: ["var(--font-serif)", "Georgia", "serif"],
+        script: ["var(--font-script)", "cursive"],
       },
       fontSize: {
         meta: ["0.8125rem", { lineHeight: "1.35" }],

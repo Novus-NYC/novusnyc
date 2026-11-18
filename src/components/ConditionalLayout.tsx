@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import BackToTop from "@/components/BackToTop";
+import PublicBanner from "@/components/PublicBanner";
 
 export default function ConditionalLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -25,6 +26,7 @@ export default function ConditionalLayout({ children }: { children: React.ReactN
 
   return (
     <>
+      {!isMembersPage && <PublicBanner />}
       {!isMembersPage && <Navbar />}
       <main
         ref={mainRef}
@@ -36,6 +38,7 @@ export default function ConditionalLayout({ children }: { children: React.ReactN
       </main>
       {!isMembersPage && <Footer />}
       {!isMembersPage && <BackToTop />}
+      {!isMembersPage && <div aria-hidden="true" className="paper-grain" />}
     </>
   );
 }

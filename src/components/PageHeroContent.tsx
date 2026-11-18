@@ -18,7 +18,7 @@ const ACCENT: Record<HeroAccent, { button: string; tone: "brand" | "student" | "
 /** An emphasized phrase in a photo hero: in a tint lifted for photography. */
 export function HeroAccentText({ children, accent = "orange" }: { children: ReactNode; accent?: HeroAccent }) {
   return (
-    <span className={ACCENT[accent].text}>{children}</span>
+    <span className={`accent-serif ${ACCENT[accent].text}`}>{children}</span>
   );
 }
 
@@ -31,6 +31,7 @@ export default function PageHeroContent({
   primaryAction,
   secondaryAction,
   accent = "orange",
+  note,
 }: {
   eyebrow: string;
   title: ReactNode;
@@ -38,6 +39,7 @@ export default function PageHeroContent({
   primaryAction?: HeroAction;
   secondaryAction?: HeroAction;
   accent?: HeroAccent;
+  note?: string;
 }) {
   const colors = ACCENT[accent];
 
@@ -50,6 +52,10 @@ export default function PageHeroContent({
       <p className="mt-7 max-w-[56ch] font-body text-lg leading-[1.6] text-white/90 [text-shadow:0_3px_18px_rgba(0,0,0,0.7)] md:text-xl">
         {description}
       </p>
+
+      {note ? (
+        <p aria-hidden="true" className={`script-note mt-5 [text-shadow:0_2px_12px_rgba(0,0,0,0.6)] ${colors.text}`}>{note}</p>
+      ) : null}
 
       {(primaryAction || secondaryAction) && (
         <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">

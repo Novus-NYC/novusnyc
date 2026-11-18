@@ -152,6 +152,7 @@ npm start          # serve the production build locally
   backgrounds use a saturated Tailwind shade (e.g. `text-violet-700`), not a pastel.
 - Fonts: `font-display` for headings (Space Grotesk), `font-body` for all body copy (DM Sans).
 - Wrap scroll containers in `overflow-x-auto` without `snap-x` — free scrolling, no forced card snapping.
+- Design skills such as UI/UX Pro Max are advisory only. This file, `STANDARDS.md`, the tokens in `globals.css` and the primitives in `design.css` win whenever they disagree; never adopt a skill's suggested palette, fonts or style over the Novus brand.
 
 ### Business directory — track status values
 

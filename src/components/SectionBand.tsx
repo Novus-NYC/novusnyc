@@ -1,22 +1,27 @@
+import type { ReactNode } from "react";
 import Image from "next/image";
 import BridgeIllustration from "@/components/BridgeIllustration";
 import Eyebrow from "@/components/Eyebrow";
+import ParallaxMedia from "@/components/ParallaxMedia";
 
 type BandTone = "brand" | "business" | "student";
 
-const BAND_CLASS: Record<BandTone, string> = {
+const PANEL_CLASS: Record<BandTone, string> = {
   brand: "band-brand",
   business: "band-business",
   student: "band-student",
 };
 
 const BRIDGE_CLASS: Record<BandTone, string> = {
-  brand: "text-n-orange-ink/45 [--bridge-surface:#fdeadf]",
-  business: "text-n-yellow-ink/40 [--bridge-surface:#fdf6d6]",
-  student: "text-n-purple-ink/40 [--bridge-surface:#f3ebf2]",
+  brand: "text-n-orange-ink/55 [--bridge-surface:#fdeadf]",
+  business: "text-n-yellow-ink/50 [--bridge-surface:#fdf6d6]",
+  student: "text-n-purple-ink/50 [--bridge-surface:#f3ebf2]",
 };
 
-/** A solid audience-colored band that opens a homepage chapter. */
+/**
+ * Opens a homepage chapter: a full-bleed photo drifting behind a solid,
+ * audience-coloured panel that carries the words.
+ */
 export default function SectionBand({
   index,
   eyebrow,
@@ -26,33 +31,35 @@ export default function SectionBand({
   tone,
   id,
   bridge = false,
+  align = "left",
 }: {
   index: number;
   eyebrow: string;
-  title: string;
+  title: ReactNode;
   detail: string;
   imageSrc: string;
   tone: BandTone;
   id?: string;
   bridge?: boolean;
+  align?: "left" | "right";
 }) {
   return (
-    <section id={id} className={`${BAND_CLASS[tone]} relative overflow-hidden py-14 md:py-20`}>
-      <div className="mx-auto grid max-w-7xl gap-8 px-5 md:px-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-16">
-        <div>
+    <section id={id} className="relative isolate overflow-hidden py-20 md:py-32">
+      <ParallaxMedia>
+        <Image src={imageSrc} alt="" fill sizes="100vw" className="photo-grade object-cover" />
+      </ParallaxMedia>
+      <div
+        aria-hidden="true"
+        className={`absolute inset-0 ${align === "left" ? "bg-gradient-to-r" : "bg-gradient-to-l"} from-n-night/45 via-n-night/15 to-transparent`}
+      />
+      <div className={`relative mx-auto flex max-w-7xl px-5 md:px-8 ${align === "right" ? "justify-end" : ""}`}>
+        <div className={`${PANEL_CLASS[tone]} w-full max-w-xl rounded-card p-7 shadow-e3 md:p-10`}>
           <Eyebrow index={index} tone={tone}>{eyebrow}</Eyebrow>
-          <h2 className="type-display mt-5 max-w-[14ch] text-n-ink">{title}</h2>
-          <p className="measure mt-6 font-body text-lg leading-relaxed text-n-ink/75">{detail}</p>
-        </div>
-        <div className="relative">
-          <div className="relative overflow-hidden rounded-card border-4 border-white shadow-e3">
-            <Image src={imageSrc} alt="" width={1200} height={800} sizes="(min-width: 1024px) 520px, 92vw" className="photo-grade aspect-[3/2] w-full object-cover" />
-          </div>
+          <h2 className="mt-5 font-display text-[clamp(2.3rem,1.5rem+3vw,4rem)] font-bold leading-[1.0] tracking-[-0.035em] text-n-ink [text-wrap:balance]">{title}</h2>
+          <p className="mt-5 font-body text-lg leading-relaxed text-n-ink/75">{detail}</p>
+          {bridge ? <BridgeIllustration water={false} className={`mt-6 w-full ${BRIDGE_CLASS[tone]}`} /> : null}
         </div>
       </div>
-      {bridge ? (
-        <BridgeIllustration className={`pointer-events-none mx-auto mt-10 w-full max-w-7xl px-5 md:-mt-6 md:px-8 ${BRIDGE_CLASS[tone]}`} />
-      ) : null}
     </section>
   );
 }

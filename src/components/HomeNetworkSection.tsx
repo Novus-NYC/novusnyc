@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import AnimatedSection from "@/components/AnimatedSection";
+import Accent from "@/components/Accent";
 import Eyebrow from "@/components/Eyebrow";
 import NetworkConstellation from "@/components/NetworkConstellation";
 import { chapterConnections, chapterLocations } from "@/data/network";
@@ -57,7 +58,7 @@ export default function HomeNetworkSection() {
         <AnimatedSection>
           <Eyebrow onDark index={4}>Our network</Eyebrow>
           <h2 className="type-display mt-5 max-w-[14ch] text-white">
-            From New York City to new communities.
+            From New York City to <Accent className="text-n-orange">new communities.</Accent>
           </h2>
           <p className="measure mt-6 font-body text-lg leading-relaxed text-white/85">
             Novus began in New York City and is growing through student-led teams in communities across the country, and a few beyond it.

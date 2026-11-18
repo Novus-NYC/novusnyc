@@ -102,11 +102,11 @@ export default async function About() {
       </section>
 
       {/* ── IMPACT NUMBERS ───────────────────────────────────── */}
-      <section id="impact" className="band-brand py-16 md:py-20">
+      <section id="impact" className="band-plum py-16 md:py-20">
         <div className="max-w-7xl mx-auto px-5 md:px-8">
           <AnimatedSection>
-            <Eyebrow index={2}>Impact</Eyebrow>
-            <h2 className="type-h2 mt-3 text-n-ink mb-10">Our impact</h2>
+            <Eyebrow index={2} onDark>Impact</Eyebrow>
+            <h2 className="type-h2 mt-3 text-white mb-10">Our <span className="accent-serif text-n-orange">impact</span></h2>
             <div className="grid grid-cols-2 gap-px overflow-hidden rounded-card border border-n-border bg-n-border shadow-e1 md:grid-cols-4 md:gap-0 md:divide-x md:divide-n-border">
               {[
                 { value: effectiveValues.aboutBusinesses, label: "Total\nbusinesses", color: "text-n-orange-ink" },
@@ -137,7 +137,7 @@ export default async function About() {
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
               <div>
                 <Eyebrow index={3}>Leadership</Eyebrow>
-                <h2 className="type-h2 mt-3 text-n-ink">Our leadership</h2>
+                <h2 className="type-h2 mt-3 text-n-ink">Our <span className="accent-serif">leadership</span></h2>
                 <p className="font-body text-n-muted mt-3 max-w-2xl leading-relaxed">Students from high schools and colleges who lead teams, build projects, and keep the organization moving.</p>
               </div>
               <div className="flex gap-8 md:pb-1 shrink-0">
@@ -161,7 +161,7 @@ export default async function About() {
         <div className="relative z-10 max-w-5xl mx-auto px-5 md:px-8">
           <AnimatedSection className="mb-12">
             <Eyebrow index={4} tone="student">Our history</Eyebrow>
-            <h2 className="type-h2 mt-3 text-n-ink">Building Novus, one step at a time</h2>
+            <h2 className="type-h2 mt-3 text-n-ink">Building Novus, <span className="accent-serif">one step at a time</span></h2>
             <p className="measure font-body text-n-muted mt-4 leading-relaxed">
               A timeline for the moments, partnerships, and people that shaped our work.
             </p>
@@ -175,7 +175,7 @@ export default async function About() {
         <div className="max-w-7xl mx-auto px-5 md:px-8">
           <AnimatedSection className="mb-10">
             <Eyebrow index={5}>Core values</Eyebrow>
-            <h2 className="type-h2 mt-3 text-n-ink">Our core values</h2>
+            <h2 className="type-h2 mt-3 text-n-ink">Our <span className="accent-serif">core values</span></h2>
             <p className="measure mt-4 font-body leading-relaxed text-n-muted">The standards we use to decide what to take on and how to do the work.</p>
           </AnimatedSection>
 

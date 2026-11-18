@@ -47,27 +47,27 @@ const steps = [
 // The whole path is visible at once: five piers joined by the bridge cable.
 export default function ApplicationJourney() {
   return (
-    <section id="journey" className="band-student relative overflow-hidden py-16 md:py-20" aria-labelledby="application-journey-heading">
+    <section id="journey" className="band-plum relative overflow-hidden py-16 md:py-20" aria-labelledby="application-journey-heading">
       <div className="mx-auto max-w-7xl px-5 md:px-8">
         <div className="mb-12 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
-            <Eyebrow tone="student" index={3}>Your Novus journey</Eyebrow>
-            <h2 id="application-journey-heading" className="type-h2 mt-3 text-n-ink">Work you can put on your resume.</h2>
+            <Eyebrow tone="student" index={3} onDark>Your Novus journey</Eyebrow>
+            <h2 id="application-journey-heading" className="type-h2 mt-3 text-white">Work you can put on <span className="accent-serif text-n-purple">your resume.</span></h2>
           </div>
-          <p className="max-w-md font-body text-base leading-relaxed text-n-ink/75">Follow the steps from application to work you can use in college applications, interviews, and future roles.</p>
+          <p className="max-w-md font-body text-base leading-relaxed text-white/80">Follow the steps from application to work you can use in college applications, interviews, and future roles.</p>
         </div>
 
         <ol className="relative grid gap-5 lg:grid-cols-5 lg:gap-4">
-          <li aria-hidden="true" className="pointer-events-none absolute left-6 right-6 top-6 hidden h-0.5 bg-n-purple-ink/30 lg:block" />
+          <li aria-hidden="true" className="pointer-events-none absolute left-6 right-6 top-6 hidden h-0.5 bg-white/25 lg:block" />
           {steps.map((step, index) => (
             <li key={step.label} className="relative flex flex-col">
               <div className="relative z-10 flex items-center gap-3 lg:flex-col lg:items-start">
-                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 border-n-ink bg-n-purple font-mono text-base font-semibold text-n-ink">
+                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 border-white bg-n-purple font-mono text-base font-semibold text-n-ink">
                   {String(index + 1).padStart(2, "0")}
                 </span>
-                <p className="font-display text-lg font-bold leading-tight text-n-ink">{step.label}</p>
+                <p className="font-display text-lg font-bold leading-tight text-white">{step.label}</p>
               </div>
-              <div className="relative z-10 mt-4 flex flex-1 flex-col rounded-card border border-n-purple/50 bg-white p-5 shadow-e1">
+              <div className="relative z-10 mt-4 flex flex-1 flex-col rounded-card border border-white/10 bg-white p-5 shadow-e3">
                 <div className="flex items-start justify-between gap-3">
                   <p className="eyebrow eyebrow--student">{step.eyebrow}</p>
                   <Illustration name={step.illustration} className="-mt-1 h-12 w-12 shrink-0" />
