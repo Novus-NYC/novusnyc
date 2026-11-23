@@ -2129,6 +2129,12 @@ details[open] > .accordion-body {
   height: 18px;
   border-width: 2px;
 }
+.novus-map-marker__dot--approximate {
+  width: 13px;
+  height: 13px;
+  border-width: 2px;
+  border-style: dashed;
+}
 .novus-map-popup {
   min-width: 160px;
   font-family: var(--font-dm-sans), sans-serif;

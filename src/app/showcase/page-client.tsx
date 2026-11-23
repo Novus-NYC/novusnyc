@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import ExpandableDescription from "@/components/ExpandableDescription";
 import AnimatedSection from "@/components/AnimatedSection";
-import NeighborhoodMap from "@/components/NeighborhoodMap";
+import NeighborhoodMap, { approximateLocation, type MapProject } from "@/components/NeighborhoodMap";
 import { MapPinIcon } from "@/components/Icons";
 import MasonryGrid from "@/components/MasonryGrid";
 
@@ -333,15 +333,18 @@ export default function ShowcaseClient({
   orgPartners,
 }: {
   projects: ShowcaseProject[];
-  mapProjects: Array<{
-    name: string; type: string; services: string[]; neighborhood: string;
-    borough?: string; lat?: number; lng?: number; status: ProjectDisplayStatus;
-    url?: string; colorClass: string; source?: "business" | "bid";
-  }>;
+  mapProjects: MapProject[];
   totalBusinesses: string;
   orgPartners: string;
 }) {
   const mobileScrollRef = useRef<HTMLDivElement>(null);
+  const businessMapProjects = mapProjects.filter((project) => project.source === "business");
+  const approximateBusinesses = businessMapProjects.filter((project) =>
+    project.lat === undefined && approximateLocation(project) !== null,
+  );
+  const businessesWithoutLocation = businessMapProjects.filter((project) =>
+    project.lat === undefined && approximateLocation(project) === null,
+  );
 
   return (
     <>
@@ -383,6 +386,25 @@ export default function ShowcaseClient({
         {/* ── MAP ───────────────────────────────────────────────── */}
         <div id="showcase-map" className="w-full h-[520px] md:h-[600px] relative z-0">
           <NeighborhoodMap projects={mapProjects} />
+        </div>
+        <div className="mx-auto max-w-7xl px-5 pb-10 pt-5 font-body text-sm text-white/70 md:px-8">
+          <p>
+            Showing {businessMapProjects.length} businesses: {businessMapProjects.length - approximateBusinesses.length - businessesWithoutLocation.length} mapped locations, {approximateBusinesses.length} approximate areas, and {businessesWithoutLocation.length} without a published location.
+          </p>
+          {approximateBusinesses.length > 0 && <p className="mt-1">Dashed circles mark approximate areas, not storefront addresses.</p>}
+          {businessesWithoutLocation.length > 0 && (
+            <details className="mt-4 rounded-lg border border-white/20 p-4">
+              <summary className="cursor-pointer font-semibold text-white">Businesses without a published location ({businessesWithoutLocation.length})</summary>
+              <p className="mt-3">These businesses are included here without placing a pin at an unverified address.</p>
+              <ul className="mt-3 grid gap-x-6 gap-y-2 sm:grid-cols-2 lg:grid-cols-3">
+                {businessesWithoutLocation.map((business, index) => (
+                  <li key={`${business.name}-${index}`}>
+                    {business.url ? <a href={business.url} target="_blank" rel="noopener noreferrer" className="text-white hover:text-n-orange hover:underline">{business.name}</a> : business.name}
+                  </li>
+                ))}
+              </ul>
+            </details>
+          )}
         </div>
       </section>
 

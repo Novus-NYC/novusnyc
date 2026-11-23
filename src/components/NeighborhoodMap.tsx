@@ -55,6 +55,7 @@ interface NeighborhoodMapProps {
 interface PreparedMarker extends MapProject {
   borough: string;
   isBid: boolean;
+  approximate: boolean;
   lat: number;
   lng: number;
   hex: string;
@@ -133,6 +134,46 @@ const BOROUGH_HEX: Record<string, { fill: string; text: string }> = {
 
 const BOROUGH_FALLBACK = { fill: "#CBD5E1", text: "#475569" };
 
+// These are representative neighborhood points, never business addresses.
+const AREA_CENTERS: Record<string, [number, number]> = {
+  "bayside": [40.7615, -73.7684],
+  "bedford-stuyvesant": [40.6872, -73.9418],
+  "brownsville": [40.6633, -73.9094],
+  "canarsie brooklyn": [40.6409, -73.9007],
+  "crown heights": [40.6694, -73.9422],
+  "cypress hills": [40.6827, -73.8797],
+  "east new york": [40.6663, -73.8826],
+  "east village": [40.7265, -73.9815],
+  "flushing": [40.7675, -73.8331],
+  "great kills": [40.5543, -74.1515],
+  "harlem": [40.8116, -73.9465],
+  "hell's kitchen": [40.7638, -73.9918],
+  "jackson heights": [40.7557, -73.8831],
+  "long island city": [40.7447, -73.9485],
+  "midtown manhattan": [40.7549, -73.9840],
+  "park slope": [40.6728, -73.9778],
+  "parkchester": [40.8395, -73.8609],
+  "prospect heights": [40.6774, -73.9670],
+  "sunnyside": [40.7433, -73.9196],
+  "sunset park": [40.6455, -74.0124],
+  "upper east side": [40.7736, -73.9566],
+  "whitestone": [40.7933, -73.8096],
+  "11206": [40.7015, -73.9423],
+  "10314": [40.6035, -74.1450],
+  "brooklyn": [40.6782, -73.9442],
+  "bronx": [40.8448, -73.8648],
+  "manhattan": [40.7831, -73.9712],
+  "queens": [40.7282, -73.7949],
+  "staten island": [40.5795, -74.1502],
+};
+
+export function approximateLocation(project: MapProject): [number, number] | null {
+  const neighborhood = project.neighborhood.trim().toLowerCase();
+  if (neighborhood === "nyc" || neighborhood === "neighborhood, borough") return null;
+  const area = neighborhood.replace(/,?\s+ny$/, "").replace(/,\s*ny$/, "");
+  return AREA_CENTERS[area] ?? AREA_CENTERS[normalizeBorough(project.borough).toLowerCase()] ?? null;
+}
+
 function appendTextLine(parent: HTMLElement, text: string, className: string) {
   const line = document.createElement("div");
   line.className = className;
@@ -146,7 +187,7 @@ function createPopupContent(marker: PreparedMarker): HTMLElement {
 
   appendTextLine(content, marker.name, "novus-map-popup__title");
   appendTextLine(content, marker.type, "novus-map-popup__muted");
-  appendTextLine(content, marker.neighborhood, "novus-map-popup__muted");
+  appendTextLine(content, marker.approximate ? `Approximate area: ${marker.neighborhood}` : marker.neighborhood, "novus-map-popup__muted");
 
   const details = document.createElement("div");
   details.className = "novus-map-popup__details";
@@ -190,11 +231,11 @@ function createMarkerElement(marker: PreparedMarker): HTMLButtonElement {
   const button = document.createElement("button");
   button.type = "button";
   button.className = "novus-map-marker";
-  button.setAttribute("aria-label", `View ${marker.name} on the map`);
+  button.setAttribute("aria-label", `View ${marker.name}${marker.approximate ? " (approximate area)" : ""} on the map`);
 
   const dot = document.createElement("span");
-  dot.className = marker.isBid ? "novus-map-marker__dot novus-map-marker__dot--partner" : "novus-map-marker__dot";
-  dot.style.backgroundColor = marker.isBid ? `${marker.hex}24` : marker.hex;
+  dot.className = marker.isBid ? "novus-map-marker__dot novus-map-marker__dot--partner" : marker.approximate ? "novus-map-marker__dot novus-map-marker__dot--approximate" : "novus-map-marker__dot";
+  dot.style.backgroundColor = marker.isBid ? `${marker.hex}24` : marker.approximate ? "#fff" : marker.hex;
   dot.style.borderColor = marker.isBid ? `${marker.textHex}73` : marker.textHex;
   button.appendChild(dot);
 
@@ -222,21 +263,29 @@ export default function NeighborhoodMap({ projects }: NeighborhoodMapProps) {
 
   const markers = useMemo<PreparedMarker[]>(
     () =>
-      projects.filter((project) => isNycCoordinate(project.lat, project.lng)).map((project) => {
+      projects.map((project, index): PreparedMarker | null => {
+        const precise = isNycCoordinate(project.lat, project.lng);
+        const area = precise ? null : approximateLocation(project);
+        if (!precise && !area) return null;
         const borough = normalizeBorough(project.borough ?? project.neighborhood);
         const isBid = project.source === "bid";
         const markerColor = isBid ? (BOROUGH_HEX[borough] ?? BOROUGH_FALLBACK) : getMarkerColors(project.colorClass);
+
+        // Spread businesses sharing an area so every approximate marker stays clickable.
+        const angle = index * 2.39996;
+        const radius = area ? 0.002 * Math.sqrt(index % 7) : 0;
 
         return {
           ...project,
           borough,
           isBid,
-          lat: Number(project.lat),
-          lng: Number(project.lng),
+          approximate: !precise,
+          lat: precise ? Number(project.lat) : area![0] + Math.sin(angle) * radius,
+          lng: precise ? Number(project.lng) : area![1] + Math.cos(angle) * radius,
           hex: markerColor.fill,
           textHex: markerColor.text,
         };
-      }),
+      }).filter((marker): marker is PreparedMarker => marker !== null),
     [projects],
   );
 
