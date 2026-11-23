@@ -234,8 +234,8 @@ function createMarkerElement(marker: PreparedMarker): HTMLButtonElement {
   button.setAttribute("aria-label", `View ${marker.name}${marker.approximate ? " (approximate area)" : ""} on the map`);
 
   const dot = document.createElement("span");
-  dot.className = marker.isBid ? "novus-map-marker__dot novus-map-marker__dot--partner" : marker.approximate ? "novus-map-marker__dot novus-map-marker__dot--approximate" : "novus-map-marker__dot";
-  dot.style.backgroundColor = marker.isBid ? `${marker.hex}24` : marker.approximate ? "#fff" : marker.hex;
+  dot.className = marker.isBid ? "novus-map-marker__dot novus-map-marker__dot--partner" : "novus-map-marker__dot";
+  dot.style.backgroundColor = marker.isBid ? `${marker.hex}24` : marker.hex;
   dot.style.borderColor = marker.isBid ? `${marker.textHex}73` : marker.textHex;
   button.appendChild(dot);
 

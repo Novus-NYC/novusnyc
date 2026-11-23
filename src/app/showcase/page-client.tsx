@@ -391,7 +391,7 @@ export default function ShowcaseClient({
           <p>
             Showing {businessMapProjects.length} businesses: {businessMapProjects.length - approximateBusinesses.length - businessesWithoutLocation.length} mapped locations, {approximateBusinesses.length} approximate areas, and {businessesWithoutLocation.length} without a published location.
           </p>
-          {approximateBusinesses.length > 0 && <p className="mt-1">Dashed circles mark approximate areas, not storefront addresses.</p>}
+          {approximateBusinesses.length > 0 && <p className="mt-1">Some dots represent approximate areas; open a dot for location details.</p>}
           {businessesWithoutLocation.length > 0 && (
             <details className="mt-4 rounded-lg border border-white/20 p-4">
               <summary className="cursor-pointer font-semibold text-white">Businesses without a published location ({businessesWithoutLocation.length})</summary>
