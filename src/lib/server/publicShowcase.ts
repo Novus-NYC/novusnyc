@@ -412,10 +412,52 @@ async function geocodeWithNominatim(query: string): Promise<{ lat: number; lng: 
   return { lat, lng };
 }
 
+function streetAddressKey(value: string): string {
+  return value.split(",")[0]
+    .toLowerCase()
+    .replace(/\b(ave|av)\b/g, "avenue")
+    .replace(/\b(st)\b/g, "street")
+    .replace(/\b(blvd)\b/g, "boulevard")
+    .replace(/\b(\d+)(st|nd|rd|th)\b/g, "$1")
+    .replace(/[^a-z0-9]/g, "");
+}
+
+async function geocodeWithNycGeosearch(address: string): Promise<{ lat: number; lng: number } | null> {
+  try {
+    const url = `https://geosearch.planninglabs.nyc/v2/search?text=${encodeURIComponent(address)}&size=1`;
+    const res = await fetch(url, { cache: "no-store" });
+    if (!res.ok) return null;
+
+    const data = await res.json() as {
+      features?: Array<{ properties?: { label?: string }; geometry?: { coordinates?: [number, number] } }>;
+    };
+    const match = data.features?.[0];
+    const coordinates = match?.geometry?.coordinates;
+    if (!match?.properties?.label || !coordinates) return null;
+    if (streetAddressKey(address) !== streetAddressKey(match.properties.label)) return null;
+    const [lng, lat] = coordinates;
+    return isNycCoordinate(lat, lng) ? { lat, lng } : null;
+  } catch {
+    return null;
+  }
+}
+
 const geocodeCache = new Map<string, { lat: number; lng: number }>();
 
 async function geocodeBusinessAddress(address: string, borough: string): Promise<{ lat: number; lng: number } | null> {
   const queries = buildBusinessGeocodeQueries(address, borough);
+  for (const query of queries) {
+    const cacheKey = query.toLowerCase();
+    const cached = geocodeCache.get(cacheKey);
+    if (cached) return cached;
+
+    const nyc = await geocodeWithNycGeosearch(query);
+    if (nyc) {
+      geocodeCache.set(cacheKey, nyc);
+      return nyc;
+    }
+  }
+
   for (const query of queries) {
     const cacheKey = query.toLowerCase();
     const cached = geocodeCache.get(cacheKey);
