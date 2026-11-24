@@ -52,6 +52,8 @@ const REFERRAL_GENERIC = [
   "Other",
 ] as const;
 
+const RDRC_REFERRAL = "RDRC (Rockaway Development & Revitalization Corporation)";
+
 function isGenericReferral(value: string): boolean {
   return (REFERRAL_GENERIC as readonly string[]).includes(value.trim());
 }
@@ -82,7 +84,7 @@ export default function ContactForm() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [neighborhoodOptions, setNeighborhoodOptions] = useState<string[]>([]);
-  const [partnerOptions, setPartnerOptions] = useState<string[]>([]);
+  const [partnerOptions, setPartnerOptions] = useState<string[]>([RDRC_REFERRAL]);
   const [referredByDetail, setReferredByDetail] = useState("");
 
   useEffect(() => {
@@ -95,7 +97,16 @@ export default function ContactForm() {
     fetch("/api/public/org-partners")
       .then((r) => r.json())
       .then((data: { partners?: string[] }) => {
-        if (Array.isArray(data.partners)) setPartnerOptions(data.partners);
+        if (Array.isArray(data.partners)) {
+          setPartnerOptions([
+            ...data.partners.filter((name) =>
+              name !== "RDRC" &&
+              name !== "Rockaway Development & Revitalization Corporation" &&
+              name !== RDRC_REFERRAL,
+            ),
+            RDRC_REFERRAL,
+          ].sort((a, b) => a.localeCompare(b)));
+        }
       })
       .catch(() => { /* non-fatal */ });
   }, []);
